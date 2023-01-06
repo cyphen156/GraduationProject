@@ -1,12 +1,23 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-function Greetings() {
+function Greetings(props) {
   return (
-    <View>
-      <Text>안녕하세요!</Text>
+    <View style={styles.text}>
+      <Text>안녕하세요! {props.name}!</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    flex: 1,
+    backgroundColor: 'red',
+  },
+});
+
+Greetings.defaultProps = {
+  name: 'react-native',
+};
 
 export default Greetings;

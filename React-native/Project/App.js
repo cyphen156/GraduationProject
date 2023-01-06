@@ -5,7 +5,8 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
+import {NavigationContainer} from "@react-navigation/native";
 import {
   SafeAreaView,
   ScrollView,
@@ -24,6 +25,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Greetings from './components/Greetings';
+import Box from './components/Box';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -71,6 +73,7 @@ const App = () => {
         style={backgroundStyle}>
         <Header />
         <Greetings />
+        <Box />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
