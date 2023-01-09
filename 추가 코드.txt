@@ -1,0 +1,22 @@
+네비게이션 관련 설치
+yarn add @react-navigation-native @react-navigation-native-stack 
+yarn add react-native-screens react-native-safe-area-context
+드로어 == 사이드바
+yarn add @react-navigation/drawer react-native-gesture-handler react-native-reanimated
+머테리얼 상단 탭
+yarn addd @react-navigation/material-top-tabs react-native-tab-view react-native-pager-view
+하단탭
+yarn add @react-navigation/bottom-tabs react-native-vector-icons
+
+/Info.plist
+<key>UIAPPFonts</key>
+<array>
+    <string>MaterialIcons.ttf</string>
+</array>
+
+/build.gradle
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf' ]
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

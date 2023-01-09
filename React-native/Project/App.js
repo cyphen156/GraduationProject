@@ -7,6 +7,11 @@
 
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screen/Home';
+import DetailScreen from './screen/Detail';
+import MainTab from "./screen/MainTab";
+
 import {
   SafeAreaView,
   ScrollView,
@@ -24,11 +29,10 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import Greetings from './components/Greetings';
-import Box from './components/Box';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
+
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -55,7 +59,9 @@ const Section = ({children, title}): Node => {
   );
 };
 
-const App = () => {
+const Stack = createNativeStackNavigator();
+
+function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -63,6 +69,13 @@ const App = () => {
   };
 
   return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name='Home' component={HomeScreen} />
+        <Stack.Screen name='Detail' component={DetailScreen} />
+      </Stack.Navigator> 
+    </NavigationContainer>
+    /*
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
@@ -72,31 +85,24 @@ const App = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        <Greetings />
-        <Box />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
+          <Section>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName='Home'>
+                <Stack.Screen name='Home' component={HomeScreen} />
+                <Stack.Screen name='Detail' component={DetailScreen} />
+              </Stack.Navigator> 
+            </NavigationContainer>
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
         </View>
       </ScrollView>
     </SafeAreaView>
+    */
   );
-};
+}
 
 const styles = StyleSheet.create({
   sectionContainer: {
