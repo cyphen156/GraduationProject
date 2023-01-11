@@ -2,15 +2,25 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from './Feed'
 import CalendarScreen from "./Calendar";
 import SearchScreen from './Search';
+import { Icon } from "react-native-vector-icons/MaterialIcons";
 
 const Tab = createBottomTabNavigator();
 
 function MainTab() {
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Feed" component={FeedScreen} />
-            <Tab.Screen name="Calendar" component={CalendarScreen} />
-            <Tab.Screen name="Search" component={SearchScreen} />
+        <Tab.Navigator tabbarOptions={{
+            showLable: false,
+            activeTintColor:'#009688',
+        }}>
+            <Tab.Screen name="Feed" component={FeedScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
+            <Tab.Screen name="Calendar" component={CalendarScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
+            <Tab.Screen name="Search" component={SearchScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
         </Tab.Navigator>
     );
 }

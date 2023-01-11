@@ -8,9 +8,7 @@
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screen/Home';
-import DetailScreen from './screen/Detail';
-import MainTab from "./screen/MainTab";
+import RootStack from './screen/RootStack'
 
 import {
   SafeAreaView,
@@ -70,10 +68,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='Detail' component={DetailScreen} />
-      </Stack.Navigator> 
+      <RootStack />
     </NavigationContainer>
     /*
     <SafeAreaView style={backgroundStyle}>
