@@ -27,6 +27,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import LogContext from './context/LogContext';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -68,7 +69,9 @@ function App() {
 
   return (
     <NavigationContainer>
-      <RootStack />
+      <LogContext.Provider value='hi'>
+        <RootStack />
+      </LogContext.Provider>
     </NavigationContainer>
     /*
     <SafeAreaView style={backgroundStyle}>

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from './Feed'
 import CalendarScreen from "./Calendar";
 import SearchScreen from './Search';
-import { Icon } from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const Tab = createBottomTabNavigator();
 
