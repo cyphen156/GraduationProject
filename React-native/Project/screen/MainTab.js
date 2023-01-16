@@ -8,7 +8,7 @@ const Tab = createBottomTabNavigator();
 
 function MainTab() {
     return (
-        <Tab.Navigator tabbarOptions={{
+        <Tab.Navigator tabBarOptions={{
             showLable: false,
             activeTintColor:'#009688',
         }}>
@@ -26,3 +26,8 @@ function MainTab() {
 }
 
 export default MainTab;
+/*
+screenOptions={({route}) => ({
+    return (showLable:false, activeTintColor:"#009688",)
+})}
+*/
