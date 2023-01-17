@@ -8,10 +8,10 @@ const Tab = createBottomTabNavigator();
 
 function MainTab() {
     return (
-        <Tab.Navigator tabBarOptions={{
-            showLable: false,
-            activeTintColor:'#009688',
-        }}>
+        <Tab.Navigator screenOptions={{
+            tabBarShowLabel: true,
+            tabBarActiveTintColor: '#e91e63',
+          }}>
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
