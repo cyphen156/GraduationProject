@@ -27,8 +27,8 @@ function FloatingWriteButton () {
 
 const styles = StyleSheet.create({
     wrapper: {
-        position: "absolute",
-        buttom: 16,
+        position: 'absolute',
+        bottom: 16,
         right: 16,
         width: 56,
         height: 56,
