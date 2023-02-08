@@ -9,7 +9,8 @@ import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RootStack from './screen/RootStack'
-
+import { LogContextProvider } from './context/LogContext';
+import { SearchContextProvider } from "./context/SearchContext";
 import {
   SafeAreaView,
   ScrollView,
@@ -27,7 +28,6 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { LogContextProvider } from './context/LogContext';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -69,9 +69,11 @@ function App() {
 
   return (
     <NavigationContainer>
-      <LogContextProvider>
-        <RootStack />
-      </LogContextProvider>
+      <SearchContextProvider>
+        <LogContextProvider>
+          <RootStack />
+        </LogContextProvider>
+      </SearchContextProvider>
     </NavigationContainer>
     /*
     <SafeAreaView style={backgroundStyle}>
