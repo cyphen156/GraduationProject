@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 
 function CalendarView({markedDates, selectedDate, onSelectDate}) {
     const markedSelectedDate = {
-        ...markedDates,
-        [selectedDate]: {
-            selected: TurboModuleRegistry,
-            marked: markedDates[selectedDate]?.marked,
-        },
+      ...markedDates,
+      [selectedDate]: {
+        selected: true,
+        marked: markedDates[selectedDate]?.marked,
+      },
     };
 
     return (
@@ -24,14 +24,14 @@ function CalendarView({markedDates, selectedDate, onSelectDate}) {
                 todayTextColor: "#009688",
             }} 
         />
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     calendar:{
         borderBottomColor: "#e0e0e0",
         borderBottomWidth: 1,
-    }
+    },
 });
 
 export default CalendarView;
