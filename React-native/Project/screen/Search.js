@@ -10,13 +10,13 @@ function SearchScreen({navigation}){
     const {logs} = useContext(LogContext);
 
     const filtered =
-    keyword === ''
-      ? []
-      : logs.filter(log =>
-          [log.title, log.body].some(text => text.includes(keyword)),
-        );
+        keyword === ''
+        ? []
+        : logs.filter((log) =>
+            [log.title, log.body].some((text) => text.includes(keyword)),
+            );
         
-    if (keyword === "") {
+    if (keyword === '') {
         return <EmptySearchResult type="EMPTY_KEYWORD"/>
     }
     if (filtered.length === 0) {

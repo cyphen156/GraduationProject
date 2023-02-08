@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
 
 const messages = {
-    NOT_FOUND: "검색 결과가 없습니다.",
-    EMPTY_KEYWORD: "검색어를 입력하세요.",
+    NOT_FOUND: '검색 결과가 없습니다.',
+    EMPTY_KEYWORD: '검색어를 입력하세요.',
 };
 
 function EmptySearchResult({type}) {

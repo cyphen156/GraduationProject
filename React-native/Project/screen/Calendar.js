@@ -1,47 +1,42 @@
-import { useContext, useRef } from "react";
-import { Animated, Button, StyleSheet, Text, View } from "react-native";
+import { format } from "date-fns";
+import { useContext, useState, useMemo } from "react";
+import { StyleSheet } from "react-native";
+import CalendarView from "../components/CalendarView";
+import FeedList from "../components/FeedList"
 import LogContext from "../context/LogContext";
 
-function FadeInAndOut() {
-    const animation = useRef(new Animated.Value(1)).current;
-
-    return (
-        <View>
-            <Animated.View 
-                style={[styles.rectangle, {opacity: animation,},]}/>
-            <Button title="FadeIn" onPress={() => {
-                Animated.timing(animation, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                }).start();
-            }}/>
-            <Button title="FadeOut" onPress={() => {
-                Animated.timing(animation, {
-                    toValue: 0,
-                    useNativeDriver: true,
-                }).start();
-            }}/>
-        </View>
-    );
-}
-
 function CalendarScreen() {
-    const {text} = useContext(LogContext);
-
+    const {logs} = useContext(LogContext);
+    const [selectedDate, setSelectedDate] = useState(
+        format(new Date(), 'yyyy-mm-dd'),);
+    const markedDates = useMemo(
+        () =>
+          logs.reduce((acc, current) => {
+            const formattedDate = format(new Date(current.date), 'yyyy-MM-dd');
+            acc[formattedDate] = {marked: true};
+            return acc;
+          }, {}),
+        [logs],
+      );
+        
+    const filteredLogs = logs.filter(
+        (log) => format(new Date(log.date), 'yyyy-mm-dd') === selectedDate,);
     return (
-        <View style={[styles.block]}>
-            <FadeInAndOut />
-        </View>
+        <FeedList
+            logs={filteredLogs}
+            ListHeaderComponent = {
+                <CalendarView 
+                    markedDates={markedDates} 
+                    selectedDate={selectedDate} 
+                    onSelectDate={setSelectedDate}>
+                </CalendarView>
+            }
+        />
     );
 }
 
 const styles = StyleSheet.create({
     block: {},
-    rectangle: {
-        width: 100,
-        height: 100,
-        backgroundColor: "black",
-    },
 });
 
 export default CalendarScreen;

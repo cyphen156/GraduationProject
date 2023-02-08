@@ -3,10 +3,10 @@ import { createContext, useState } from "react";
 const SearchContext = createContext();
 
 export function SearchContextProvider({children}) {
-    const [keyward, onChangeText] = useState("");
+    const [keyword, onChangeText] = useState('');
     
     return (
-        <SearchContext.Provider value={{keyward, onChangeText}}>
+        <SearchContext.Provider value={{keyword, onChangeText}}>
             {children}
         </SearchContext.Provider>
     );
