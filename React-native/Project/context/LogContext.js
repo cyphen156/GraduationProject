@@ -1,9 +1,12 @@
 import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useEffect, useRef } from "react";
+import logsStorage from "../storages/logsStorage";
 
 const LogContext = createContext();
 
 export function LogContextProvider({children}) {
+    const initialLogsRef = useRef(null);
     const [logs, setLogs] = useState([]);
     
     const onCreate = ({title, body, date}) => {
@@ -27,6 +30,23 @@ export function LogContextProvider({children}) {
         setLogs(nextLogs);
     };
 
+    useEffect(() => {
+      (async () => {
+        const savedLogs = await logsStorage.get();
+        if(savedLogs) {
+            initialLogsRef.current = savedLogs;
+            setLogs(savedLogs);
+        }
+      })();
+    }, []);
+
+    useEffect(() => {
+      if (logs === initialLogsRef.current) {
+        return;
+      }
+      logsStorage.set(logs);
+    }, [logs]);
+    
     return (
         <LogContext.Provider value={{logs, onCreate, onModify, onRemove}}>
             {children}
