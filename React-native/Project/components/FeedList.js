@@ -10,7 +10,8 @@ function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
         const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
         const distanceFromBottom = contentSize.height - layoutMeasurement.height - contentOffset.y;
 
-        if (distanceFromBottom < 72) {onScrolledToBottom(true);}
+        if (contentSize.height > layoutMeasurement.height &&
+            distanceFromBottom < 72) {onScrolledToBottom(true);}
         else {onScrolledToBottom(false);}
     };
 
