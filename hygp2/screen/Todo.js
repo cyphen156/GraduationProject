@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import {KeyboardAvoidingView, StyleSheet, Platform} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Platform} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import DateHead from '../components/DateHead';
 import AddTodo from '../components/AddTodo';

@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native/types";
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function SignIn () {
