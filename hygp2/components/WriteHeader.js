@@ -30,10 +30,10 @@ function WriteHeader({onSave, onAskRemove, isEditing, date, onChangeDate}) {
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
-    const open = (mode) => dispatch({type: "open", mode});
-    const close = () => dispatch({type: "close"});
+    const open = mode => dispatch({type: 'open', mode});
+    const close = () => dispatch({type: 'close'});
 
-    const onConfirm = (selectedDate) => {
+    const onConfirm = selectedDate => {
         close();
         onChangeDate(selectedDate);
     };
@@ -72,12 +72,12 @@ function WriteHeader({onSave, onAskRemove, isEditing, date, onChangeDate}) {
                 <Text>{format(new Date(date), 'p', {locale: ko})}</Text>
                 </Pressable>
             </View>
-            <DateTimePickerModal 
-            isVisible = {state.visible}
-            mode = {state.mode}
-            onConfirm = {onConfirm}
-            onCancle = {close}
-            date = {date} 
+            <DateTimePickerModal
+                isVisible={state.visible}
+                mode={state.mode}
+                onConfirm={onConfirm}
+                onCancel={close}
+                date={date}
             />
         </View>
     );

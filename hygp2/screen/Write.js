@@ -64,7 +64,7 @@ function WriteScreen({route}){
                     onAskRemove={onAskRemove}
                     isEditing={!!log} 
                     date={date}
-                    onChangeDate={setDate}/>
+                    onChangeDate={setDate} />
                 <WriteEditor 
                     title = {title}
                     body = {body}
