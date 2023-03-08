@@ -13,7 +13,7 @@ const TodosStorage = {
             }
 
             const savedTodos = JSON.parse(rawTodos);
-                return savedTodos;
+            return savedTodos;
         } catch (e) {
             throw new Error("Failed to load todos");
         }
