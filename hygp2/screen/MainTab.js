@@ -5,7 +5,6 @@ import SearchScreen from './Search';
 import Todo from './Todo';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SearchHeader from "../components/SearchHeader";
-import SignIn from "./SignIn";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,10 +13,7 @@ function MainTab() {
         <Tab.Navigator screenOptions={{
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63',
-            }}>
-             <Tab.Screen name="Login" component={SignIn} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+          }}>
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
