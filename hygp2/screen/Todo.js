@@ -1,5 +1,5 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Platform} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import DateHead from '../components/DateHead';
@@ -30,10 +30,15 @@ function Todo() {
   useEffect(() => {
     async function load() {
       try {
-        const rawTodos = await AsyncStorage.getItem('todos');
+        console.log(1);
+        const rawTodos = await AsyncStorage.getItem('todos');//catch
+        console.log(2);
         const savedTodos = JSON.parse(rawTodos);
+        console.log(3);
         setTodos(savedTodos);
+        console.log(4);
       } catch (e) {
+        console.log(5);
         console.log('Failed to load todos');
       }
     }
@@ -43,8 +48,11 @@ function Todo() {
   useEffect(() => {
     async function save() {
       try {
-        await AsyncStorage.setItem('todos', JSON.stringify(todos));
+        console.log(6);
+        await AsyncStorage.setItem('todos', JSON.stringify(todos));//catch
+        console.log(7);
       } catch (e){
+        console.log(8);
         console.log('Failed to save todos');
       }
     }
