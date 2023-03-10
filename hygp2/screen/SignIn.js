@@ -7,6 +7,7 @@ import SignButtons from '../components/SignButtons';
 import SignForm from '../components/SignForm';
 import { signIn, signUp } from '../lib/auth';
 import { getUser } from '../lib/user';
+import { useUserContext } from '../context/UserContext';
 
 /** 로그인 화면 */
 function SignIn ({navigation, route}) {
@@ -17,6 +18,7 @@ function SignIn ({navigation, route}) {
         confirmPassword: '',
     });
     const [loading, setLoading] = useState();
+    const {setUser} = useUserContext();
 
     const createChangeTextHandler = (name) => (value) => {
         setForm({...form, [name]: value});
@@ -41,7 +43,7 @@ function SignIn ({navigation, route}) {
             if(!profile){
                 navigation.navigate('Welcome', {uid: user.uid});
             } else {
-                // 구현 예정
+                setUser(profile);
             }
             //console.log(user);
         } catch (e) {

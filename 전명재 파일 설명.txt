@@ -29,3 +29,7 @@ SignButtons : 로그인 버튼
 lib/auth.js : 회원가입, 로그인, 로그아웃, 사용자 정보 조회,  기능 
 lib/user.js : 사용자 정보가 담긴 문서를 저장
 
+// context : 사용자 인증 상태 조회
+UserContext.js : useState를 사용해 user 상태를 관리하며, 
+                 user와 setUser를 Context의 value로 사용
+                 

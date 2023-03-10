@@ -6,20 +6,25 @@ import Todo from './Todo';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SearchHeader from "../components/SearchHeader";
 import SignIn from "./SignIn";
+import { StyleSheet, Text, View } from "react-native";
+import { useUserContext } from "../context/UserContext";
+import  HomeScreen from './Home';
 
 const Tab = createBottomTabNavigator();
 
 
 /** 메인 화면 아래 탭 */
 function MainTab() {
+    const {user} = useUserContext();
     return (
+ 
         <Tab.Navigator screenOptions={{
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63',
-          }}>
-            <Tab.Screen name="Login" component={SignIn} options={{
+          }}>            
+            <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+            }}/> 
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
@@ -36,6 +41,7 @@ function MainTab() {
         </Tab.Navigator>
     );
 }
+
 
 export default MainTab;
 /*

@@ -28,6 +28,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { UserContextProvider } from './context/UserContext';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -68,13 +69,15 @@ function App() {
   };
 
   return (
-    <NavigationContainer>
-      <SearchContextProvider>
-        <LogContextProvider>
-          <RootStack />
-        </LogContextProvider>
-      </SearchContextProvider>
-    </NavigationContainer>
+    <UserContextProvider>
+      <NavigationContainer>
+        <SearchContextProvider>
+          <LogContextProvider>
+            <RootStack />
+          </LogContextProvider>
+        </SearchContextProvider>
+      </NavigationContainer>
+    </UserContextProvider>
     /*
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
