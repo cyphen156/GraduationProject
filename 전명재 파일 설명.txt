@@ -1,0 +1,18 @@
+RootStack : 프로젝트의 최상위 스택
+MainTab : 로그인하면 보일 화면
+ - HomeStack : 첫 번째 탭인 홈의 스택
+FeedScreen : 포스트들의 목록을 볼 수 있는 화면
+PostScreen : 하나의 포스트를 볼 수 있는 화면
+ProfileScreen : 특정 사용자의 프로필을 볼 수 있는 화면
+ - MyProfileStack : 두 번째 탭인 프로필의 스택
+MyProfileStack : 자신의 프로필을 볼 수 있는 화면
+PostScreen : 하나의 포스트를 볼 수 있는 화면. HomeStack과 컴포넌트 공유
+UploadScreen : 사진을 업로드하는 화면
+ModifyScreen : 포스트의 문구를 수정하는 화면
+SettingScreen : 설정 화면
+SignInScreen : 로그인 화면
+WelcomeScreen : 회면가입 후 프로필 사진과 이름을 설정하는 화면
+
+// 컴포넌트
+BorderedInput.js : 로그인 인풋
+CustomButton.js : 로그인 버튼

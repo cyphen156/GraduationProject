@@ -40,6 +40,9 @@ yarn add react-native-modal-datetime-picker /
 yarn add date-fns   /
 yarn add uuid   /
 
+// jmj 내비게이션과 아이콘
+
+
 cd ios
 pod install
 

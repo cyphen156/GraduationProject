@@ -9,6 +9,8 @@ import SignIn from "./SignIn";
 
 const Tab = createBottomTabNavigator();
 
+
+/** 메인 화면 아래 탭 */
 function MainTab() {
     return (
         <Tab.Navigator screenOptions={{
