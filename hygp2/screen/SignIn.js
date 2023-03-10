@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SignButtons from '../components/SignButtons';
 import SignForm from '../components/SignForm';
 import { signIn, signUp } from '../lib/auth';
+import { getUser } from '../lib/user';
 
 /** 로그인 화면 */
 function SignIn ({navigation, route}) {
@@ -27,6 +28,7 @@ function SignIn ({navigation, route}) {
 
         if (isSignUp && password !== confirmPassword){
              Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
+             console.log({password, confirmPassword});
              return;
         }
 
@@ -35,7 +37,13 @@ function SignIn ({navigation, route}) {
         
         try{
             const {user} = isSignUp ? await signUp(info) : await signIn(info);
-            console.log(user);
+            const profile = await getUser(user.uid);
+            if(!profile){
+                navigation.navigate('Welcome', {uid: user.uid});
+            } else {
+                // 구현 예정
+            }
+            //console.log(user);
         } catch (e) {
             const messages = {
                 'auth/email-already-in-use': '이미 가입된 이메일입니다.',
