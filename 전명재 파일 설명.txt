@@ -18,5 +18,9 @@ BorderedInput.js : 로그인 인풋
 CustomButton.js : 로그인 버튼
 
 // 분리
-SignForm.js : 로그인, 회원가입 인풋
+SignForm : 로그인, 회원가입 인풋
 SignButtons : 로그인 버튼
+
+// 파이어베이스
+lib/auth.js : 회원가입, 로그인, 로그아웃, 사용자 정보 조회,  기능 
+lib/user.js : 사용자 정보가 담긴 문서를 저장

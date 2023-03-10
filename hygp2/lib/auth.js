@@ -1,5 +1,4 @@
 import auth from '@react-native-firebase/auth';
-import { call } from 'react-native-reanimated';
 
 /** 로그인을 하는 함수 */
 export function signIn({email, password}){
