@@ -1,4 +1,4 @@
-import { View, Button , StyleSheet , Text , Pressable, Platform} from 'react-native';
+import { View, Button , StyleSheet , Text , Pressable, Platform, Image} from 'react-native';
 import { useUserContext } from "../context/UserContext";
 import { signOut } from '../lib/auth';
 
@@ -13,8 +13,14 @@ function HomeScreen ({navigation}) {
 
     return (
         <View style={styles.block}>
-        
-            <Text style={styles.text}>Hello, {user.displayName}</Text>
+            {user.photoURL && (
+                <Image
+                    source={{uri: user.photoURL}}
+                    style={{width: 128, height: 128, marginBottom: 16}}
+                    resizeMode="cover"
+                />
+            )}
+            <Text style={styles.text}>환영합니다! {user.displayName}님</Text>
             <Pressable
                 onPress={onLogout}
                 style={({pressed}) => [
