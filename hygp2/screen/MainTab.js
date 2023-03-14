@@ -15,7 +15,9 @@ const Tab = createBottomTabNavigator();
 
 /** 메인 화면 아래 탭 */
 function MainTab() {
+
     const {user} = useUserContext();
+<<<<<<< Updated upstream
     return (
  
         <Tab.Navigator screenOptions={{
@@ -39,8 +41,13 @@ function MainTab() {
                 headerTitle: () => <SearchHeader />,
             }}/>
         </Tab.Navigator>
+=======
+
+    return(
+
+>>>>>>> Stashed changes
     );
-}
+};
 
 const styles = StyleSheet.create({
     block: {
