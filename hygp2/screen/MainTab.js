@@ -6,6 +6,7 @@ import Todo from './Todo';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SearchHeader from "../components/SearchHeader";
 import SignIn from "./SignIn";
+import pickImg from "./ImagePicker";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +29,10 @@ function MainTab() {
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Search" component={SearchScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                headerTitle: () => <SearchHeader />,
+            }}/>
+            <Tab.Screen name="ImagePicker" component={pickImg} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 headerTitle: () => <SearchHeader />,
             }}/>
