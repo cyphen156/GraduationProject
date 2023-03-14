@@ -85,7 +85,7 @@ function WriteHeader({onSave, onAskRemove, isEditing, date, onChangeDate}) {
 
 const styles = StyleSheet.create({
     block: {
-        height: 80,
+        height: 40,
         paddingHorizontal: 8,
         flexDirection: "row",
         alignItems: "center",
