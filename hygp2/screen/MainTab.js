@@ -42,6 +42,12 @@ function MainTab() {
     );
 }
 
+const styles = StyleSheet.create({
+    block: {
+        flex: 1,
+        zindex: 0,
+    },
+});
 
 export default MainTab;
 /*
