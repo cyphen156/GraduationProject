@@ -28,6 +28,7 @@
     "react-native-calendars": "^1.1293.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-get-random-values": "^1.8.0",
+    "react-native-image-picker": "^5.1.0",
     "react-native-modal-datetime-picker": "^14.0.1",
     "react-native-pager": "^0.0.3",
     "react-native-pager-view": "^6.1.4",
@@ -36,6 +37,7 @@
     "react-native-screens": "^3.20.0",
     "react-native-tab-view": "^3.4.0",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-web": "^0.18.12",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
