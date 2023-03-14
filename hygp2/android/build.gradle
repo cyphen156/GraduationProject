@@ -1,6 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+
 buildscript {
+    //project.ext.react = [entryFile: "index.js",]
+
     ext {
         buildToolsVersion = "33.0.0"
         minSdkVersion = 21

@@ -40,6 +40,11 @@ yarn add react-native-modal-datetime-picker /
 yarn add date-fns   /
 yarn add uuid   /
 
+yarn add react-native-image-picker // 추가 이미지 선택 기능
+
+// jmj 내비게이션과 아이콘
+
+
 cd ios
 pod install
 

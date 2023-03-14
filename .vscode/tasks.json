@@ -1,17 +1,17 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "npm",
-			"script": "android",
-			"path": "React-native/Project",
-			"problemMatcher": [],
-			"label": "npm: android - React-native/Project",
-			"detail": "react-native run-android",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "android",
+            "path": "React-native/Project",
+            "problemMatcher": [],
+            "label": "npm: android - React-native/Project",
+            "detail": "react-native run-android",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
 }
