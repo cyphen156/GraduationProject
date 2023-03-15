@@ -5,6 +5,7 @@ import WriteEditor from "../components/WriteEditor";
 import { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LogContext from "../context/LogContext";
+import CameraButton from "../components/CameraButton";
 
 function WriteScreen({route}){
     const log = route.params?.log;
@@ -71,6 +72,7 @@ function WriteScreen({route}){
                     onChangeTitle={setTitle}
                     onChangeBody={setBody} />
             </KeyboardAvoidingView>
+            <CameraButton/>
         </SafeAreaView>
     );
 }

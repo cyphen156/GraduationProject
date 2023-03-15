@@ -14,7 +14,7 @@ SettingScreen : 설정 화면
 SignInScreen : 로그인 화면
 WelcomeScreen : 회면가입 후 프로필 사진과 이름을 설정하는 화면
 
-////////////만든 것/////////////////
+////////////8 장. 만든 것/////////////////
 
 // 컴포넌트
 BorderedInput.js : 로그인 인풋
@@ -33,3 +33,8 @@ lib/user.js : 사용자 정보가 담긴 문서를 저장
 UserContext.js : useState를 사용해 user 상태를 관리하며, 
                  user와 setUser를 Context의 value로 사용
                  
+///////////9 장. 만든 것/////////////////
+
+// 컴포넌트
+CameraButton.js : 카메라 버튼
+UploadModeModal.js : 카메라로 촬영하기, 사진 선택하기 
