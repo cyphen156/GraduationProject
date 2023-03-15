@@ -9,19 +9,22 @@ import SignIn from "./SignIn";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
 import  HomeScreen from './Home';
+//import pickImg from "./ImagePicker";
 
 const Tab = createBottomTabNavigator();
 
 
 /** 메인 화면 아래 탭 */
 function MainTab() {
+    
     const {user} = useUserContext();
+
     return (
- 
+
         <Tab.Navigator screenOptions={{
             tabBarShowLabel: true,
-            tabBarActiveTintColor: '#e91e63',
-          }}>            
+            tabBarActiveTintColor: '#e91e63'}}>     
+
             <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
@@ -37,11 +40,23 @@ function MainTab() {
             <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 headerTitle: () => <SearchHeader />,
+            
+            /*<Tab.Screen name="ImagePicker" component={pickImg} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                headerTitle: () => <SearchHeader />,
+            */
+           
             }}/>
         </Tab.Navigator>
     );
 }
 
+const styles = StyleSheet.create({
+    block: {
+        flex: 1,
+        zindex: 0,
+    },
+});
 
 export default MainTab;
 /*

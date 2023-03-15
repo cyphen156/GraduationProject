@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import FeedListItem from "./FeedListItem";
 
+
 function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
     const onScroll = (e) => {
         if (!onScrolledToBottom) {
@@ -16,6 +17,7 @@ function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
     };
 
     return (
+        <>
         <FlatList
             data={logs}
             style={styles.block}
@@ -25,6 +27,7 @@ function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
             onScroll={onScroll}
             ListHeaderComponent={ListHeaderComponent}
         />
+        </>
     );
 }
 
