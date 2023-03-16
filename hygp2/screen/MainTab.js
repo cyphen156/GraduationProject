@@ -9,6 +9,7 @@ import SignIn from "./SignIn";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
 import  HomeScreen from './Home';
+import Camera from "../components/image-picker-ex";
 //import pickImg from "./ImagePicker";
 
 const Tab = createBottomTabNavigator();
@@ -39,13 +40,10 @@ function MainTab() {
             }}/>
             <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                headerTitle: () => <SearchHeader />,
-            
-            /*<Tab.Screen name="ImagePicker" component={pickImg} options={{
+                headerTitle: () => <SearchHeader />,   
+            }}/>
+            <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                headerTitle: () => <SearchHeader />,
-            */
-           
             }}/>
         </Tab.Navigator>
     );
