@@ -14,10 +14,10 @@ export function signUp({email, password}){
  *  현재 사용자의 정보를 파라미터로 받아오는 
  * 특정 콜백 함수를 등록하는 함수
  */
-export function subscribeAuth({callback}){
+export function subscribeAuth(callback) {
     return auth().onAuthStateChanged(callback);
-}
-
+  }
+  
 /** 로그아웃을 하는 함수 */
 export function signOut(){
     return auth().signOut();

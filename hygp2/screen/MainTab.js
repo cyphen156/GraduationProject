@@ -10,7 +10,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
 import  HomeScreen from './Home';
 import Camera from "../components/image-picker-ex";
-//import pickImg from "./ImagePicker";
+import HomeStack from "./HomeStack";
+import MyProfileStack from "./MyProfileStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,7 @@ function MainTab() {
     return (
 
         <Tab.Navigator screenOptions={{
+            headerShown: false,
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63'}}>     
 
@@ -44,6 +46,12 @@ function MainTab() {
             }}/>
             <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
+            <Tab.Screen name="HomeStack" component={HomeStack} options={{
+                tabBarIcon: ({color}) => (<Icon name="home" color={color} />),
+            }}/>
+            <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
+                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
             }}/>
         </Tab.Navigator>
     );

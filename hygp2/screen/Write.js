@@ -72,7 +72,6 @@ function WriteScreen({route}){
                     onChangeTitle={setTitle}
                     onChangeBody={setBody} />
             </KeyboardAvoidingView>
-            <CameraButton/>
         </SafeAreaView>
     );
 }
