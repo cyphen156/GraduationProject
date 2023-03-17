@@ -5,7 +5,6 @@ import SearchScreen from './Search';
 import Todo from './Todo';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SearchHeader from "../components/SearchHeader";
-import SignIn from "./SignIn";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
 import  HomeScreen from './Home';
@@ -27,7 +26,6 @@ function MainTab() {
             headerShown: false,
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63'}}>     
-
             <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
@@ -42,7 +40,7 @@ function MainTab() {
             }}/>
             <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                headerTitle: () => <SearchHeader />,   
+                headerTitle: () => <SearchHeader />, headerShown: true   
             }}/>
             <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
