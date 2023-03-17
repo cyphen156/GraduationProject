@@ -11,7 +11,7 @@ import  HomeScreen from './Home';
 import Camera from "../components/image-picker-ex";
 import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
-
+import SubTab from "./SubTab";
 const Tab = createBottomTabNavigator();
 
 
@@ -45,12 +45,16 @@ function MainTab() {
             <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
+            {/** 스크린 이동시 main tabBar 숨기기 필요*/}
+            <Tab.Screen name="SubTab" component={SubTab} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
             <Tab.Screen name="HomeStack" component={HomeStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} />),
             }}/>
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
-            }}/>
+            }}/>            
         </Tab.Navigator>
     );
 }

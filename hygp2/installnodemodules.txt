@@ -44,6 +44,8 @@ yarn add react-native-image-picker // 추가 이미지 선택 기능
 
 // jmj 내비게이션과 아이콘
 
+yarn add react-query axios //리액트 쿼리 (HTTP 프로토콜관련)
+
 
 cd ios
 pod install
