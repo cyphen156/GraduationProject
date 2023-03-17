@@ -3,6 +3,7 @@ import {useState} from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity,
   Image, Platform, PermissionsAndroid } from 'react-native';
 import { launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ToastButton from './ToastButton';
 
 function Camera() {
   const [filePath, setFilePath] = useState({});
@@ -126,6 +127,14 @@ function Camera() {
       <Text style={styles.titleText}>
         Example of Image Picker in React Native
       </Text>
+      <TouchableOpacity
+        onPress= {() => {
+          ToastButton.show("Toast Button is Clicked!!", ToastButton.SHORT);
+        }}>
+          <Text>
+            ToastButton
+          </Text>
+        </TouchableOpacity>
       <View style={styles.container}>
         {/* <Image
           source={{
