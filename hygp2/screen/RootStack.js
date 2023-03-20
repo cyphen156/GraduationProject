@@ -9,7 +9,7 @@ import FileScreen from "./FileScreen";
 import {subscribeAuth} from '../lib/auth';
 import {getUser} from '../lib/user';
 import { useEffect } from "react";
-
+import UploadScreen from "./UploadScreen";
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
@@ -41,6 +41,11 @@ function RootStack() {
                     <Stack.Screen name="MainTab" component={MainTab} options={{headerShown: false}} />
                     <Stack.Screen name="Write" component={WriteScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+                    <Stack.Screen 
+                      name="Upload"
+                      component={UploadScreen}
+                      options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}                    
+                     />
                 </>
             ) : (
                 <>

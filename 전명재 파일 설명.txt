@@ -38,9 +38,24 @@ UserContext.js : useState를 사용해 user 상태를 관리하며,
 // 컴포넌트
 CameraButton.js : 카메라 버튼
 UploadModeModal.js : 카메라로 촬영하기, 사진 선택하기 
+PostCard.js : 포스트의 정보를 보여주는 컴포넌트
 
 //스크린
 FileScreen : 게시물 화면
 MyProfileScreen : 마이 프로필 화면
 MyProfileStack : 마이 프로필의 스택
 HomeStack :  홈의 스택
+
+UploadScreen : 사진을 업로드하는 화면
+
+// 파이어베이스 
+lib/posts.js : 포스트 등록, 읽기, 쓰기
+
+
+yarn add uuid react-native-get-random-values
+npx pod-install
+
+//
+index.js : uuid 라이브러리 작동하려면, react-native-get-random-values를 불러옴
+
+p.311 스타트해야함
