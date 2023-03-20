@@ -5,14 +5,13 @@ import SearchScreen from './Search';
 import Todo from './Todo';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SearchHeader from "../components/SearchHeader";
-import SignIn from "./SignIn";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
 import  HomeScreen from './Home';
 import Camera from "../components/image-picker-ex";
 import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
-
+import SubTab from "./SubTab";
 const Tab = createBottomTabNavigator();
 
 
@@ -27,7 +26,6 @@ function MainTab() {
             headerShown: false,
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63'}}>     
-
             <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
@@ -42,9 +40,13 @@ function MainTab() {
             }}/>
             <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                headerTitle: () => <SearchHeader />,   
+                headerTitle: () => <SearchHeader />, headerShown: true   
             }}/>
             <Tab.Screen name="Camera" component={Camera} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
+            {/** 스크린 이동시 main tabBar 숨기기 필요*/}
+            <Tab.Screen name="SubTab" component={SubTab} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
             <Tab.Screen name="HomeStack" component={HomeStack} options={{
@@ -52,7 +54,7 @@ function MainTab() {
             }}/>
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
-            }}/>
+            }}/>            
         </Tab.Navigator>
     );
 }
