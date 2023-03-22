@@ -3,8 +3,10 @@ import { useState } from "react";
 import {
     ActivityIndicator, FlatList, Image, StyleSheet,
     Text, View } from 'react-native';
+// import { Avatar } from "react-native-elements";
 import { getPosts } from "../lib/posts";
 import { getUser } from "../lib/user";
+import Avatar from "./Avatar";
 
 function Profile({userId}) {
     const [user, setUser] = useState(null);
@@ -25,7 +27,8 @@ function Profile({userId}) {
         style={styles.block}
         ListHeaderComponent={
             <View style={styles.userInfo}>
-
+                <Avatar source={user.photoURL && {uri: user.photoURL}} size={128}/>
+                <Text style={styles.username}>{user.displayName}</Text>
             </View>
         }
       />   

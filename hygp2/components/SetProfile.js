@@ -9,6 +9,7 @@ import CustomButton from "./CustomButton";
 import { useUserContext } from "../context/UserContext";
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
+import { Avatar } from "react-native-gifted-chat";
 
 function SetupProfile(){
     const [displayName, setDisplayName] = useState('');
@@ -76,14 +77,7 @@ function SetupProfile(){
     return(
         <View style={styles.block}>
             <Pressable onPress={onSelectImage} >
-                <Image 
-                    style={styles.circle}
-                    source={
-                        response 
-                        ? {uri: response?.assets[0]?.uri}
-                        : require('../assets/images/user.png')
-                    } 
-                    />
+                <Avatar source={response && {uri: response.uri}} size={128} />
             </Pressable>
             <View style={styles.form}>
                 <BordredInput

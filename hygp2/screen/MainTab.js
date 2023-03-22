@@ -26,9 +26,15 @@ function MainTab() {
             headerShown: false,
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63'}}>     
-            <Tab.Screen name="Home" component={HomeScreen} options={{
+            {/* <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
+            }}/>  */}
+            <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
+                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
+            }}/>   
+            <Tab.Screen name="HomeStack" component={HomeStack} options={{
+                tabBarIcon: ({color}) => (<Icon name="home" color={color} />),
+            }}/>     
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
@@ -49,12 +55,8 @@ function MainTab() {
             <Tab.Screen name="SubTab" component={SubTab} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
-            <Tab.Screen name="HomeStack" component={HomeStack} options={{
-                tabBarIcon: ({color}) => (<Icon name="home" color={color} />),
-            }}/>
-            <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
-                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
-            }}/>            
+
+    
         </Tab.Navigator>
     );
 }
