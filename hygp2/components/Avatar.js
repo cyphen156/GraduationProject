@@ -13,8 +13,8 @@ function Avatar({source, size, style}){
                     borderRadius: size / 2,
                 },
             ]}
-            />
-        )   ;
+        />
+    );
 }
 
 Avatar.defaultProps = {

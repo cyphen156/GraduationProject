@@ -9,7 +9,7 @@ import CustomButton from "./CustomButton";
 import { useUserContext } from "../context/UserContext";
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
-import { Avatar } from "react-native-gifted-chat";
+import  Avatar  from  './Avatar';
 
 function SetupProfile(){
     const [displayName, setDisplayName] = useState('');

@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
     ActivityIndicator, FlatList, Image, StyleSheet,
     Text, View } from 'react-native';
-// import { Avatar } from "react-native-elements";
 import { getPosts } from "../lib/posts";
 import { getUser } from "../lib/user";
 import Avatar from "./Avatar";
@@ -33,7 +32,6 @@ function Profile({userId}) {
         }
       />   
     );
-
 }
 
 const styles = StyleSheet.create({
