@@ -55,7 +55,9 @@ function MainTab() {
             <Tab.Screen name="SubTab" component={SubTab} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
-
+            <Tab.Screen name="chat" component={Chat} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/> 
     
         </Tab.Navigator>
     );
