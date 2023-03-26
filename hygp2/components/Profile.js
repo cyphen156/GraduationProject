@@ -2,15 +2,45 @@ import { useEffect } from "react";
 import { useState } from "react";
 import {
     ActivityIndicator, FlatList, Image, StyleSheet,
-    Text, View } from 'react-native';
-import { getPosts } from "../lib/posts";
+    Text, View, RefreshControl } from 'react-native';
+import { getPosts, getNewerPosts, getOlderPosts, PAGE_SIZE } from "../lib/posts";
 import { getUser } from "../lib/user";
 import Avatar from "./Avatar";
+import PostGridItem from "./PostGridItem";
 
 function Profile({userId}) {
     const [user, setUser] = useState(null);
     const [posts, setPosts] = useState(null);
 
+    const [noMorePost, setNoMorePost] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onLoadMore = async () => {
+        if(noMorePost || !posts || posts.length < PAGE_SIZE){
+            return;
+        }
+        const lastPost =posts[posts.length - 1];
+        const olderPosts = await getOlderPosts(lastPost.id, userId);
+        if (olderPosts.length < PAGE_SIZE){
+            setNoMorePost(true);
+        }
+        setPosts(posts.concat(olderPosts));
+    }
+
+    const onRefresh = async () => {
+        if(!posts || posts.length === 0 || refreshing){
+            return;
+        }
+        const firstPost = posts[0];
+        setRefreshing(true);
+        const newerPosts = await getNewerPosts(firstPost.id, userId);
+        setRefreshing(false);
+        if (newerPosts.length === 0){
+            return;
+        }
+        setPosts(newerPosts.concat(posts));
+    }
+    
     useEffect(() => {
         getUser(userId).then(setUser);
         getPosts({userId}).then(setPosts);
@@ -24,15 +54,35 @@ function Profile({userId}) {
     return (
       <FlatList
         style={styles.block}
+        data={posts}
+        renderItem={renderItem}
+        numColumns={3}
+        keyExtractor={(item) => item.id}
         ListHeaderComponent={
             <View style={styles.userInfo}>
                 <Avatar source={user.photoURL && {uri: user.photoURL}} size={128}/>
                 <Text style={styles.username}>{user.displayName}</Text>
             </View>
         }
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.25}
+        ListFooterComponent={
+            !noMorePost && (
+                <ActivityIndicator
+                    style={styles.bottomSpinner}
+                    size={32}
+                    color="#6200ee"
+                    />
+                )
+            }
+            refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing}/>
+            }
       />   
     );
 }
+
+const renderItem = ({item}) => <PostGridItem post={item} />;
 
 const styles = StyleSheet.create({
     spinner: {
@@ -51,6 +101,9 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontSize: 24,
         color: '#424242',
+    },
+    bottomSpinner: {
+        height: 128,
     },
 });
 

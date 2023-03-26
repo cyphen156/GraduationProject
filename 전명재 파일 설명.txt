@@ -61,4 +61,6 @@ npx pod-install
 //
 index.js : uuid 라이브러리 작동하려면, react-native-get-random-values를 불러옴
 
-p.311 스타트해야함
+// 훅
+usePosts.js : 컴포넌트의 로직만 반복되어 분리 해줌
+
