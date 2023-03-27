@@ -62,6 +62,7 @@ const Section = ({children, title}): Node => {
 const Stack = createNativeStackNavigator();
 
 function App() {
+  
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
