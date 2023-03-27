@@ -64,3 +64,7 @@ index.js : uuid 라이브러리 작동하려면, react-native-get-random-values�
 // 훅
 usePosts.js : 컴포넌트의 로직만 반복되어 분리 해줌
 
+///포스트 열기////////////////////
+
+// 스크린
+PostScreen.js : 프로필 화면에서 사진을 눌렀을 때 단일 포스트를 조회하는 기능
