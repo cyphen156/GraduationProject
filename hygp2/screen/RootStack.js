@@ -13,6 +13,7 @@ import UploadScreen from "./UploadScreen";
 import MyProfileScreen from "./MyProfileScreen";
 import SettingScreen from "./SettingScreen";
 import PostScreen from './PostScreen';
+import ModifyScreen from "./ModifyScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,11 @@ function RootStack() {
                       name='Post'
                       component={PostScreen}
                       options={{title: '게시물'}}
+                      />
+                      <Stack.Screen
+                      name='Modify'
+                      component={ModifyScreen}
+                      options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
                       />
                 </>
             ) : (

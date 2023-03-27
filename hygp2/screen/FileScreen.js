@@ -4,9 +4,19 @@ import PostCard from '../components/PostCard';
 import { FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import usePosts from '../hooks/usePosts';
+import events from '../lib/events';
 
 function FileScreen(){
-    const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = usePosts();
+    const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} = usePosts();
+
+    useEffect(() => {
+        events.addListener('refresh', onRefresh);
+        events.addListener('removePost', removePost);
+        return () => {
+            events.removeListener('refresh', onRefresh);
+            events.removeListener('removePost', removePost);
+        };
+    }, [onRefresh, removePost]);
 
     return (
         <FlatList

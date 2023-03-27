@@ -57,6 +57,7 @@ lib/posts.js : 포스트 등록, 읽기, 쓰기
 
 yarn add uuid react-native-get-random-values
 npx pod-install
+yarn add eventemitter3
 
 //
 index.js : uuid 라이브러리 작동하려면, react-native-get-random-values를 불러옴
@@ -66,3 +67,4 @@ usePosts.js : 포스트 새로고침
 usePostActions.js : 사용자에게 수정 및 삭제 물어보기
 // 스크린
 PostScreen.js : 프로필 화면에서 사진을 눌렀을 때 단일 포스트를 조회하는 기능
+ModifyScreen.js : 포스트 설명 수정 화면

@@ -7,15 +7,35 @@ import { getUser } from "../lib/user";
 import Avatar from "./Avatar";
 import PostGridItem from "./PostGridItem";
 import usePosts from "../hooks/usePosts";
+import { useUserContext } from "../context/UserContext";
+import events from "../lib/events";
 
 function Profile({userId}) {
     const [user, setUser] = useState(null);
-    const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = 
-        usePosts(userId,);
+    const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} = 
+        usePosts(
+            userId,
+            );
+    const  {user: me} = useUserContext();
+    const isMyProfile = me.id === userId;
 
     useEffect(() => {
         getUser(userId).then(setUser);
     }, [userId]);
+
+    useEffect(() => {
+        // 자신의 프로필을 보고 있을 때만 새 포스트 작성 후 새로고침
+        if(!isMyProfile){
+            return;
+        }
+        events.addListener('refresh', onRefresh);
+        events.addListener('removePost', removePost);
+        return () => {
+            events.removeListener('refresh', onRefresh);
+            events.removeListener('removePost', removePost);
+        };
+    }, [removePost, isMyProfile, onRefresh]);
+
     if(!user || !posts){
         return (
             <ActivityIndicator style={styles.spinner} size={32} color="#6200ee"/>
