@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from './Feed'
 import CalendarScreen from "./Calendar";
 import SearchScreen from './Search';
@@ -7,7 +7,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import SearchHeader from "../components/SearchHeader";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
-import  HomeScreen from './Home';
 import Camera from "../components/image-picker-ex";
 import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
@@ -46,7 +45,7 @@ function MainTab() {
             }}/>
             <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                headerTitle: () => <SearchHeader />, headerShown: true   
+                headerTitle: () => <SearchHeader />, headerShown: true
             }}/>
             <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
@@ -55,9 +54,9 @@ function MainTab() {
             <Tab.Screen name="SubTab" component={SubTab} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
-            {/* <Tab.Screen name="chat" component={Chat} options={{
+            <Tab.Screen name="chat" component={Chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>  */}
+            }}/> 
     
         </Tab.Navigator>
     );

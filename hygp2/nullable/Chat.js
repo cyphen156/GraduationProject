@@ -1,10 +1,13 @@
 import React, { useCallback, useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import { auth, db } from '../lib/firebase';
-import { signOut } from '../lib/auth';
+import Avatar from '../components/Avatar';
+import auth from '@react-native-firebase/auth';
+import { signOut} from '../lib/auth';
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot } from '@react-native-firebase/firestore';
 import { GiftedChat } from 'react-native-gifted-chat';
+import { db } from '../lib/firebase'
+//import { auth, db } from '../lib/firebase';
+
 
 const Chat = ({ navigation }) => {
     const [messages, setMessages] = useState([]);
