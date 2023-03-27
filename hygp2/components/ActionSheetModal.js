@@ -1,8 +1,7 @@
 import {StyleSheet, Modal, View, Pressable, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ActionSheetModal from './ActionSheetModal';
 
-function UploadModeModal({visible, onClose, onLaunchCamera, onLaunchImageLibrary}) {
+function ActionSheetModal({visible, onClose, actions}) {
     return(
         <Modal
             visible={visible}
@@ -11,36 +10,25 @@ function UploadModeModal({visible, onClose, onLaunchCamera, onLaunchImageLibrary
             onRequestClose={onClose}>
             <Pressable style={styles.background} onPress={onClose}>
                 <View style={styles.whiteBox}>
+                 {/* Props로 받아온 actions 배열 사용 */}   
+                 {actions.map((action) => (
                     <Pressable
                         style={styles.actionButton}
-                        android_ripple={{color: '#eee'}}
+                        android_ripple={{color:'#eee'}}
                         onPress={() => {
-                            onLaunchCamera();
+                            action.onPress();
                             onClose();
-                        }}>
+                        }}
+                        key={action.text}>
                         <Icon
-                            name="camera-alt"
+                            name={action.icon}
                             color="#757575"
                             size={24}
                             style={styles.icon}
                         />
-                        <Text style={styles.actionText}>카메라로 촬영하기</Text>
+                        <Text style={styles.text}>{action.text}</Text>                
                     </Pressable>
-                    <Pressable
-                        style={styles.actionButton}
-                        android_ripple={{color: '#eee'}}
-                        onPress={() => {
-                            onLaunchImageLibrary();
-                            onClose();
-                        }}>
-                        <Icon
-                            name="photo"
-                            color="#757575"
-                            size={24}
-                            style={styles.icon}
-                        />
-                        <Text style={styles.actionText}>사진 선택하기</Text>
-                    </Pressable>
+                 ))}
                 </View>
             </Pressable>
         </Modal>
@@ -73,4 +61,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default UploadModeModal;
+export default ActionSheetModal;

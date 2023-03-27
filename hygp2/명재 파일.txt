@@ -1,0 +1,68 @@
+// 파일 설명
+RootStack : 프로젝트의 최상위 스택
+MainTab : 로그인하면 보일 화면
+ - HomeStack : 첫 번째 탭인 홈의 스택
+FeedScreen : 포스트들의 목록을 볼 수 있는 화면
+PostScreen : 하나의 포스트를 볼 수 있는 화면
+ProfileScreen : 특정 사용자의 프로필을 볼 수 있는 화면
+ - MyProfileStack : 두 번째 탭인 프로필의 스택
+MyProfileStack : 자신의 프로필을 볼 수 있는 화면
+PostScreen : 하나의 포스트를 볼 수 있는 화면. HomeStack과 컴포넌트 공유
+UploadScreen : 사진을 업로드하는 화면
+ModifyScreen : 포스트의 문구를 수정하는 화면
+SettingScreen : 설정 화면
+SignInScreen : 로그인 화면
+WelcomeScreen : 회면가입 후 프로필 사진과 이름을 설정하는 화면
+
+////////////8 장. 만든 것/////////////////
+
+// 컴포넌트
+BorderedInput.js : 로그인 인풋
+CustomButton.js : 로그인 버튼
+SetProfile.js : 프로필 사진, 닉네임 입력
+
+// 분리
+SignForm : 로그인, 회원가입 인풋
+SignButtons : 로그인 버튼
+
+// 파이어베이스
+lib/auth.js : 회원가입, 로그인, 로그아웃, 사용자 정보 조회,  기능 
+lib/user.js : 사용자 정보가 담긴 문서를 저장
+
+// context : 사용자 인증 상태 조회
+UserContext.js : useState를 사용해 user 상태를 관리하며, 
+                 user와 setUser를 Context의 value로 사용
+                 
+///////////9 장. 만든 것/////////////////
+
+// 컴포넌트
+CameraButton.js : 카메라 버튼
+UploadModeModal.js : 카메라로 촬영하기, 사진 선택하기 
+
+PostCard.js : 포스트의 정보를 보여주는 컴포넌트
+Profile.js : Profile 컴포넌트
+Avatar.js : size를 Props로 받아와서 값을 컴포넌트의 크기로 설정하기 위함
+PostGridItem.js : 포스트 그리드 뷰
+//스크린
+FileScreen : 게시물 화면
+MyProfileScreen : 마이 프로필 화면
+MyProfileStack : 마이 프로필의 스택
+HomeStack :  홈의 스택
+
+UploadScreen : 사진을 업로드하는 화면
+
+// 파이어베이스 
+lib/posts.js : 포스트 등록, 읽기, 쓰기
+
+
+yarn add uuid react-native-get-random-values
+npx pod-install
+
+//
+index.js : uuid 라이브러리 작동하려면, react-native-get-random-values를 불러옴
+
+// 훅 : 컴포넌트의 로직만 반복되어 분리 해줌
+usePosts.js : 포스트 새로고침
+usePostActions.js : 사용자에게 수정 및 삭제 물어보기
+// 스크린
+PostScreen.js : 프로필 화면에서 사진을 눌렀을 때 단일 포스트를 조회하는 기능
