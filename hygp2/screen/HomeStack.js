@@ -15,7 +15,7 @@ function HomeStack() {
       <Stack.Screen name="File" component={FileScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen
-        name="Post"
+        name='Post'
         component={PostScreen}
         options={{title: '게시물'}}
       />

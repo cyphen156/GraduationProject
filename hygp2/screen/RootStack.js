@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import UploadScreen from "./UploadScreen";
 import MyProfileScreen from "./MyProfileScreen";
 import SettingScreen from "./SettingScreen";
+import PostScreen from './PostScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,11 @@ function RootStack() {
                       component={SettingScreen}
                       options={{title: '설정', headerBackTitle: '뒤로가기'}}                    
                      />
+                     <Stack.Screen
+                      name='Post'
+                      component={PostScreen}
+                      options={{title: '게시물'}}
+                      />
                 </>
             ) : (
                 <>
