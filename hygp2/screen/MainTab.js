@@ -11,6 +11,9 @@ import Camera from "../components/image-picker-ex";
 import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
 import SubTab from "./SubTab";
+import GoogleSigninBTN from "../SignIn/GoogleSignin";
+
+
 const Tab = createBottomTabNavigator();
 
 
@@ -28,6 +31,9 @@ function MainTab() {
             {/* <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>  */}
+            <Tab.Screen name="GoogleLogin" component={GoogleSigninBTN} options={{
+                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
+            }}/>  
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
             }}/>   

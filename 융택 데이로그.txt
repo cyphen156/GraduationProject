@@ -1,0 +1,15 @@
+23.03.28
+google-signin - 왜 돼냐 갑자기????
+
+yarn add react-native-google-signin --save
+
+/android/app/build.gradle
+dependencies {  ／／추가하기
+        implementation 'com.google.android.gms:play-services-auth:20.4.1'
+}
+
+
+loginpage 수정중
+SignIn/GoogleSignin.js // 구글 인증
+
+MainTab // GoogleSigninComponent 추가 --< 앱이 멈추는거같음 인증 // firebase/auth두번 불러와서 그런거같아보임

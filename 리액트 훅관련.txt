@@ -1,0 +1,19 @@
+//  useRef  // 
+.focus()    TextInput 포커스
+.blur()     포커스 해제
+.clear()    내용 비우기
+
+사용법 
+const bodyref = useRef()
+
+<TextInput
+    value = {body}
+    ref = {bodyref}    
+/>
+
+
+
+//  useMemo //
+불필요한 연산 제거시 사용법
+const value = useMemo(() = > compute(a, b), [a, b]);
+-> a, b의 값이 변경될때만 연산
