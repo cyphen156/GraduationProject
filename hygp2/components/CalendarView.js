@@ -1,4 +1,4 @@
-import { Calendar } from "react-native-calendars";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { StyleSheet } from "react-native";
 
 function CalendarView({markedDates, selectedDate, onSelectDate}) {
@@ -13,15 +13,21 @@ function CalendarView({markedDates, selectedDate, onSelectDate}) {
     return (
         <Calendar 
             style={styles.calendar}
+            markingType="multi-dot"
             markedDates={markedSelectedDate}
             onDayPress={day => {
                 onSelectDate(day.dateString);
             }}
             theme={{
-                selectedDayBackgroundColor: "#009688",
-                arrowColor: "#009688",
-                dotColor: "#009688",
-                todayTextColor: "#009688",
+                backgroundColor: '#ffffff',
+                calendarBackground: '#ffffff',
+                textSectionTitleColor: '#b6c1cd',
+                selectedDayBackgroundColor: '#00adf5',
+                selectedDayTextColor: '#ffffff',
+                todayTextColor: '#00adf5',
+                dayTextColor: '#2d4150',
+                textDisabledColor: '#d9e',
+                dotColor: 'f0f0f0',
             }} 
         />
     );

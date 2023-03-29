@@ -13,3 +13,7 @@ loginpage 수정중
 SignIn/GoogleSignin.js // 구글 인증
 
 MainTab // GoogleSigninComponent 추가 --< 앱이 멈추는거같음 인증 // firebase/auth두번 불러와서 그런거같아보임
+
+23.03.29
+OAuth2.0 - > user -> app -> google 순으로 인증
+Login/password대신 AccessToken형식으로 사용
