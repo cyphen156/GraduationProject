@@ -10,6 +10,7 @@ function FileScreen(){
     const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} = usePosts();
 
     useEffect(() => {
+        //console.log("FileScreen", posts)
         events.addListener('refresh', onRefresh);
         events.addListener('removePost', removePost);
         return () => {

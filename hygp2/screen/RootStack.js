@@ -14,6 +14,7 @@ import MyProfileScreen from "./MyProfileScreen";
 import SettingScreen from "./SettingScreen";
 import PostScreen from './PostScreen';
 import ModifyScreen from "./ModifyScreen";
+import UserProfileScreen from "./UserProfileScreen"; 
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ function RootStack() {
                     <Stack.Screen name="MainTab" component={MainTab} options={{headerShown: false}} />
                     <Stack.Screen name="Write" component={WriteScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="MyProflie" component={MyProfileScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="UserProfile" component={UserProfileScreen} />
                     <Stack.Screen 
                       name="Upload"
                       component={UploadScreen}

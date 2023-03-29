@@ -11,6 +11,8 @@ import { useUserContext } from "../context/UserContext";
 import events from "../lib/events";
 
 function Profile({userId}) {
+    //console.log("Profile: ", userId)
+    
     const [user, setUser] = useState(null);
     const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} = 
         usePosts(
@@ -22,7 +24,6 @@ function Profile({userId}) {
     useEffect(() => {
         getUser(userId).then(setUser);
     }, [userId]);
-
     useEffect(() => {
         // 자신의 프로필을 보고 있을 때만 새 포스트 작성 후 새로고침
         if(!isMyProfile){

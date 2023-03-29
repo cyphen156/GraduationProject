@@ -7,11 +7,13 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import ActionSheetModal from "./ActionSheetModal";
 import usePostActions from "../hooks/usePostActions";
 
+
 function PostCard({user, photoURL, description, createdAt, id}) {
   const date = useMemo(
     () => (createdAt ? new Date(createdAt._seconds * 1000) : new Date()),
     [createdAt],
   );
+  
   const navigation = useNavigation();
   const routeNames = useNavigationState(state => state.routeNames);
 
@@ -22,15 +24,23 @@ function PostCard({user, photoURL, description, createdAt, id}) {
     id,
     description,
   });
-
+  
   const onOpenProfile = () => {
     // MyProfile이 존재하는지 확인
+    
     if (routeNames.find(routeName => routeName === 'MyProfile')) {
+      console.log("PostCard 내 프로필 누름: ", user);
       navigation.navigate('MyProfile');
-    } else {
+    } else if(me.id === user.id) {
+      console.log("PostCard 내 프로필 누름: ", user);
       navigation.navigate('Profile', {
         userId: user.id,
         displayName: user.displayName,
+      });
+    } else {
+      console.log("PostCard 남의 프로필 누름: ", user);
+      navigation.navigate('UserProfile', {
+        userInfo: user,
       });
     }
   };

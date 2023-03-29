@@ -43,6 +43,7 @@ PostCard.js : 포스트의 정보를 보여주는 컴포넌트
 Profile.js : Profile 컴포넌트
 Avatar.js : size를 Props로 받아와서 값을 컴포넌트의 크기로 설정하기 위함
 PostGridItem.js : 포스트 그리드 뷰
+
 //스크린
 FileScreen : 게시물 화면
 MyProfileScreen : 마이 프로필 화면
