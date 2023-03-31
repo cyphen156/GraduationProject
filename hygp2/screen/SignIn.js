@@ -1,4 +1,3 @@
-import { ms } from 'date-fns/locale';
 import React, {useRef, useState} from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform,
     StyleSheet, Text, View, Alert } from "react-native";
@@ -32,11 +31,17 @@ function SignIn ({navigation, route}) {
              Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
              console.log({password, confirmPassword});
              return;
+        } else if(!email){
+            Alert.alert('실패', '이메일을 입력해주세요.');
+            return;
+        } else if(!password){
+            Alert.alert('실패', '비밀번호를 입력해주세요.');
+            return;
         }
 
         setLoading(true);
         const info = {email, password};
-        
+
         try{
             const {user} = isSignUp ? await signUp(info) : await signIn(info);
             const profile = await getUser(user.uid);
@@ -46,12 +51,17 @@ function SignIn ({navigation, route}) {
                 setUser(profile);
             }
             //console.log(user);
+
         } catch (e) {
+
             const messages = {
+                'auth/invalid-password' : '6자리 이상 입력해주세요.',
+                'auth/invalid-display-name' : '값 비어있음',
                 'auth/email-already-in-use': '이미 가입된 이메일입니다.',
                 'auth/wrong-password': '잘못된 비밀번호입니다.',
                 'auth/user-not-found': '존재하지 않는 계정입니다.',
                 'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
+
             };
             const msg = messages[e.code] || `${isSignUp ? '가입' : '로그인'} 실패 `;
             Alert.alert('실패', msg);
