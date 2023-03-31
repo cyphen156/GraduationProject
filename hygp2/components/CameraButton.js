@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import UploadModeModal from './UploadModeModal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
+import { PermissionsAndroid } from 'react-native';
 
 const TABBAR_HEIGHT = 49;
 const imagePickerOption = {
@@ -31,8 +32,29 @@ function CameraButton(){
         navigation.push('Upload', {res});
         console.log(res);
       };
-    
+      const requestCameraPermission = async () => {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: "App Camera Permission",
+              message:"App needs access to your camera ",
+              buttonNeutral: "Ask Me Later",
+              buttonNegative: "Cancel",
+              buttonPositive: "OK"
+            }
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("Camera permission given");
+          } else {
+            console.log("Camera permission denied");
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      };
     const onLaunchCamera = () => {
+        requestCameraPermission();
         launchCamera(imagePickerOption, onPickImage);
     };
     
@@ -49,6 +71,7 @@ function CameraButton(){
 
         ActionSheetIOS.showActionSheetWithOptions(
             {
+                title : '사진 업로드',
                 options: ['카메라로 촬영하기', '사진 선택하기','취소'],
                 cancelButtonIndex: 2,
             },
