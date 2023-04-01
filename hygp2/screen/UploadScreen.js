@@ -18,13 +18,15 @@ function UploadScreen(){
     const [description, setDescription] = useState('');
     const navigation = useNavigation();
     const {user} = useUserContext();
+
     const onSubmit = useCallback(async () => {
       // 포스트 작성 로직 구현
+      console.log('res : ', res);
       navigation.pop();
       const asset = res.assets[0];
-
       const extension = asset.fileName.split('.').pop();
       const reference = storage().ref(` /photo/${user.id}/${v4()}.${extension}`);
+
         if (Platform.OS === 'android'){
           await reference.putString(asset.base64, 'base64', {
             contentType: asset.type,
@@ -32,8 +34,9 @@ function UploadScreen(){
         } else {
           await reference.putFile(asset.uri);
         }
+
         const photoURL = await reference.getDownloadURL();
-        await createPost({description, photoURL, user});
+        await createPost({description, photoURL, user, file});
         events.emit('refresh');
         // TODO: 포스트 목록 새로고침
     }, [res, user, description, navigation]);
@@ -50,6 +53,8 @@ function UploadScreen(){
         didShow.remove();
         didHide.remove();
       };
+      // 업로드된 파일 저장
+
     }, []);
   
     useEffect(() => {
@@ -87,6 +92,7 @@ function UploadScreen(){
         value={description}
         onChangeText={setDescription}
       />
+      
     </KeyboardAvoidingView>
     );
 }

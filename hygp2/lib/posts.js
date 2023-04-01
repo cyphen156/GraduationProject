@@ -2,11 +2,12 @@ import firestore from '@react-native-firebase/firestore';
 
 const postsCollection = firestore().collection('posts');
 
-export function createPost({user, photoURL, description}) {
+export function createPost({user, photoURL, description, file}) {
   return postsCollection.add({
     user,
     photoURL,
     description,
+    file,
     createdAt: firestore.FieldValue.serverTimestamp(),
   });
 }

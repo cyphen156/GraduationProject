@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import { PermissionsAndroid } from 'react-native';
 
 const TABBAR_HEIGHT = 49;
+
 const imagePickerOption = {
     mediaType: 'photo',
     maxWidth: 768,

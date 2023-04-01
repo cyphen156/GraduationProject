@@ -32,8 +32,7 @@ function SignButtons({isSignUp, onSubmit, loading}){
                 onPress={onSubmit} />
             <CustomButton title={secondaryTitle}
                 theme="secondary"
-                onPress={onSecondaryButtonPress}
-            />
+                onPress={onSecondaryButtonPress} />
         </View>
     );
 }

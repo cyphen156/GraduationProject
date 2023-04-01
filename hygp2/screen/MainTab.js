@@ -11,6 +11,8 @@ import Camera from "../components/image-picker-ex";
 import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
 import SubTab from "./SubTab";
+import FileUpload from "../components/FileUpload";
+
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
 
@@ -63,7 +65,9 @@ function MainTab() {
             {/* <Tab.Screen name="chat" component={Chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>  */}
-    
+            <Tab.Screen name="FileUpload" component={FileUpload} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/>
         </Tab.Navigator>
     );
 }

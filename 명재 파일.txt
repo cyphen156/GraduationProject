@@ -68,3 +68,7 @@ usePostActions.js : 사용자에게 수정 및 삭제 물어보기
 // 스크린
 PostScreen.js : 프로필 화면에서 사진을 눌렀을 때 단일 포스트를 조회하는 기능
 ModifyScreen.js : 포스트 설명 수정 화면
+
+lib/files.js : 파일 등록, 읽기, 쓰기
+yarn add react-native-document-picker
+
