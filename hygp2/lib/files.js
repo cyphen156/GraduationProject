@@ -2,12 +2,13 @@ import firestore from '@react-native-firebase/firestore';
 
 const filesCollection = firestore().collection('files');
 
-export function createFile({user, description, file}) {
+export function createFile({user, file, photoURL}) {
   return filesCollection.add({
     user,
-    description,
+    //description,
     file,
     createdAt: firestore.FieldValue.serverTimestamp(),
+    photoURL,
   });
 }
 

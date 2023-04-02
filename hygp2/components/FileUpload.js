@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import {useRoute, useNavigation} from '@react-navigation/native';
+import React, { useState , useCallback } from 'react';
 // Import core components
 import {
   StyleSheet,
@@ -7,40 +8,41 @@ import {
   TouchableOpacity
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
+import storage from '@react-native-firebase/storage';
 import { createFile } from '../lib/files';
+import {useUserContext} from '../context/UserContext';
+import {v4} from 'uuid';
 
 function FileUpload() {
 
 const [singleFile, setSingleFile] = useState(null);
- const uploadImage = async () => {
+const {user} = useUserContext();
+const navigation = useNavigation();
+
+ const uploadImage = useCallback(async () => {
     // Check if any file is selected or not
     if (singleFile != null) {
       // If file selected then create FormData
       const fileToUpload = singleFile;
-      const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
-      // Please change file upload URL
-      let res = await fetch(
-        'http://localhost/upload.php',
-        {
-          method: 'post',
-          body: data,
-          headers: {
-            'Content-Type': 'multipart/form-data; ',
-          },
-        }
-      );
-      let responseJson = await res.json();
-      if (responseJson.status == 1) {
-        alert('Upload Successful');
-      }
-    } else {
-      // If no file selected the show alert
-      alert('Please Select File first');
-    }
-  };
+      //navigation.pop();
 
+      const extension = fileToUpload[0].name.split('.').pop(); // 확장자
+      const reference = storage().ref(` /file/${user.id}/${v4()}.${extension}`);
+      console.log(`파일 업로드 : ${extension}, ${reference}` );
+      const message2 = '5b6p5Y+344GX44G+44GX44Gf77yB44GK44KB44Gn44Go44GG77yB';
+
+      if (Platform.OS === 'android'){
+          await reference.putString(message2, 'base64', {
+            contentType: fileToUpload[0].type,
+          });
+        } else {
+          await reference.putFile(fileToUpload[0].uri);
+        }
+        const photoURL = await reference.getDownloadURL();
+        await createFile({user, fileToUpload , photoURL});
+      }
+  }, [singleFile, user, navigation]);
+// file:///data/user/0/com.hygp2/cache/rn_image_picker_lib_temp_17a66d7d-f21d-4900-9b1a-66b6275d14ab.jpg
   const selectFile = async () => {
     // Opening Document Picker to select one file
     try {
@@ -90,13 +92,13 @@ return (
       {/*Showing the data of selected Single file*/}
       {singleFile != null ? (
         <Text style={styles.textStyle}>
-          File Name: {singleFile.name ? singleFile.name : ''}
+          File Name: {singleFile[0].name ? singleFile[0].name : ''}
           {'\n'}
-          Type: {singleFile.type ? singleFile.type : ''}
+          Type: {singleFile[0].type ? singleFile[0].type : ''}
           {'\n'}
-          File Size: {singleFile.size ? singleFile.size : ''}
+          File Size: {singleFile[0].size ? singleFile[0].size : ''}
           {'\n'}
-          URI: {singleFile.uri ? singleFile.uri : ''}
+          URI: {singleFile[0].uri ? singleFile[0].uri : ''}
           {'\n'}
         </Text>
       ) : null}

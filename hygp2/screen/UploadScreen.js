@@ -26,7 +26,7 @@ function UploadScreen(){
       const asset = res.assets[0];
       const extension = asset.fileName.split('.').pop();
       const reference = storage().ref(` /photo/${user.id}/${v4()}.${extension}`);
-
+      console.log(`포스트 업로드 : ${extension}, ${reference}` );
         if (Platform.OS === 'android'){
           await reference.putString(asset.base64, 'base64', {
             contentType: asset.type,
@@ -36,7 +36,7 @@ function UploadScreen(){
         }
 
         const photoURL = await reference.getDownloadURL();
-        await createPost({description, photoURL, user, file});
+        await createPost({description, photoURL, user});
         events.emit('refresh');
         // TODO: 포스트 목록 새로고침
     }, [res, user, description, navigation]);
