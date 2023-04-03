@@ -33,6 +33,26 @@ import { UserContextProvider } from './context/UserContext';
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
 
+import firebase from '@react-native-firebase/app'
+import '@react-native-firebase/auth'
+import '@react-native-firebase/firestore'
+
+const firebaseConfig = {
+  // Your Firebase project config
+  apiKey: "AIzaSyDOWnBCSHjMGCGF1EUycGntildV844uUSM",
+  authDomain: "hygp2-ec607.firebaseapp.com",
+  projectId: "hygp2-ec607",
+  storageBucket: "hygp2-ec607.appspot.com",
+  messagingSenderId: "603930050293",
+  appId: "1:603930050293:web:4acfa6e947d76587bacfbc",
+  measurementId: "G-YV0BZHL37W"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (

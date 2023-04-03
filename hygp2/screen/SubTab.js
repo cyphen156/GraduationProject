@@ -3,6 +3,8 @@ import Search from "../screen/Search"
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Agendascr from "./Agenda";
+import TeamListScreen from "./TeamList";
+import CreateTeamScreen from "./CreateTeam";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +18,12 @@ function SubTab () {
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="AgeendaScreen" component={Agendascr} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/> 
+            <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/> 
+            <Tab.Screen name="TeamList" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
         </Tab.Navigator>
