@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import {View, StyleSheet, Text ,Image, Pressable} from 'react-native';
 import Avatar from "./Avatar";
 import {useNavigation, useNavigationState} from '@react-navigation/native';
@@ -6,9 +6,16 @@ import { useUserContext } from "../context/UserContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import ActionSheetModal from "./ActionSheetModal";
 import usePostActions from "../hooks/usePostActions";
-
+import { getUser } from "../lib/user";
 
 function PostCard({user, photoURL, description, createdAt, id}) {
+
+  const [ setUser] = useState(null);
+
+    useEffect(() => {
+      getUser(id).then(setUser);
+  }, [id, setUser]);
+
   const date = useMemo(
     () => (createdAt ? new Date(createdAt._seconds * 1000) : new Date()),
     [createdAt],

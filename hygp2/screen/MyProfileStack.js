@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MyProfileScreen from './MyProfileScreen';
 import PostScreen from './PostScreen';
+import UpdateProfile from '../components/UpdateProfile';
 
 const Stack = createNativeStackNavigator();
 

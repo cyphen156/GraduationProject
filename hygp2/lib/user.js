@@ -17,3 +17,10 @@ export function createUser({id, displayName, photoURL}) {
   
     return doc.data();
   }
+
+  export function updateUser({id, displayName, photoURL}) {
+    return usersCollection.doc(id).update({
+      displayName,
+      photoURL,
+    });
+  }

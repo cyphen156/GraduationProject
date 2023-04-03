@@ -9,6 +9,7 @@ import PostGridItem from "./PostGridItem";
 import usePosts from "../hooks/usePosts";
 import { useUserContext } from "../context/UserContext";
 import events from "../lib/events";
+import UpdateProfile from "./UpdateProfile";
 
 function Profile({userId}) {
     //console.log("Profile: ", userId)
@@ -23,7 +24,8 @@ function Profile({userId}) {
 
     useEffect(() => {
         getUser(userId).then(setUser);
-    }, [userId]);
+    }, [userId, setUser]);
+
     useEffect(() => {
         // 자신의 프로필을 보고 있을 때만 새 포스트 작성 후 새로고침
         if(!isMyProfile){
@@ -52,7 +54,7 @@ function Profile({userId}) {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
             <View style={styles.userInfo}>
-                <Avatar source={user.photoURL && {uri: user.photoURL}} size={128}/>
+                <Avatar source={user.photoURL && {uri: user.photoURL}} size={128}/>    
                 <Text style={styles.username}>{user.displayName}</Text>
             </View>
         }
