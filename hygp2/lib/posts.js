@@ -62,8 +62,8 @@ export function updatePost({id, description}) {
 }
 
 // posts에 참조된 user의 값을 변경해준다
-export function updateUserProfile({user}) {
-  return postsCollection.doc(user.id).collection(user).update({
-    user,
+export function updateUserProfile({id, photoURL}) {
+  return postsCollection.doc(id).collection('user').update({
+    photoURL,
   });
 }

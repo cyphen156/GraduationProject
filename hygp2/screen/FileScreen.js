@@ -18,7 +18,7 @@ function FileScreen(){
             events.removeListener('removePost', removePost);
         };
     }, [onRefresh, removePost]);
-
+    // keyExtractor : 각 항목 데이터 고유의 값을 설정해준다.
     return (
         <FlatList
             data={posts}
@@ -27,7 +27,7 @@ function FileScreen(){
             contentContainerStyle={styles.container}
             onEndReached={onLoadMore}
             onEndReachedThreshold={0.75}
-            ListFooterComponent={
+            ListFooterComponent= {
                 !noMorePost && (
                     <ActivityIndicator style={styles.spinner} size={32} color="#6200ee" />
                 )
