@@ -29,6 +29,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { UserContextProvider } from './context/UserContext';
+import { LogBox } from 'react-native';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -82,7 +83,10 @@ const Section = ({children, title}): Node => {
 const Stack = createNativeStackNavigator();
 
 function App() {
-  
+  LogBox.ignoreLogs(['Warning: ...']);
+  console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+  console.disableYellowBox = true;
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

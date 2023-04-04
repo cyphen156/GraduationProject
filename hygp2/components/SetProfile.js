@@ -12,6 +12,7 @@ import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 
 function SetupProfile(){
+
     const [displayName, setDisplayName] = useState('');
     const navigation = useNavigation();
     const {setUser} = useUserContext();
@@ -20,6 +21,8 @@ function SetupProfile(){
 
     const {params} = useRoute();
     const {uid} = params || {};
+    const userImage = require('../assets/images/user.png');
+    console.log(userImage);
 
     const onSubmit = async () => {
         setLoading(true);
@@ -40,7 +43,9 @@ function SetupProfile(){
             }
             // 다운로드할 수 있는 URL 생성
             photoURL = response ? await reference.getDownloadURL() : null;
-        }    
+        } else{
+            
+        }
 
         const user = {
             id : uid,

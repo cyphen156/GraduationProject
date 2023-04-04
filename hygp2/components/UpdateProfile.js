@@ -11,6 +11,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 import events from "../lib/events";
+import { updateUserProfile } from "../lib/posts";
 
 function UpdateProfile(){
     const [displayName, setDisplayName] = useState('');
@@ -18,7 +19,7 @@ function UpdateProfile(){
     const {user, setUser} = useUserContext();
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    
     //const {params} = useRoute();
     console.log("user", user);
     myPhotoURL = user.photoURL;
@@ -49,6 +50,7 @@ function UpdateProfile(){
             photoURL = response ? await reference.getDownloadURL() : null;
         }else{
             photoURL = myPhotoURL;
+            console.log("photoURL : ", photoURL);
         }
 
         await updateUser({
@@ -66,6 +68,13 @@ function UpdateProfile(){
         setUser(user);
 
         navigation.pop();
+
+        // posts에 참조된 user의 값을 변경해준다
+        // await updateUserProfile({
+        //     user,
+        // });
+
+        console.log("user: ", user)
         onLogout();
     };
 
@@ -73,6 +82,7 @@ function UpdateProfile(){
         signOut();
         navigation.goBack();
     };
+
     const onSelectImage = () => {
         launchImageLibrary(
             {
@@ -91,10 +101,12 @@ function UpdateProfile(){
             },
         );
     };
+
     const onLogout = async () => {
         await signOut();
         setUser(null);
     };
+    
     return(
         <View style={styles.block}>
             <Pressable onPress={onSelectImage} >
