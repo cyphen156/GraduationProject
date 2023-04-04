@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Agendascr from "./Agenda";
 import TeamListScreen from "./TeamList";
 import CreateTeamScreen from "./CreateTeam";
-import DataUpload from "../nullable/DataUpload";
+// import DataUpload from "../nullable/DataUpload";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,9 +27,9 @@ function SubTab () {
             <Tab.Screen name="TeamList" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
-            <Tab.Screen name="DataUpload" component={DataUpload} options={{
+            {/* <Tab.Screen name="DataUpload" component={DataUpload} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
+            }}/>  */}
         </Tab.Navigator>
     )
 }
