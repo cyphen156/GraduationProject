@@ -7,6 +7,7 @@ import storage from '@react-native-firebase/storage';
 import {useUserContext} from '../context/UserContext';
 import {v4} from 'uuid';
 import {createPost} from '../lib/posts';
+import { createData } from '../nullable/DBsync';
 import events from '../lib/events';
 
 function UploadScreen(){
@@ -37,6 +38,7 @@ function UploadScreen(){
 
         const photoURL = await reference.getDownloadURL();
         await createPost({description, photoURL, user});
+        await createData({test, description, photoURL, user});
         events.emit('refresh');
         // TODO: 포스트 목록 새로고침
     }, [res, user, description, navigation]);
