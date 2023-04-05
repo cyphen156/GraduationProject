@@ -7,6 +7,7 @@ import {useEffect} from 'react';
 import Profile from '../components/Profile';
 
 function UserProfileScreen () {
+    console.log(" userprofile")
     const route = useRoute();
     const {userInfo} = route.params;
     const navigation = useNavigation();
