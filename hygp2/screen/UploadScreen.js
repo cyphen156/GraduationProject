@@ -37,6 +37,7 @@ function UploadScreen(){
 
         const photoURL = await reference.getDownloadURL();
         await createPost({description, photoURL, user});
+        console.log("포스트 생성: ", user)
         events.emit('refresh');
         // TODO: 포스트 목록 새로고침
     }, [res, user, description, navigation]);

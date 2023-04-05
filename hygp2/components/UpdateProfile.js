@@ -11,7 +11,8 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 import events from "../lib/events";
-import { updateUserProfile } from "../lib/posts";
+import { createTest, updateTest , readTest } from "../lib/posts";
+
 
 function UpdateProfile(){
     const [displayName, setDisplayName] = useState('');
@@ -64,16 +65,20 @@ function UpdateProfile(){
             displayName,
             photoURL,
         });
-        console.log("URL: ", photoURL)
+        console.log("URL: ", photoURL);
         setUser(user);
-
+        //////
+        //await createTest({user});
+        name = '오융택'
+        const read = await readTest(name)
+        console.log("read : ",read);
         navigation.pop();
 
         // posts에 참조된 user의 값을 변경해준다
-        // await updateUserProfile({
-        //     user,
-        // });
+    
+        // await createTest({user, name});
 
+    
         console.log("user: ", user)
         onLogout();
     };
