@@ -27,3 +27,17 @@ Login/password대신 AccessToken형식으로 사용
 
 파이어베이스 콜렉션에 대한 이해 필요...
 -> 파일 입출력, 쿼리 사용법 모름
+
+컬렉션 구성
+RDBMS 
+- User
+        -file -- storage
+        -friends-
+        --group
+        -chatlog -- chating server
+        -calendar
+
+- group
+        --user > 권한 설정
+        -file -- stroage
+        -calendar
