@@ -11,7 +11,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 import events from "../lib/events";
-import { createTest, updateTest , readTest } from "../lib/posts";
+import { updateProfile } from "../lib/posts";
 
 
 function UpdateProfile(){
@@ -24,12 +24,37 @@ function UpdateProfile(){
     //const {params} = useRoute();
     console.log("user", user);
     myPhotoURL = user.photoURL;
-    
+    id = user.id;
     useEffect(() => {
-        //uid = user.id;
+        
         setDisplayName(user.displayName);
       }, [setUser, navigation]);
 
+    const postUpadte = ({users}) => {
+        
+        updateUser({
+            photoURL: users.photoURL,
+            id: users.id,
+            displayName : users.displayName,
+            
+        });
+        events.emit('updateUser', {
+            photoURL: users.photoURL,
+            id: users.id,
+            displayName : users.displayName,
+        });
+
+        console.log("user :",users);
+
+        updateProfile({
+            id: users.id, 
+            user : users,
+        });
+        events.emit('updateProfile', {
+            id: users.id,
+            user: users,
+        });
+    }
     const onSubmit = async () => {
         setLoading(true);
 
@@ -54,24 +79,16 @@ function UpdateProfile(){
             console.log("photoURL : ", photoURL);
         }
 
-        await updateUser({
-            id: user.id,
-            displayName,
-            photoURL,
-        });
-        // TODO: 포스트 및 포스트 목록 업데이트
-        events.emit('updateUser', {
-            userId: user.id,
-            displayName,
-            photoURL,
-        });
-        console.log("URL: ", photoURL);
-        setUser(user);
+        users = {
+            photoURL: photoURL,
+            displayName : displayName,
+            id: id,
+        }
 
-        await readTest({
-            id: user.id, 
-            user : user,
-        });
+        console.log(users);
+        postUpadte({users});
+
+        setUser(users);
         
         navigation.pop();
 

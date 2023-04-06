@@ -68,12 +68,10 @@ export function createTest({user, name}) {
 }
 
 // posts에 참조된 user의 값을 변경해준다
-export function readTest({id, user}){
+export function updateProfile({id, user}){
   return postsCollection.where('user.id', '==', id).get().then(function (querySnapshot) {
     console.log("user :", user);
     querySnapshot.forEach(function (doc) {
-      console.log('doc: ',doc);
-      console.log('doc.ref: ',doc.ref.update);
       doc.ref.update({user : user});
     });
   });
