@@ -6,4 +6,8 @@ npm install express cheerio request
 
 //cheerio == 웹 페이지 데이터 파싱
 
+//body-parser
+
 //async == 실행순서 정의
+
+//cors
