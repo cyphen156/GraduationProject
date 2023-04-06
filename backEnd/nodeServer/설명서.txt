@@ -1,0 +1,41 @@
+nvm 설치, 
+nvm install 18
+nvm use 18 --> 프론트는 19
+
+url모듈
+
+// URL 모듈 추출
+const url = require('url');
+
+//URL 문자열 > URL 객체 변환
+parse(urlStr [,parseQueryString=false,
+    slashesDenoteHost=false])
+
+// URL 객체 -> 문자열 변환
+format(urlObj)
+
+//매개변수 조합 완전한 문자열 생성 
+resolve(from, to)
+
+
+fileSystem
+
+//파일 모듈
+const fs = require('fs')
+
+//동기화 읽기
+.readFileSync("filename");
+
+//비동기 읽기
+.readFile("filename", (error, file) => {
+    console.log(file);
+})
+
+예외처리 예시
+// 동기처리                                 //비동기처리
+try{//예외 안발생
+    fs.readFileSync('설명서.txt');          fs.readFile('설명서.txt', (e, file) => {
+    console("fileread Successful");             if(e) {//예외발생
+}catch (e){//예외발생                                 console.log
+    console.log(e);                         }})else{예외 안발생
+}                                           }

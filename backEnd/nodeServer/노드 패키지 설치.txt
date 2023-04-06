@@ -1,0 +1,9 @@
+npm install express cheerio request
+
+///express == 서버생성 실행
+
+//request == http protocol request/reply
+
+//cheerio == 웹 페이지 데이터 파싱
+
+//async == 실행순서 정의
