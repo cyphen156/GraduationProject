@@ -67,11 +67,12 @@ function UpdateProfile(){
         });
         console.log("URL: ", photoURL);
         setUser(user);
-        //////
-        //await createTest({user});
-        name = '오융택'
-        const read = await readTest(name)
-        console.log("read : ",read);
+
+        await readTest({
+            id: user.id, 
+            user : user,
+        });
+        
         navigation.pop();
 
         // posts에 참조된 user의 값을 변경해준다
