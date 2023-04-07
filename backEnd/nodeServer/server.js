@@ -1,43 +1,32 @@
-const express = require('express');
-const app = express();
-
-app.use((request, response) => {
-  response.send('<h1>HelloWorld</h1>');
-  response.send('<h1>HelloWorld</h1>');
-});
-
-app.listen(8080, () => {
-  console.log("serverStarted");
-});
-
-//채팅서버 예제
-/*
-// Import required modules
+//모듈임포트
 const express = require('express');
 const mysql = require('mysql');
-const bodyParser = require('body-parser');
 
-// Create a new Express application
+//앱 선언, 사용할 포트
 const app = express();
+const port = 3000;
 
-// Set up the database connection
+//db연결 세팅
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
   database: 'chatdb'
 });
-
-// Connect to the database
+//db연결
 connection.connect(err => {
   if (err) throw err;
   console.log('MySQL connected');
 });
 
-// Use body-parser middleware
-app.use(bodyParser.json());
+//함수 선언
+app.use((request, response) => {
+  response.send('<h1>HelloWofdsdfsdf</h1>');
+});
 
-// Define the routes
+
+
+// 라우팅경로 정의
 app.get('/chat', (req, res) => {
   // Select all chat messages from the database
   connection.query('SELECT * FROM chat', (err, results) => {
@@ -45,6 +34,9 @@ app.get('/chat', (req, res) => {
     res.json(results);
   });
 });
+/*
+// Use body-parser middleware
+app.use(bodyParser.json());
 
 app.post('/chat', (req, res) => {
   // Insert a new chat message into the database
@@ -58,3 +50,7 @@ app.post('/chat', (req, res) => {
 // Start the server
 app.listen(3000, () => console.log('Server started on port 3000'));
 */
+
+app.listen(port, () => {
+  console.log(`App listening on port: ${port}`);
+});

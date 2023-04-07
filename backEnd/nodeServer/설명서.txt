@@ -2,6 +2,11 @@ nvm 설치,
 nvm install 18
 nvm use 18 --> 프론트는 19
 
+터미널 
+//서버실행
+node server.js
+한 뒤에 f5버튼으로 창열기
+
 url모듈
 
 // URL 모듈 추출
