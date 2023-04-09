@@ -1,9 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {useState , useEffect} from "react";
 import { StyleSheet, View , Pressable, Platform,
-     Image, ActivityIndicator} from "react-native";
+     Image, ActivityIndicator, Button} from "react-native";
 import { signOut } from "../lib/auth";
-import { updateUser , getUser } from "../lib/user";
+import { updateUser , nameCheck } from "../lib/user";
 import BordredInput from "./BordredInput";
 import CustomButton from "./CustomButton";
 import { useUserContext } from "../context/UserContext";
@@ -129,7 +129,10 @@ function UpdateProfile(){
         await signOut();
         setUser(null);
     };
-    
+    const check = async () => {
+        const name = await nameCheck(displayName);
+        console.log(name)
+    };
     return(
         <View style={styles.block}>
             <Pressable onPress={onSelectImage} >
@@ -146,14 +149,18 @@ function UpdateProfile(){
             </Pressable>
             <View style={styles.form}>
 
-                <BordredInput
-                    placeholder="닉네임"
-                    value={displayName}
-                    onChangeText={setDisplayName}
-                    onSubmitEditing={onSubmit}
-                    returnKeyType="next"
-                    /> 
-
+                <View style={styles.checking}>
+                    <BordredInput
+                        placeholder="닉네임"
+                        value={displayName}
+                        onChangeText={setDisplayName}
+                        onSubmitEditing={onSubmit}
+                        returnKeyType="next"
+                        width="70%"
+                        
+                        /> 
+                    <Button style={styles.margin} title="아이디 확인" onPress={check}/>
+                </View>
                         <View style={styles.button}>
                             <CustomButton title="변경" onPress={onSubmit} hasMarginBottom/>
                             <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
@@ -179,11 +186,22 @@ const styles = StyleSheet.create({
     },
     form: {
         marginTop: 16,
-        width: '100%',
+        width: '50%',
     },
     button: {
         marginTop: 48,
     },
+    checking: {
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    margin:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        
+    }
 });
 UpdateProfile.defaultProps = {
     size : 32,

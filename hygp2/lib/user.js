@@ -24,3 +24,19 @@ export function createUser({id, displayName, photoURL}) {
       photoURL,
     });
   }
+
+  // 유저 displayName 중복 체크하기 : 아이디 사용가능 여부
+  export async function nameCheck(displayName) {
+
+    usersCollection.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, '=>', doc.data());
+        if(displayName == doc.data().displayName){
+          console.log("중복 O");
+          return false
+        }
+        return true
+      });
+    });
+  
+  }
