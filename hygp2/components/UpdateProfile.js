@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, {useState , useEffect} from "react";
+import React, {useState , useEffect , useRef } from "react";
 import { StyleSheet, View , Pressable, Platform,
-     Image, ActivityIndicator, Button , Alert} from "react-native";
+     Image, ActivityIndicator, Button , Alert, Text, Dimensions, Keyboard} from "react-native";
 import { signOut } from "../lib/auth";
 import { updateUser , nameCheck } from "../lib/user";
 import BordredInput from "./BordredInput";
@@ -13,6 +13,7 @@ import  Avatar  from  './Avatar';
 import events from "../lib/events";
 import { updateProfile } from "../lib/posts";
 import firestore from '@react-native-firebase/firestore'
+import Toast from 'react-native-easy-toast';
 
 function UpdateProfile(){
     const [displayName, setDisplayName] = useState('');
@@ -20,14 +21,15 @@ function UpdateProfile(){
     const {user, setUser} = useUserContext();
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+    const windowHeight = Dimensions.get('window').height;
     // 아이디 변경 가능여부
     let changeable = true;
 
     // 아이디 확인 버튼 여부
     let checking = false;
 
-    //const {params} = useRoute();
+    const toastRef = useRef(); // toast ref 생성
+
     console.log("user", user);
     myPhotoURL = user.photoURL;
     id = user.id;
@@ -64,7 +66,7 @@ function UpdateProfile(){
     }
     const onSubmit = async () => {
         setLoading(true);
-        
+        Keyboard.dismiss();
         if (changeable && checking){
             
             let photoURL = null;
@@ -108,7 +110,7 @@ function UpdateProfile(){
             console.log("user: ", user)
             onLogout();
         }else{
-            Alert.alert("닉네임 확인 해주세요.")
+            toastRef.current.show("닉네임 확인 해주세요.");
         }
     };
 
@@ -141,6 +143,7 @@ function UpdateProfile(){
         setUser(null);
     };
     const check = () => {
+        Keyboard.dismiss();
         checking = true;
 
         firestore().collection('user').get().then(function (querySnapshot) {
@@ -150,7 +153,7 @@ function UpdateProfile(){
               // 다른 유저 displayName 이름 중복이 있으면 
               if(displayName == doc.data().displayName && doc.id != id){
                 console.log('중복 O');
-                Alert.alert('중복 있음')
+                toastRef.current.show('닉네임이 중복됩니다.');
                 changeable = false;
               }
             });
@@ -158,7 +161,7 @@ function UpdateProfile(){
           }).then(() => {
             console.log('changeable : ', changeable);
             if (changeable == true){
-              Alert.alert('변경 가능')
+                toastRef.current.show('닉네임 변경 가능합니다.');
               
             } 
         });
@@ -179,6 +182,7 @@ function UpdateProfile(){
                 }
                 />
             </Pressable>
+
             <View style={styles.form}>
 
                 <View style={styles.checking}>
@@ -188,18 +192,25 @@ function UpdateProfile(){
                         onChangeText={setDisplayName}
                         onSubmitEditing={onSubmit}
                         returnKeyType="next"
-                        width="70%"
-                        
+                        width="70%"                 
                         /> 
-                    <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
+
+                    <Button style={styles.margin} title="닉네임 확인"  onPress={check} />
+                     <Toast ref={toastRef}
+                        positionValue={windowHeight * 0.55}
+                        fadeInDuration={300}
+                        fadeOutDuration={1000}
+                        style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
+                    />
                 </View>
                         <View style={styles.button}>
                             <CustomButton title="변경" onPress={onSubmit} hasMarginBottom/>
                             <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
                         </View>
                    
-            </View>
+                </View>
         </View>
+     
     )
 }
 

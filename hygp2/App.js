@@ -73,6 +73,7 @@ function App() {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+
   return (
     <UserContextProvider>
       <NavigationContainer>

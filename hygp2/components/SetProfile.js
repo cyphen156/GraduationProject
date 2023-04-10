@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import { StyleSheet, View , Pressable, Platform,
-     Image, ActivityIndicator, Button, Alert} from "react-native";
+     Image, ActivityIndicator, Button, Alert, Keyboard, Dimensions} from "react-native";
 import { signOut } from "../lib/auth";
 import { createUser } from "../lib/user";
 import BordredInput from "./BordredInput";
@@ -11,6 +11,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 import firestore from '@react-native-firebase/firestore'
+import Toast from 'react-native-easy-toast';
 
 function SetupProfile(){
 
@@ -28,11 +29,13 @@ function SetupProfile(){
 
     // 아이디 확인 버튼 여부
     let checking = false;
-
+    
+    const toastRef = useRef(); // toast ref 생성
+    const windowHeight = Dimensions.get('window').height;
     console.log(userImage);
 
     const onSubmit = async () => {
-        
+        Keyboard.dismiss();
         //setLoading(true);
 
         let photoURL = null;
@@ -65,7 +68,8 @@ function SetupProfile(){
             setUser(user);
 
         }else{
-            Alert.alert("닉네임 확인 해주세요.")
+            toastRef.current.show('닉네임 확인 해주세요.');
+            
         }
     };
 
@@ -93,7 +97,7 @@ function SetupProfile(){
 
     const check = () => {
         checking = true;
-
+        Keyboard.dismiss();
         firestore().collection('user').get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
               console.log(doc.id, '=>', doc.data());
@@ -101,7 +105,7 @@ function SetupProfile(){
               // 다른 유저 displayName 이름 중복이 있으면 
               if(displayName == doc.data().displayName){
                 console.log('중복 O');
-                Alert.alert('다른 닉네임으로 변경해주세요.')
+                toastRef.current.show('다른 닉네임으로 변경해주세요.');
                 changeable = false;
               }
             });
@@ -109,14 +113,20 @@ function SetupProfile(){
           }).then(() => {
             console.log('changeable : ', changeable);
             if (changeable == true){
-              Alert.alert('닉네임 사용 가능합니다.')
-              
+              toastRef.current.show('사용 가능합니다.');
             } 
         });
 
     };
 
     return(
+        <View>
+            <Toast ref={toastRef}
+                        positionValue={windowHeight * 0.55}
+                        fadeInDuration={300}
+                        fadeOutDuration={1000}
+                        style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
+                    />
         <View style={styles.block}>
             <Pressable onPress={onSelectImage} >
                 <Image
@@ -138,6 +148,7 @@ function SetupProfile(){
                     width="70%"
                     />
                     <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
+              
                     {loading ? (
                         <ActivityIndicator size={32} color="#6200ee" style={styles.spinner}/>
                     ) : (
@@ -146,6 +157,8 @@ function SetupProfile(){
                             <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
                         </View>
                     )}
+            </View>
+            
             </View>
         </View>
     )
