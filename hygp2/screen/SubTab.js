@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Search from "../screen/Search"
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Agendascr from "./Agenda";
+import chat from "./chat/chat";
 import TeamListScreen from "./TeamList";
 import CreateTeamScreen from "./CreateTeam";
 // import DataUpload from "../nullable/DataUpload";
@@ -18,7 +18,7 @@ function SubTab () {
             <Tab.Screen name="search" component={Search} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
-            <Tab.Screen name="AgeendaScreen" component={Agendascr} options={{
+            <Tab.Screen name="chat" component={chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{

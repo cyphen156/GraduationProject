@@ -3,7 +3,7 @@ const express = require('express'); //express 웹 서버 생성
 const morgan = require('morgan'); //로그 기록
 const http = require('http'); //http
 const cors = require('cors'); //client ajex 요청 다중서버 접속
-const firebase = require("firebase/app");
+const firebase = require('firebase/app');
 require('firebase/firestore');
 
 // Firebase configuration
