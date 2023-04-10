@@ -11,3 +11,7 @@ npm install express cheerio request
 //mysql
 
 //socket.io
+
+//body-parser
+
+//morgan == 상세 로그 저장
