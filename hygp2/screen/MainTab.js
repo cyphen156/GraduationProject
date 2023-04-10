@@ -12,6 +12,8 @@ import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
 import SubTab from "./SubTab";
 import FileUpload from "../components/FileUpload";
+import { friends } from "../Styles/friends";
+import List from "../components/Friends/List";
 
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
@@ -68,6 +70,9 @@ function MainTab() {
             <Tab.Screen name="FileUpload" component={FileUpload} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
+            <Tab.Screen name="Friends" component={List} options={{
+                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
+            }}/>  
         </Tab.Navigator>
     );
 }
