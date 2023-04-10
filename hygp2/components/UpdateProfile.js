@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {useState , useEffect} from "react";
 import { StyleSheet, View , Pressable, Platform,
-     Image, ActivityIndicator, Button} from "react-native";
+     Image, ActivityIndicator, Button , Alert} from "react-native";
 import { signOut } from "../lib/auth";
 import { updateUser , nameCheck } from "../lib/user";
 import BordredInput from "./BordredInput";
@@ -12,7 +12,7 @@ import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 import events from "../lib/events";
 import { updateProfile } from "../lib/posts";
-
+import firestore from '@react-native-firebase/firestore'
 
 function UpdateProfile(){
     const [displayName, setDisplayName] = useState('');
@@ -21,10 +21,17 @@ function UpdateProfile(){
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
     
+    // 아이디 변경 가능여부
+    let changeable = true;
+
+    // 아이디 확인 버튼 여부
+    let checking = false;
+
     //const {params} = useRoute();
     console.log("user", user);
     myPhotoURL = user.photoURL;
     id = user.id;
+
     useEffect(() => {
         
         setDisplayName(user.displayName);
@@ -57,48 +64,52 @@ function UpdateProfile(){
     }
     const onSubmit = async () => {
         setLoading(true);
-
-        let photoURL = null;
-
-        if (response) {
-            const asset = response.assets[0];
-            const extension = asset.fileName.split('.').pop(); // 확장자 추출
-            const reference = storage().ref(` /profile/${user.id}.${extension}`); // 업로드할 경로
-
-            if (Platform.OS === 'android'){
-                await reference.putString(asset.base64, 'base64', {
-                    contentType : asset.type,
-                });
-            } else {
-                await reference.putFile(asset.uri); // 파일 저장
-            }
-            // 다운로드할 수 있는 URL 생성
-            photoURL = response ? await reference.getDownloadURL() : null;
-        }else{
-            photoURL = myPhotoURL;
-            console.log("photoURL : ", photoURL);
-        }
-
-        users = {
-            photoURL: photoURL,
-            displayName : displayName,
-            id: id,
-        }
-
-        console.log(users);
-        postUpadte({users});
-
-        setUser(users);
         
-        navigation.pop();
+        if (changeable && checking){
+            
+            let photoURL = null;
 
-        // posts에 참조된 user의 값을 변경해준다
-    
-        // await createTest({user, name});
+            if (response) {
+                const asset = response.assets[0];
+                const extension = asset.fileName.split('.').pop(); // 확장자 추출
+                const reference = storage().ref(` /profile/${user.id}.${extension}`); // 업로드할 경로
 
-    
-        console.log("user: ", user)
-        onLogout();
+                if (Platform.OS === 'android'){
+                    await reference.putString(asset.base64, 'base64', {
+                        contentType : asset.type,
+                    });
+                } else {
+                    await reference.putFile(asset.uri); // 파일 저장
+                }
+                // 다운로드할 수 있는 URL 생성
+                photoURL = response ? await reference.getDownloadURL() : null;
+            }else{
+                photoURL = myPhotoURL;
+                console.log("photoURL : ", photoURL);
+            }
+
+            users = {
+                photoURL: photoURL,
+                displayName : displayName,
+                id: id,
+            }
+
+            console.log(users);
+            postUpadte({users});
+
+            setUser(users);
+            
+            navigation.pop();
+
+            // posts에 참조된 user의 값을 변경해준다
+        
+            // await createTest({user, name});
+
+            console.log("user: ", user)
+            onLogout();
+        }else{
+            Alert.alert("닉네임 확인 해주세요.")
+        }
     };
 
     const onCancel = () => {
@@ -129,10 +140,31 @@ function UpdateProfile(){
         await signOut();
         setUser(null);
     };
-    const check = async () => {
-        const name = await nameCheck(displayName);
-        console.log(name)
+    const check = () => {
+        checking = true;
+
+        firestore().collection('user').get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              console.log(doc.id, '=>', doc.data());
+
+              // 다른 유저 displayName 이름 중복이 있으면 
+              if(displayName == doc.data().displayName && doc.id != id){
+                console.log('중복 O');
+                Alert.alert('중복 있음')
+                changeable = false;
+              }
+            });
+
+          }).then(() => {
+            console.log('changeable : ', changeable);
+            if (changeable == true){
+              Alert.alert('변경 가능')
+              
+            } 
+        });
+
     };
+
     return(
         <View style={styles.block}>
             <Pressable onPress={onSelectImage} >
@@ -159,7 +191,7 @@ function UpdateProfile(){
                         width="70%"
                         
                         /> 
-                    <Button style={styles.margin} title="아이디 확인" onPress={check}/>
+                    <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
                 </View>
                         <View style={styles.button}>
                             <CustomButton title="변경" onPress={onSubmit} hasMarginBottom/>

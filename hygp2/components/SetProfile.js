@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {useState} from "react";
 import { StyleSheet, View , Pressable, Platform,
-     Image, ActivityIndicator} from "react-native";
+     Image, ActivityIndicator, Button, Alert} from "react-native";
 import { signOut } from "../lib/auth";
 import { createUser } from "../lib/user";
 import BordredInput from "./BordredInput";
@@ -10,6 +10,7 @@ import { useUserContext } from "../context/UserContext";
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
+import firestore from '@react-native-firebase/firestore'
 
 function SetupProfile(){
 
@@ -22,39 +23,50 @@ function SetupProfile(){
     const {params} = useRoute();
     const {uid} = params || {};
     const userImage = require('../assets/images/user.png');
+    // 아이디 변경 가능여부
+    let changeable = true;
+
+    // 아이디 확인 버튼 여부
+    let checking = false;
+
     console.log(userImage);
 
     const onSubmit = async () => {
-        setLoading(true);
+        
+        //setLoading(true);
 
         let photoURL = null;
 
-        if (response) {
-            const asset = response.assets[0];
-            const extension = asset.fileName.split('.').pop(); // 확장자 추출
-            const reference = storage().ref(` /profile/${uid}.${extension}`); // 업로드할 경로
+        if (changeable && checking){
 
-            if (Platform.OS === 'android'){
-                await reference.putString(asset.base64, 'base64', {
-                    contentType : asset.type,
-                });
-            } else {
-                await reference.putFile(asset.uri); // 파일 저장
-            }
-            // 다운로드할 수 있는 URL 생성
-            photoURL = response ? await reference.getDownloadURL() : null;
-        } else{
-            
+            if (response) {
+                const asset = response.assets[0];
+                const extension = asset.fileName.split('.').pop(); // 확장자 추출
+                const reference = storage().ref(` /profile/${uid}.${extension}`); // 업로드할 경로
+
+                if (Platform.OS === 'android'){
+                    await reference.putString(asset.base64, 'base64', {
+                        contentType : asset.type,
+                    });
+                } else {
+                    await reference.putFile(asset.uri); // 파일 저장
+                }
+                // 다운로드할 수 있는 URL 생성
+                photoURL = response ? await reference.getDownloadURL() : null;
+            } 
+
+            const user = {
+                id : uid,
+                displayName,
+                photoURL,
+            };
+
+            createUser(user);
+            setUser(user);
+
+        }else{
+            Alert.alert("닉네임 확인 해주세요.")
         }
-
-        const user = {
-            id : uid,
-            displayName,
-            photoURL,
-        };
-
-        createUser(user);
-        setUser(user);
     };
 
     const onCancel = () => {
@@ -79,6 +91,31 @@ function SetupProfile(){
         );
     };
 
+    const check = () => {
+        checking = true;
+
+        firestore().collection('user').get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              console.log(doc.id, '=>', doc.data());
+
+              // 다른 유저 displayName 이름 중복이 있으면 
+              if(displayName == doc.data().displayName){
+                console.log('중복 O');
+                Alert.alert('다른 닉네임으로 변경해주세요.')
+                changeable = false;
+              }
+            });
+
+          }).then(() => {
+            console.log('changeable : ', changeable);
+            if (changeable == true){
+              Alert.alert('닉네임 사용 가능합니다.')
+              
+            } 
+        });
+
+    };
+
     return(
         <View style={styles.block}>
             <Pressable onPress={onSelectImage} >
@@ -91,14 +128,16 @@ function SetupProfile(){
                 }
                 />
             </Pressable>
-            <View style={styles.form}>
-                <BordredInput
+            <View >
+                <BordredInput style={styles.checking}
                     placeholder="닉네임"
                     value={displayName}
                     onChangeText={setDisplayName}
                     onSubmitEditing={onSubmit}
                     returnKeyType="next"
+                    width="70%"
                     />
+                    <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
                     {loading ? (
                         <ActivityIndicator size={32} color="#6200ee" style={styles.spinner}/>
                     ) : (
@@ -131,6 +170,16 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 48,
+    },
+    margin:{
+        alignItems: 'center',
+        justifyContent: 'center',   
+    },
+    checking: {
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 
