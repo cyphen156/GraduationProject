@@ -63,6 +63,7 @@ yarn add @react-native-firebase/app
 yarn add @react-native-firebase/auth
 yarn add @react-native-firebase/firestore
 yarn add @react-native-firebase/storage
+yarn add @react-native-firebase/database
 
 cd ios
 pod install --repo-update
