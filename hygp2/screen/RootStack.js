@@ -47,8 +47,8 @@ function RootStack() {
                 <>
                     <Stack.Screen name="MainTab" component={MainTab} options={{headerShown: false}} />
                     <Stack.Screen name="Write" component={WriteScreen} options={{headerShown: false}}/>
-                    <Stack.Screen name="MyProflie" component={MyProfileScreen} options={{headerShown: false}}/>
-                    <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+                    <Stack.Screen name="MyProflie" component={MyProfileScreen}/>
+                    <Stack.Screen name="UserProfile" component={UserProfileScreen}  />
                     <Stack.Screen name="프로필 변경" component={UpdateProfile} />
                     <Stack.Screen 
                       name="Upload"

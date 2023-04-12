@@ -12,7 +12,7 @@ function HomeStack() {
   return (
     <>
     <Stack.Navigator>
-      <Stack.Screen name="File" component={FileScreen} />
+      <Stack.Screen name="File" component={FileScreen} options={{title: '게시물'}} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen
         name='Post'

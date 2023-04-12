@@ -13,7 +13,8 @@ function MyProfileStack() {
       <Stack.Screen 
         name="Post"
         component={PostScreen}
-        options={{title: '게시물'}}
+        options={{title: '게시물', headerShown: false}}
+
         />
     </Stack.Navigator>
   );

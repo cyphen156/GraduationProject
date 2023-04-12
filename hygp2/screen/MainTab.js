@@ -39,10 +39,10 @@ function MainTab() {
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
             }}/>  */}
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
-                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
+                tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
             }}/>   
             <Tab.Screen name="HomeStack" component={HomeStack} options={{
-                tabBarIcon: ({color}) => (<Icon name="home" color={color} />),
+                tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
@@ -56,9 +56,6 @@ function MainTab() {
             <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 headerTitle: () => <SearchHeader />, headerShown: true
-            }}/>
-            <Tab.Screen name="Camera" component={Camera} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
             {/** 스크린 이동시 main tabBar 숨기기 필요*/}
             <Tab.Screen name="SubTab" component={SubTab} options={{
