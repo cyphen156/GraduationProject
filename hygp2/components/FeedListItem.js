@@ -22,6 +22,7 @@ function truncate(text) {
   }
 
 function FeedListItem({log}) {
+    
     const {title, body, date} = log;
     const navigation = useNavigation();
     const onPress = () => {

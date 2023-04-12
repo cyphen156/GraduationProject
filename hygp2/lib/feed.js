@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const feedsCollection = firestore().collection('feeds');
 
-
+  //피드 업데이트
   export function addFeed({id, feed}) {
 
     return feedsCollection.doc(id).update({
@@ -12,6 +12,7 @@ export const feedsCollection = firestore().collection('feeds');
     });
   }
 
+  //피드 생성 : 피드 처음 생성 할 경우 사용하면 된다.
   export function createFeed({id ,feed}){
 
     return feedsCollection.doc(id).set({
@@ -19,13 +20,16 @@ export const feedsCollection = firestore().collection('feeds');
     });
   }
 
-  // 컬렉션 feeds -> id 가 있는지 검사
+  // 컬렉션 feeds -> id 확인하기
   export function feedIdSearch(id){
-    return feedsCollection.get().then(function (querySnapshot){
+     feedsCollection.get().then(function (querySnapshot){
         querySnapshot.forEach(function (doc) {
             if (doc.id == id){
-                console.log(doc.id, '=>', doc.data());               
+                //console.log(doc.id, '=>', doc.data()); 
+                console.log(doc.id, '=>', doc.data().feed); 
+              return doc.data().feed;
             }
+            return false
         });
     });
   }
@@ -45,3 +49,5 @@ export const feedsCollection = firestore().collection('feeds');
 
       });
     }
+
+    // 컬렉션 feeds -> id -> feed배열 가져오기

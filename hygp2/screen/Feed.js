@@ -6,8 +6,10 @@ import FeedList from "../components/FeedList";
 
 
 function FeedScreen (){
-    console.log("Feed 화면")
-    const {logs} = useContext(LogContext);
+    
+    const {feeds} = useContext(LogContext);
+    console.log("Feed 화면", feeds);
+
     const [hidden, setHidden] = useState(false);
     const onScrolledToBottom = (isBottom) => {
         if (hidden != isBottom) {setHidden(isBottom)};
@@ -15,7 +17,7 @@ function FeedScreen (){
     return (
         <>
         <View style={styles.block}>
-            <FeedList logs={logs} onScrolledToBottom={onScrolledToBottom} />
+            <FeedList feeds={feeds} onScrolledToBottom={onScrolledToBottom} />
             <FloatingWriteButton hidden={hidden} />
         </View>
         </>

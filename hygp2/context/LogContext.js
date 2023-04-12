@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useRef } from "react";
 import logsStorage from "../storages/logsStorage";
 import { useUserContext } from "./UserContext";
-import {createFeed, addFeed, feedIdSearch, feedIdExists} from "../lib/feed"
+import { feedIdExists } from "../lib/feed"
 import firestore from '@react-native-firebase/firestore';
 
 const LogContext = createContext();
@@ -13,52 +13,46 @@ export function LogContextProvider({children}) {
     const {user} = useUserContext();
     const initialLogsRef = useRef(null);
     const [logs, setLogs] = useState([]);
-    console.log("Log:",user)
     // feed 체크
-    let checking = false;
-
-    // 컬렉션 id 여부 확인 함수
-    let collectionId = (id) => {
-      firestore().collection('feeds').get().then(function (querySnapshot){
-          querySnapshot.forEach(function (doc) {
-              if (doc.id == id){
-                  console.log(doc.id, '=>', doc.data());   
-                  checking = true;          
-              }
-          });
-      });
-    }
+    const [feeds, setFeeds] = useState([]);
+    
+    useEffect(() => {
+      (async () => {
+        await searchArray().then(
+          console.log("feeds: ",feeds)
+        )
+      })();
+  }, [user, onCreate]);
+  
     const onCreate = ({title, body, date}) => {
       const id = user.id;
-      const displayName = user.displayName;
-        const log = {
+      const log = {
             id: uuidv4(),
             title,
             body,
             date,
-        };
-        const feed = {
+      };
+      const feed = {
           id: uuidv4(),
           displayName : user.displayName,
           title,
           body,
           date,
-        }
+      };
+  
       setLogs([log, ...logs]);
-      //addFeed({id, feed})
-      //createFeed({id, feed});
-      //collectionId(id);
+      console.log("logs :",logs);
       feedIdExists({id ,feed});
-
-      console.log(checking);
     };
+
 
     const onModify = modified => {
         // logs 배열을 순회해 id가 일치하면 log를 교체하고 그렇지 않으면 유지
         const nextLogs = logs.map(log => (log.id === modified.id ? modified : log));
         setLogs(nextLogs);
-       
-   
+
+       //const nextFeeds = feeds.map(feed => (feed.id === modified.id ? modified : feed));
+       //setFeeds(nextFeeds);
     };
 
     const onRemove = id => {
@@ -66,9 +60,12 @@ export function LogContextProvider({children}) {
         setLogs(nextLogs);
     };
 
+    
     useEffect(() => {
+    
       (async () => {
         const savedLogs = await logsStorage.get();
+        
         if(savedLogs) {
             initialLogsRef.current = savedLogs;
             setLogs(savedLogs);
@@ -80,11 +77,24 @@ export function LogContextProvider({children}) {
       if (logs === initialLogsRef.current) {
         return;
       }
+      
       logsStorage.set(logs);
     }, [logs]);
-    
+
+
+    // 같은 아이디에 feed배열 가져오기
+     function searchArray(){
+      return firestore().collection('feeds').get().then(function (querySnapshot){
+         querySnapshot.forEach(function (doc) {
+            console.log(doc.id, '=>', doc.data().feed); 
+            setFeeds(doc.data().feed);
+             
+         });
+     });
+   };
+
     return (
-        <LogContext.Provider value={{logs, onCreate, onModify, onRemove}}>
+        <LogContext.Provider value={{feeds, setFeeds ,onCreate, onModify, onRemove}}>
             {children}
         </LogContext.Provider>
     );
