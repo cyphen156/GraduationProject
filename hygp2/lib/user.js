@@ -45,8 +45,6 @@ export function createUser({id, displayName, photoURL}) {
       console.log('check : ', check);
       if (check == true){
 
-
-
         Alert.alert('변경 가능')
         return check;
       }

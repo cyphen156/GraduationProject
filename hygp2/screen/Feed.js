@@ -6,6 +6,7 @@ import FeedList from "../components/FeedList";
 
 
 function FeedScreen (){
+    console.log("Feed 화면")
     const {logs} = useContext(LogContext);
     const [hidden, setHidden] = useState(false);
     const onScrolledToBottom = (isBottom) => {
