@@ -13,6 +13,7 @@ function FloatingWriteButton ({hidden}) {
     const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
+        console.log("Feed 버튼")
         Animated.spring(animation, {
             toValue: hidden ? 1 : 0,
             useNativeDriver: true,
