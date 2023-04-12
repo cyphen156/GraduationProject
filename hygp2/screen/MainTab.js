@@ -57,9 +57,9 @@ function MainTab() {
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 headerTitle: () => <SearchHeader />, headerShown: true
             }}/>
-            <Tab.Screen name="Camera" component={Camera} options={{
+            {/* <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+            }}/> */}
             {/** 스크린 이동시 main tabBar 숨기기 필요*/}
             <Tab.Screen name="SubTab" component={SubTab} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
@@ -67,9 +67,9 @@ function MainTab() {
             {/* <Tab.Screen name="chat" component={Chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>  */}
-            <Tab.Screen name="FileUpload" component={FileUpload} options={{
+            {/* <Tab.Screen name="FileUpload" component={FileUpload} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+            }}/> */}
             <Tab.Screen name="Friends" component={FriendsList} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>

@@ -120,15 +120,15 @@ function SetupProfile(){
     };
 
     return(
-        <View>
-            <Toast ref={toastRef}
-                        positionValue={windowHeight * 0.55}
-                        fadeInDuration={300}
-                        fadeOutDuration={1000}
-                        style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
-                    />
         <View style={styles.block}>
-            <Pressable onPress={onSelectImage} >
+            <Toast ref={toastRef}
+                    positionValue={windowHeight * 0.55}
+                    fadeInDuration={300}
+                    fadeOutDuration={1000}
+                    style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
+            />
+
+            <Pressable onPress={onSelectImage}>
                 <Image
                 style={styles.circle}
                 source={
@@ -138,28 +138,30 @@ function SetupProfile(){
                 }
                 />
             </Pressable>
-            <View >
-                <BordredInput style={styles.checking}
-                    placeholder="닉네임"
-                    value={displayName}
-                    onChangeText={setDisplayName}
-                    onSubmitEditing={onSubmit}
-                    returnKeyType="next"
-                    width="70%"
+
+            <View>
+                <View style={styles.checking}>
+                    <BordredInput 
+                        placeholder="닉네임"
+                        value={displayName}
+                        onChangeText={setDisplayName}
+                        onSubmitEditing={onSubmit}
+                        returnKeyType="next"
+                        width="70%"
+                        margin={10}
                     />
-                    <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
-              
-                    {loading ? (
-                        <ActivityIndicator size={32} color="#6200ee" style={styles.spinner}/>
-                    ) : (
-                        <View style={styles.button}>
-                            <CustomButton title="다음" onPress={onSubmit} hasMarginBottom/>
-                            <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
-                        </View>
-                    )}
+                        <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
+                </View>
+                        {loading ? (
+                            <ActivityIndicator size={32} color="#6200ee" style={styles.spinner}/>
+                        ) : (
+                            <View style={styles.button}>
+                                <CustomButton title="다음" onPress={onSubmit} hasMarginBottom/>
+                                <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
+                            </View>
+                        )}
             </View>
-            
-            </View>
+
         </View>
     )
 }
@@ -189,7 +191,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',   
     },
     checking: {
-        backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

@@ -21,6 +21,7 @@ function UpdateProfile(){
     const {user, setUser} = useUserContext();
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
+
     const windowHeight = Dimensions.get('window').height;
     // 아이디 변경 가능여부
     let changeable = true;
@@ -35,7 +36,6 @@ function UpdateProfile(){
     id = user.id;
 
     useEffect(() => {
-        
         setDisplayName(user.displayName);
       }, [setUser, navigation]);
 
@@ -45,8 +45,8 @@ function UpdateProfile(){
             photoURL: users.photoURL,
             id: users.id,
             displayName : users.displayName,
-            
         });
+
         events.emit('updateUser', {
             photoURL: users.photoURL,
             id: users.id,
@@ -64,6 +64,7 @@ function UpdateProfile(){
             user: users,
         });
     }
+
     const onSubmit = async () => {
         setLoading(true);
         Keyboard.dismiss();
@@ -192,7 +193,8 @@ function UpdateProfile(){
                         onChangeText={setDisplayName}
                         onSubmitEditing={onSubmit}
                         returnKeyType="next"
-                        width="70%"                 
+                        width="90%"   
+                        margin= {10}              
                         /> 
 
                     <Button style={styles.margin} title="닉네임 확인"  onPress={check} />
@@ -232,13 +234,13 @@ const styles = StyleSheet.create({
         width: '50%',
     },
     button: {
-        marginTop: 48,
+        marginTop: 108,
     },
     checking: {
-        backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: 10,
     },
     margin:{
         alignItems: 'center',
