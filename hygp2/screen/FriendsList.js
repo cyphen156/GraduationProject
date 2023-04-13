@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { firebase } from '@react-native-firebase/database';
+import { firebase } from '@react-native-firebase/firestore';
 
 const FriendsList = () => {
   const [friends, setFriends] = useState([]);
