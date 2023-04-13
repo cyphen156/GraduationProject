@@ -38,7 +38,7 @@ function MainTab() {
             <Tab.Screen name="GoogleLogin" component={GoogleSigninBTN} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
             }}/>  */}
-            <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
+            {/* <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
             }}/>   
             <Tab.Screen name="HomeStack" component={HomeStack} options={{
@@ -46,35 +46,36 @@ function MainTab() {
             }}/>     
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+            }}/>*/}
             <Tab.Screen name="Todo" component={Todo} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            }}/> 
+            <Tab.Screen name="ProjectRoom" component={SubTab} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Calendar" component={CalendarScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
-            <Tab.Screen name="Search" component={SearchScreen} options={{
+            {/* <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 headerTitle: () => <SearchHeader />, headerShown: true
-            }}/>
+            }}/> */}
 
             {/* <Tab.Screen name="Camera" component={Camera} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> */}
 
             {/** 스크린 이동시 main tabBar 숨기기 필요*/}
-            <Tab.Screen name="SubTab" component={SubTab} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+            
             {/* <Tab.Screen name="chat" component={Chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>  */}
             {/* <Tab.Screen name="FileUpload" component={FileUpload} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> */}
-            <Tab.Screen name="Friends" component={FriendsList} options={{
+            {/* <Tab.Screen name="Friends" component={FriendsList} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>
+            }}/> */}
         </Tab.Navigator>
     );
 }
