@@ -42,12 +42,22 @@ export const feedsCollection = firestore().collection('feeds');
         if (documentSnapshot.exists) {//있음
           console.log('User data: ', documentSnapshot.data());
           addFeed({id, feed})
-
+          return true
         }else{ //없음
             createFeed({id ,feed})
+            return true
         }
 
       });
+
     }
 
-    // 컬렉션 feeds -> id -> feed배열 가져오기
+   // 지우기
+   export function removeFeed(id, feed){
+    feedsCollection.doc(id).update({
+      
+      feed: firestore.FieldValue.arrayRemove(feed),
+
+    });
+
+   }

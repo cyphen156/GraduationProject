@@ -20,7 +20,9 @@ export function UserContextProvider({children}) {
 
 /** 사용자 정보 조회 함수 */
 export function useUserContext(){
+    
     const userContext = useContext(UserContext);
+    
     if (!UserContext){
         throw new Error('UserContext.Provider is not found');
     }
