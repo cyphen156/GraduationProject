@@ -9,7 +9,7 @@ import CameraButton from "../components/CameraButton";
 
 function WriteScreen({route}){
     const log = route.params?.log;
-
+    console.log("log :", log)
     const [title, setTitle] = useState(log?.title ?? '');
     const [body, setBody] = useState(log?.body ?? '');
     const navigation = useNavigation();
