@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { StyleSheet, View} from "react-native";
 import LogContext from "../context/LogContext";
 import FloatingWriteButton from "../components/FloatingWriteButton";
@@ -8,6 +8,11 @@ import FeedList from "../components/FeedList";
 function FeedScreen (){
     
     const {feeds} = useContext(LogContext);
+    
+    useEffect(() => { 
+        console.log(feeds)
+    }, [feeds]);
+
     console.log("Feed 화면", feeds);
 
     const [hidden, setHidden] = useState(false);
