@@ -37,10 +37,10 @@ export const feedsCollection = firestore().collection('feeds');
       // 컬렉션 feeds -> id 있는지 확인 
   export function feedIdExists({id ,feed}){
      feedsCollection.doc(id).get().then(documentSnapshot => {
-        console.log('User exists: ', documentSnapshot.exists);
+        //console.log('User exists: ', documentSnapshot.exists);
     
         if (documentSnapshot.exists) {//있음
-          console.log('User data: ', documentSnapshot.data());
+          //console.log('User data: ', documentSnapshot.data());
           addFeed({id, feed})
           return true
         }else{ //없음

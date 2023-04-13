@@ -10,7 +10,6 @@ import events from "../lib/events";
 
 const LogContext = createContext();
 
-
   export function LogContextProvider({children}) {
 
     const [ isLoading, setIsLoading ] = useState(true);
@@ -21,26 +20,32 @@ const LogContext = createContext();
     // feed 체크
     const [feeds, setFeeds] = useState([]);
    
-    useEffect(() => { 
-      setIsLoading(false);
-      
-      if(user !== null){
-        
-        GetData().then(() => {
-          setIsLoading(false);
-      })
-    }
-    
-  }, [user, onCreate, setFeeds, feedIdExists]);
 
     const GetData = async () => {
       console.log("useEffect: ", user); 
-      if(user !== null){
+      if(user == null){
+        return
+      }
         var result = await searchArray(user.id);
-        
+        if(result.length < 1 ){
+          return
+        }
+        console.log("result : ", result);
         return result;
       }
-    }
+    
+
+    useEffect(() => { 
+      //setIsLoading(false);
+      
+        GetData().then(() => {
+          setIsLoading(false);
+      })
+    
+    
+  }, [user, onCreate, setFeeds, feedIdExists, searchArray]);
+
+
 
     const onCreate = ({title, body, date}) => {
       const id = user.id;
@@ -52,11 +57,12 @@ const LogContext = createContext();
           date,
       };
       feedIdExists({id ,feed});
-      console.log("add: " ,feeds.feed)
-      // setFeeds(feeds.feed)
-      // console.log(feeds.feed)
-      return searchArray(id);
-  };
+      feeds[feeds.length] = feed
+      console.log("add: " ,feeds)
+      return setFeeds(feeds);
+      
+   
+    };
 
 
     const onModify = modified => {
@@ -101,19 +107,17 @@ const LogContext = createContext();
     }, [logs]);
 
     // 같은 아이디에 feed배열 가져오기
-     async function searchArray(id){
-      
-      await firestore().collection('feeds').get().then(function (querySnapshot){
+     const searchArray = id => {
+       firestore().collection('feeds').get().then(function (querySnapshot){
          querySnapshot.forEach(function (doc) {
             //console.log(doc.id, '=>', doc.data().feed); 
             if(doc.id === id){
-              setFeeds(doc.data().feed);
+              return setFeeds(doc.data().feed);
             }
-
          });
      });
-        return feeds
-    };
+    return feeds;
+  };
 
    if(isLoading)
    {
@@ -126,7 +130,7 @@ const LogContext = createContext();
    else
    {
     return (
-      <LogContext.Provider value={{feeds, setFeeds ,onCreate, onModify, onRemove}}>
+      <LogContext.Provider value={{feeds, setFeeds ,onCreate, onModify, onRemove, searchArray}}>
           {children}
       </LogContext.Provider>
   );
