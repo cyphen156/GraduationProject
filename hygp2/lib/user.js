@@ -27,31 +27,17 @@ export function createUser({id, displayName, photoURL}) {
   }
 
   // 유저 displayName 중복 체크하기 : 아이디 사용가능 여부
-  export async function nameCheck({id, displayName}) {
+  export async function nameCheck(displayName) {
     
-     let check = true;
-
      usersCollection.get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        console.log(doc.id, '=>', doc.data());
-        if(displayName == doc.data().displayName){
-          console.log('중복 있음');
-          Alert.alert('중복 있음')
-          check = false;
-        }
         
+        if(displayName == doc.data().displayName){
+          console.log('닉네임 있음');    
+          console.log(doc.id, '=>', doc.data());   
+          return doc.data();
+        }    
       });
-    }).then(() => {
-      console.log('check : ', check);
-      if (check == true){
-
-        Alert.alert('변경 가능')
-        return check;
-      }
-      return check;
     });
-
-
-
-
+    
   }

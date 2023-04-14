@@ -16,7 +16,6 @@ function MyProfileScreen () {
         setUser(null);
     };
 
-
     useEffect(() => {
         navigation.setOptions({
             title: user.displayName,
