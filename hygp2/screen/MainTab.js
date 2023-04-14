@@ -48,13 +48,13 @@ function MainTab() {
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Todo" component={Todo} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                tabBarIcon: ({color, size}) => (<Icon name="receipt" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="ProjectRoom" component={SubTab} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                tabBarIcon: ({color, size}) => (<Icon name="business" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Calendar" component={CalendarScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
             }}/>
             {/* <Tab.Screen name="Search" component={SearchScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
