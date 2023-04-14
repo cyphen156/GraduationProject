@@ -5,24 +5,24 @@ import FeedList from "../components/FeedList"
 import LogContext from "../context/LogContext";
 
 function CalendarScreen() {
-    const {logs} = useContext(LogContext);
+    const {feeds} = useContext(LogContext);
     const [selectedDate, setSelectedDate] = useState(
         format(new Date(), 'yyyy-MM-dd'),);
     const markedDates = useMemo(
         () =>
-          logs.reduce((acc, current) => {
+        feeds.reduce((acc, current) => {
             const formattedDate = format(new Date(current.date), 'yyyy-MM-dd');
             acc[formattedDate] = {marked: true};
             return acc;
           }, {}),
-        [logs],
+        [feeds],
       );
         
-    const filteredLogs = logs.filter(
-        log => format(new Date(log.date), 'yyyy-MM-dd') === selectedDate,);
+    const filteredLogs = feeds.filter(
+        feed => format(new Date(feed.date), 'yyyy-MM-dd') === selectedDate,);
     return (
         <FeedList
-            logs={filteredLogs}
+        feeds={filteredLogs}
             ListHeaderComponent = {
                 <CalendarView 
                     markedDates={markedDates} 

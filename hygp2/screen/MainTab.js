@@ -38,7 +38,7 @@ function MainTab() {
             <Tab.Screen name="GoogleLogin" component={GoogleSigninBTN} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
             }}/>  */}
-            {/* <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
+            <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
             }}/>   
             <Tab.Screen name="HomeStack" component={HomeStack} options={{
@@ -46,7 +46,7 @@ function MainTab() {
             }}/>     
             <Tab.Screen name="Feed" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>*/}
+            }}/>
             <Tab.Screen name="Todo" component={Todo} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
