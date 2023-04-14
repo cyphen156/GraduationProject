@@ -61,3 +61,9 @@ export const feedsCollection = firestore().collection('feeds');
     });
 
    }
+
+   // 수정하기 : 기존 데이터 삭제 -> 수정 데이터 생성
+   export function updateFeed({id, original, change}){
+      addFeed({id, change});
+      //removeFeed({id, original});
+   }
