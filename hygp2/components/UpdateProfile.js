@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {useState , useEffect , useRef } from "react";
 import { StyleSheet, View , Pressable, Platform,
      Image, ActivityIndicator, Button , Alert, Text, Dimensions, Keyboard} from "react-native";
-import { signOut } from "../lib/auth";
+import { signIn, signOut } from "../lib/auth";
 import { updateUser , nameCheck } from "../lib/user";
 import BordredInput from "./BordredInput";
 import CustomButton from "./CustomButton";
@@ -110,8 +110,9 @@ function UpdateProfile(){
 
             console.log("user: ", user)
             onLogout();
+            on
         }else{
-            toastRef.current.show("닉네임 확인 해주세요.");
+            toastRef.current.show("닉네임을 확인 해주세요.");
         }
     };
 
@@ -143,6 +144,7 @@ function UpdateProfile(){
         await signOut();
         setUser(null);
     };
+
     const check = () => {
         Keyboard.dismiss();
         checking = true;
@@ -162,7 +164,7 @@ function UpdateProfile(){
           }).then(() => {
             console.log('changeable : ', changeable);
             if (changeable == true){
-                toastRef.current.show('닉네임 변경 가능합니다.');
+                toastRef.current.show('닉네임 변경이 가능합니다.');
               
             } 
         });

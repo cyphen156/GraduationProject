@@ -8,6 +8,7 @@ function CalendarScreen() {
     const {feeds} = useContext(LogContext);
     const [selectedDate, setSelectedDate] = useState(
         format(new Date(), 'yyyy-MM-dd'),);
+
     const markedDates = useMemo(
         () =>
         feeds.reduce((acc, current) => {
@@ -19,7 +20,10 @@ function CalendarScreen() {
       );
         
     const filteredLogs = feeds.filter(
-        feed => format(new Date(feed.date), 'yyyy-MM-dd') === selectedDate,);
+        feed => format(new Date(feed.date), 'yyyy-MM-dd') === selectedDate,
+        );
+
+        
     return (
         <FeedList
         feeds={filteredLogs}

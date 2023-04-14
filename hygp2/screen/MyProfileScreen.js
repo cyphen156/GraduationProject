@@ -21,11 +21,18 @@ function MyProfileScreen () {
         navigation.setOptions({
             title: user.displayName,
             headerRight: () => (
+                <>
+                <IconRightButton
+                    name="person-add"
+                    onPress={() => navigation.push('FriendsAdd')}
+                    />
                 <IconRightButton
                     name="settings"
                     onPress={() => navigation.push('Setting')}
-                    />
+                    />      
+                 </>   
             ),
+   
         });
     }, [navigation, user])
     return (
