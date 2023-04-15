@@ -22,6 +22,10 @@ function MyProfileScreen () {
             headerRight: () => (
                 <>
                 <IconRightButton
+                    name="search"
+                    onPress={() => navigation.push('FriendsList')}
+                    />
+                <IconRightButton
                     name="person-add"
                     onPress={() => navigation.push('FriendsAdd')}
                     />

@@ -17,6 +17,7 @@ import ModifyScreen from "./ModifyScreen";
 import UserProfileScreen from "./UserProfileScreen"; 
 import UpdateProfile from "../components/UpdateProfile";
 import FriendsAddScreen from "./FriendsAddScreen";
+import FriendsList from "./FriendsList";
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,11 @@ function RootStack() {
                       name="FriendsAdd"
                       component={FriendsAddScreen}
                       options={{title: '닉네임으로 친구 추가 ', headerBackTitle: '뒤로가기'}}                    
+                     />
+                     <Stack.Screen 
+                      name="FriendsList"
+                      component={FriendsList}
+                      options={{title: '친구 검색', headerBackTitle: '뒤로가기'}}                    
                      />
                      <Stack.Screen
                       name='Post'

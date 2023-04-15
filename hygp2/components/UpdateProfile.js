@@ -147,6 +147,11 @@ function UpdateProfile(){
 
     const check = () => {
         Keyboard.dismiss();
+        if(displayName.length < 3){
+            toastRef.current.show('3자리 이상 입력하세요.');
+            return
+        
+        }
         checking = true;
 
         firestore().collection('user').get().then(function (querySnapshot) {

@@ -9,6 +9,7 @@ const FriendsList = () => {
     // 현재 로그인한 사용자의 UserID 가져오기
     const currentUserId = firebase.auth().currentUser.uid;
 
+    /** 
     // Firebase Realtime Database에서 친구 목록 가져오기
     firebase.database().ref(`friends/${currentUserId}`).on('value', (snapshot) => {
       const friendsData = snapshot.val();
@@ -18,6 +19,8 @@ const FriendsList = () => {
         setFriends(friendsArray);
       }
     });
+    */
+   
   }, []);
 
   return (

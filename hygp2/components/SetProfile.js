@@ -96,8 +96,14 @@ function SetupProfile(){
     };
 
     const check = () => {
-        checking = true;
+        
         Keyboard.dismiss();
+        if(displayName.length < 3){
+            toastRef.current.show('3자리 이상 입력하세요.');
+            return
+        
+        }
+        checking = true;
         firestore().collection('user').get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
               console.log(doc.id, '=>', doc.data());
@@ -105,7 +111,7 @@ function SetupProfile(){
               // 다른 유저 displayName 이름 중복이 있으면 
               if(displayName == doc.data().displayName){
                 console.log('중복 O');
-                toastRef.current.show('다른 닉네임으로 변경해주세요.');
+                toastRef.current.show('다른 닉네임으로 설정하세요.');
                 changeable = false;
               }
             });
