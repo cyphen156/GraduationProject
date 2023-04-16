@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
 
-const CreateTeamScreen = () => {
+const CreateTeamScreen = ({ navigation }) => {
   const [teamName, setTeamName] = useState('');
 
   const handleCreateTeam = () => {
@@ -13,11 +16,14 @@ const CreateTeamScreen = () => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
       .then(docRef => {
-        // Team has been created
+        firebase.firestore().collection(`teams/${teamName}/users`);
+        firebase.firestore().collection(`teams/${teamName}/messages`);
+        navigation.navigate('Chat', { teamName: teamName });
       })
       .catch(error => {
-        // Handle create team error
+        console.error(error);
       });
+      
   };
 
   return (

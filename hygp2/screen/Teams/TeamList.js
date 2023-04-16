@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList, Button } from 'react-native';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
 
-const TeamListScreen = () => {
+const TeamListScreen = ({ navigation }) => {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
@@ -24,8 +27,10 @@ const TeamListScreen = () => {
   const renderItem = ({ item }) => {
     return (
       <View>
-        <Text>{item.name}</Text>
-        <Text>Created at: {item.createdAt.toDate().toDateString()}</Text>
+        <Button
+          title={item.name}
+          onPress={() => navigation.navigate('Chat', { teamId: item.id })}
+          />
       </View>
     );
   };

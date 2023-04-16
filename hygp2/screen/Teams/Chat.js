@@ -9,13 +9,29 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
-function Chat({ chatRoomName }) {
-  const [messages, setMessages] = useState([]);
-  const [senders, setSenders] = useState([]);
-  const currentUser = auth.currentUser; // 현재 로그인한 사용자 정보 가져오기
+function Chat({ route, navigation }) {
+  const { teamId } = route.params;
+  const [chatRoomName, setChatRoomName] = useState('');
 
   useEffect(() => {
-    const chatMessagesRef = firestore.collection('chatRooms').doc(chatRoomName).collection('messages');
+    const teamsRef = firestore.collection('teams');
+    const unsubscribe = teamsRef.doc(teamId).onSnapshot((doc) => {
+      setChatRoomName(doc.data().name);
+      navigation.setOptions({ title: doc.data().name });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [teamId, navigation]);
+
+  const currentUser = auth.currentUser; // 현재 로그인한 사용자 정보 가져오기
+  const [messages, setMessages] = useState([]);
+  const [senders, setSenders] = useState([]);
+
+  // 채팅 메세지 가져오기
+  useEffect(() => {
+    const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const unsubscribe = chatMessagesRef
       .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
@@ -34,10 +50,11 @@ function Chat({ chatRoomName }) {
     return () => {
       unsubscribe();
     };
-  }, [chatRoomName]);
+  }, [teamId]);
 
+  // 채팅방 구성원 가져오기
   useEffect(() => {
-    const chatUsersRef = firestore.collection('chatRooms').doc(chatRoomName).collection('users');
+    const chatUsersRef = firestore.collection('teams').doc(teamId).collection('users');
     const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
       const newSenders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
@@ -53,10 +70,10 @@ function Chat({ chatRoomName }) {
     return () => {
       unsubscribe();
     };
-  }, [chatRoomName]);
+  }, [teamId]);
 
   const onSend = useCallback((newMessages = []) => {
-    const chatMessagesRef = firestore.collection('chatRooms').doc(chatRoomName).collection('messages');
+    const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const message = newMessages[0];
     chatMessagesRef.add({
       text: message.text,
@@ -67,7 +84,7 @@ function Chat({ chatRoomName }) {
         avatar: currentUser.photoURL,
       },
     });
-  }, [chatRoomName, currentUser]);
+  }, [teamId, currentUser]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -137,8 +154,10 @@ function Chat({ chatRoomName }) {
             />
           );
         }}
+        placeholder={`메시지 보내기 (${chatRoomName})`}
       />
     </View>
   );
-};
+}
+
 export default Chat;
