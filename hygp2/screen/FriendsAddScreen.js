@@ -8,7 +8,7 @@ import IconRightButton from "../components/IconRightButton";
 import firestore from '@react-native-firebase/firestore'
 import Avatar from "../components/Avatar";
 import Toast from 'react-native-easy-toast';
-import { friendIdSearch } from "../lib/friends";
+import { friendIdExists } from "../lib/friends";
 
 function FriendsAddScreen(){
     const navigation = useNavigation();
@@ -20,8 +20,10 @@ function FriendsAddScreen(){
     let {data} = [];
     const [exist, setExist] = useState(false);
     const toastRef = useRef(); // toast ref 생성
+    const myUser = useUserContext();
 
     useEffect(() => {
+      
       navigation.setOptions({  
           headerRight: () => (
               <IconRightButton
@@ -30,7 +32,7 @@ function FriendsAddScreen(){
                   />                       
           ),
       });
-  }, [displayName, exist])
+  }, [displayName, exist, myUser])
 
     // 버튼클릭 : 친구 서치하고 프로필 보이게 해줌
     const onPress = () => {
@@ -61,7 +63,8 @@ function FriendsAddScreen(){
     };
 
     const add = () => {
-      friendIdSearch();
+      const aa = friendIdExists(myUser.user.id, user.id);
+      console.log("add버튼 :", aa);
     };
   if(!response){
       return (

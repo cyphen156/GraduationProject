@@ -22,7 +22,7 @@ export function UserContextProvider({children}) {
 export function useUserContext(){
     
     const userContext = useContext(UserContext);
-    
+    //console.log("myUser:", userContext)
     if (!UserContext){
         throw new Error('UserContext.Provider is not found');
     }

@@ -70,7 +70,7 @@ function RootStack() {
                      <Stack.Screen 
                       name="FriendsList"
                       component={FriendsList}
-                      options={{title: '친구 검색', headerBackTitle: '뒤로가기'}}                    
+                      options={{title: '친구 목록', headerBackTitle: '뒤로가기'}}                    
                      />
                      <Stack.Screen
                       name='Post'
