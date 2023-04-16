@@ -2,23 +2,23 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Search from "../screen/Search"
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import chat from "./chat/chat";
-import TeamListScreen from "./TeamList";
-import CreateTeamScreen from "./CreateTeam";
-// import DataUpload from "../nullable/DataUpload";
+import Chat from "./Teams/Chat";
+import CreateTeamScreen from "./Teams/CreateTeam";
+import TeamListScreen from "./Teams/TeamList";
+
 
 const Tab = createBottomTabNavigator();
 
 function SubTab () {
     return (
         <Tab.Navigator screenOptions={{
-            headerShown: false,
+            headerShown: true,
             tabBarShowLabel: true,
             tabBarActiveTintColor: '#e91e63'}}>
             <Tab.Screen name="search" component={Search} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
-            <Tab.Screen name="chat" component={chat} options={{
+            <Tab.Screen name="Chat" component={Chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
@@ -27,9 +27,6 @@ function SubTab () {
             <Tab.Screen name="TeamList" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
-            {/* <Tab.Screen name="DataUpload" component={DataUpload} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>  */}
         </Tab.Navigator>
     )
 }
