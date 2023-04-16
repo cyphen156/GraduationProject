@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { friendIdSearch } from '../lib/friends';
 import { fromIdtoUser, getUserId } from '../lib/user';
 import { useUserContext } from '../context/UserContext';
-import FriendsContext from '../context/FriendsContext';
+import Avatar from '../components/Avatar';
+import {useNavigation, useNavigationState} from '@react-navigation/native'
 
 const FriendsList = () => {
   const {user, setUser} = useUserContext();
@@ -12,43 +13,58 @@ const FriendsList = () => {
   const [ isLoading, setIsLoading ] = useState(false);
   const [idDoc, setIddoc] = useState([]);
   let data = [];
+  const navigation = useNavigation();
+
+
   useEffect(() => {
    
     if(!isLoading){
+      // 프렌즈 컬렉션 : 내 id => id 배열 값 가져오기 
      firestore().collection('friends').get().then(function (querySnapshot){
       querySnapshot.forEach(function (doc) {
           if (doc.id == user.id){
-              console.log(doc.id, '=>', doc.data().id); 
+              //console.log(doc.id, '=>', doc.data().id); 
               setFriendArray(doc.data().id);
           }       
       });
     });
   }
   if(friendArray !== [])
-    userData();
+    userData().then(() => {
 
-  }, [user, friendArray,]);
+    
+    });
 
-  function userData(){
+  }, [user, friendArray, setIsLoading, setIddoc]);
+
+  const userData = async() => {
    
      friendArray.forEach( async (id) => {
-      console.log('id', id);
   
       firestore().collection('user').doc(id).get()
       .then((snapshot) => {
         data.push(snapshot.data())
-        setIddoc(data)
-        
+        //setIddoc(data)
+        if(data.length === friendArray.length){
+          setIddoc(data)
+          setIsLoading(true); 
+        }        
       });
     })
-    setIsLoading(true); 
+
   }
 
+
   const renderItem = ({item}) =>{
+  
     return (
-      <View style ={styles.item}>
-        <Text style = {styles.title}>{item.displayName}</Text>
-      </View>
+        <Pressable style ={styles.item} 
+        onPress={()=>  navigation.navigate('UserProfile', {
+          userInfo: item,
+        })}>
+          <Avatar style={styles.PhotoImage} source={item.photoURL && {uri: item.photoURL}} />
+          <Text style = {styles.title}>{item.displayName}</Text>
+        </Pressable>
     )
   }
 
@@ -56,16 +72,9 @@ const FriendsList = () => {
     return (
       <View>
         <Text>친구 목록:</Text>
-        {friendArray.map((friend) => (
-          <Text key={friend}>{friend}</Text>
-        ))}
-        
-        <Text>----------------------------------------</Text>
-        {data.map((data) => (
-          <Text key={data}>{data}</Text>
-        ))}
+
         <FlatList
-          data ={data}
+          data ={idDoc}
           renderItem= {renderItem}
           keyExtractor ={(item) => item.id}
           />
@@ -89,6 +98,12 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 3,
     marginHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
+  PhotoImage: {
+    marginRight: 10,
+  },
+
 });
 export default FriendsList;
