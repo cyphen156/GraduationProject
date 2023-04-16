@@ -19,6 +19,7 @@ function SubTab () {
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="Chat" component={Chat} options={{
+                tabBarLabel: 'Chat', 
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{

@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import InvitedFriend from './InviteFriend';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -17,7 +18,18 @@ function Chat({ route, navigation }) {
     const teamsRef = firestore.collection('teams');
     const unsubscribe = teamsRef.doc(teamId).onSnapshot((doc) => {
       setChatRoomName(doc.data().name);
-      navigation.setOptions({ title: doc.data().name });
+      navigation.setOptions({ 
+        title: doc.data().name,
+        headerRight: () => (
+          <>
+            <InvitedFriend
+                style = {styles.block}
+                name="person-add"
+                onPress={() => navigation.push('FriendsList')}
+               />
+          </>   
+        ),
+      });
     });
 
     return () => {
@@ -159,5 +171,12 @@ function Chat({ route, navigation }) {
     </View>
   );
 }
+
+
+const styles = StyleSheet.create({
+  block: {
+    marginRight: 16,
+  },
+});
 
 export default Chat;

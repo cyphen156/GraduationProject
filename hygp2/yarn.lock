@@ -1077,6 +1077,14 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@callstack/react-theme-provider@^3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@callstack/react-theme-provider/-/react-theme-provider-3.0.8.tgz#d0d7ac71e422133c5f7b78f4c4aa1bc57f156f50"
+  integrity sha512-5U231sYY2sqQOaELX0WBCn+iluV8bFaXIS7em03k4W5Xz0AhGvKlnpLIhDGFP8im/SvNW7/2XoR0BsClhn9t6Q==
+  dependencies:
+    deepmerge "^3.2.0"
+    hoist-non-react-statics "^3.3.0"
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.npmjs.org/@egjs/hammerjs/-/hammerjs-2.0.17.tgz"
@@ -6539,6 +6547,15 @@ react-native-pager@^0.0.3:
   version "0.0.3"
   resolved "https://registry.npmjs.org/react-native-pager/-/react-native-pager-0.0.3.tgz"
   integrity sha512-CLD5Z/uPEzfYddMZxFuAyamrbTP/XJ2W0I0VQj7q3XjOhzaO1kUpk2mUoZzr352EQm5wHRTgi/MkubR9P/0Isw==
+
+react-native-paper@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.6.0.tgz#5ac94fcc451706ff5efc0690efe7ba6acdbac485"
+  integrity sha512-X/MhAN/k1iwsp8N42MoSUfGbgCt4Lw8IlsoToIPoSoYRxbEq2OYOPRH7JsktPtFY0a1SAJPqVHFFS76FU8eSFg==
+  dependencies:
+    "@callstack/react-theme-provider" "^3.0.8"
+    color "^3.1.2"
+    use-latest-callback "^0.1.5"
 
 react-native-parsed-text@0.0.22:
   version "0.0.22"

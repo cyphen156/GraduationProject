@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, Alert } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -8,6 +8,10 @@ const CreateTeamScreen = ({ navigation }) => {
   const [teamName, setTeamName] = useState('');
 
   const handleCreateTeam = () => {
+    if (!teamName.trim()) {
+      Alert.alert('Error', 'Please enter a valid team name');
+      return;
+    }
     const user = firebase.auth().currentUser;
 
     firebase.firestore().collection('teams').add({
