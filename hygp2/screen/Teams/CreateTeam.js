@@ -16,9 +16,12 @@ const CreateTeamScreen = ({ navigation }) => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
       .then(docRef => {
-        firebase.firestore().collection(`teams/${teamName}/users`);
-        firebase.firestore().collection(`teams/${teamName}/messages`);
-        navigation.navigate('Chat', { teamName: teamName });
+        firebase.firestore().collection(`teams/${docRef.id}/messages`);
+        const invitedUsersRef = firebase.firestore().collection(`teams/${docRef.id}/invitedUsers`);
+        invitedUsersRef.doc(user.uid).set({
+          [user.uid]: true
+        });
+        navigation.navigate('Chat', { teamId: docRef.id });
       })
       .catch(error => {
         console.error(error);

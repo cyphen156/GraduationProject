@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -54,7 +54,7 @@ function Chat({ route, navigation }) {
 
   // 채팅방 구성원 가져오기
   useEffect(() => {
-    const chatUsersRef = firestore.collection('teams').doc(teamId).collection('users');
+    const chatUsersRef = firestore.collection('teams').doc(teamId).collection('invitedUsers');
     const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
       const newSenders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
