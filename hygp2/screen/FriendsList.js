@@ -71,7 +71,7 @@ const FriendsList = () => {
   if(isLoading){
     return (
       <View>
-        <Text>친구 목록:</Text>
+        <Text style={styles.displayName}>친구</Text>
 
         <FlatList
           data ={idDoc}
@@ -104,6 +104,12 @@ const styles = StyleSheet.create({
   PhotoImage: {
     marginRight: 10,
   },
-
+  displayName: {
+    padding: 10,
+    lineHeight: 16,
+    fontSize: 18,
+    marginLeft: 8,
+    fontWeight: 'bold',
+  },
 });
 export default FriendsList;
