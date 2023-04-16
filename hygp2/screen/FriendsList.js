@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#e0e0e0',
     padding: 15,
     marginVertical: 3,
     marginHorizontal: 16,

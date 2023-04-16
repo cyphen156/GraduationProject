@@ -1,7 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {useState , useEffect , useRef } from "react";
 import { StyleSheet, View , Pressable, Platform,
-     Image, ActivityIndicator, Button , Alert, Text, Dimensions, Keyboard} from "react-native";
+     Image, ActivityIndicator, Button , Alert,
+      Text, Dimensions, Keyboard} from "react-native";
 import { signIn, signOut } from "../lib/auth";
 import { updateUser , nameCheck } from "../lib/user";
 import BordredInput from "./BordredInput";
@@ -9,7 +10,6 @@ import CustomButton from "./CustomButton";
 import { useUserContext } from "../context/UserContext";
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage'
-import  Avatar  from  './Avatar';
 import events from "../lib/events";
 import { updateProfile } from "../lib/posts";
 import firestore from '@react-native-firebase/firestore'

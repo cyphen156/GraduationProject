@@ -10,6 +10,7 @@ import Avatar from "../components/Avatar";
 import Toast from 'react-native-easy-toast';
 import { friendIdExists } from "../lib/friends";
 
+
 function FriendsAddScreen(){
     const navigation = useNavigation();
     const [friend, setFriend] = useState();
@@ -65,6 +66,7 @@ function FriendsAddScreen(){
     const add = () => {
       const aa = friendIdExists(myUser.user.id, user.id);
       console.log("add버튼 :", aa);
+      toastRef.current.show("추가되었습니다.");
     };
   if(!response){
       return (
