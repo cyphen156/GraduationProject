@@ -9,18 +9,23 @@ const TeamListScreen = ({ navigation }) => {
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
-
-    const unsubscribe = firebase.firestore()
-      .collection('teams')
-      .where('createdBy', '==', user.uid)
-      .onSnapshot(querySnapshot => {
-        const teams = [];
-        querySnapshot.forEach(doc => {
+    const teamsRef = firebase.firestore().collection('teams');
+  
+    const unsubscribe = teamsRef.onSnapshot(async querySnapshot => {
+      const teams = [];
+  
+      for (const doc of querySnapshot.docs) {
+        const invitedUsersRef = doc.ref.collection('invitedUsers').doc(user.uid);
+        const invitedUser = await invitedUsersRef.get();
+        
+        if (invitedUser.exists) {
           teams.push({ id: doc.id, ...doc.data() });
-        });
-        setTeams(teams);
-      });
-
+        }
+      }
+  
+      setTeams(teams);
+    });
+  
     return () => unsubscribe();
   }, []);
 
