@@ -1,6 +1,7 @@
 // 파이어베이스에 사용자 정보가 담긴 문서를 저장
 
 import firestore from '@react-native-firebase/firestore'
+import { da } from 'date-fns/locale';
 import { Alert } from 'react-native';
 
 export const usersCollection = firestore().collection('user');
@@ -40,4 +41,33 @@ export function createUser({id, displayName, photoURL}) {
       });
     });
     
+  }
+  // user.id로 user값 가져오기 
+  export async function fromIdtoUser(friends){
+    usersCollection.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, '=>', doc.data());   
+        const arr = friends.map((friend) => {
+          console.log(friend); 
+        });
+          
+          
+        
+      });
+    });
+  }
+
+  export async function getUserId(friendArray) {
+    let data = [];
+    await friendArray.forEach( async (id) => {
+      console.log('id', id);
+  
+      await usersCollection.doc(id).get()
+      .then((snapshot) => {
+        data.push(snapshot.data())
+        
+      });
+    })
+
+    return data
   }

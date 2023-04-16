@@ -70,9 +70,11 @@ function MainTab() {
             {/* <Tab.Screen name="chat" component={Chat} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>  */}
+
             {/* <Tab.Screen name="FileUpload" component={FileUpload} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> */}
+
             {/* <Tab.Screen name="Friends" component={FriendsList} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> */}
