@@ -30,6 +30,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { UserContextProvider } from './context/UserContext';
 import { LogBox } from 'react-native';
+import DetailScreen from './screen/Detail';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -110,7 +112,7 @@ function App() {
       </ScrollView>
     </SafeAreaView>
     */
-  );
+  )
 }
 
 const styles = StyleSheet.create({
