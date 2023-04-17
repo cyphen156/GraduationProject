@@ -33,8 +33,8 @@ function HomeStack() {
         headerRight: () => (
           <>
           <IconRightButton
-              name="Search"
-              onPress={() => navigation.push('Search')}
+              name="search"
+              onPress={() => navigation.push('FriendsList')}
               />
              
              </>)}} 

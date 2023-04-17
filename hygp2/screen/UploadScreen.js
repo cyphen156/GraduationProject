@@ -17,7 +17,10 @@ function UploadScreen(){
     const [isKeyboardOpen, setIsKeyboardOpen] = useState();
     const [description, setDescription] = useState('');
     const navigation = useNavigation();
-    const {user} = useUserContext();
+    const {
+      
+      
+    } = useUserContext();
 
     const onSubmit = useCallback(async () => {
       // 포스트 작성 로직 구현

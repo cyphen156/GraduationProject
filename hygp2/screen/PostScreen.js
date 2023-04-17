@@ -8,8 +8,10 @@ function PostScreen(){
     const route = useRoute();
     const navigation = useNavigation();
     const {post} = route.params;
+   
 
     useEffect(() => {
+        console.log("post: ",post)
         const handler = ({description}) => {
             navigation.setParams({post: {...post, description}});
         };

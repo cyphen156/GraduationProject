@@ -7,6 +7,7 @@ export default function usePosts(userId){
     const [posts, setPosts] = useState(null);
     const [noMorePost, setNoMorePost] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [friendArray, setFriendArray] = useState([]);
     const {user} = useUserContext();
 
     const onLoadMore = async () => {
@@ -15,6 +16,7 @@ export default function usePosts(userId){
         }
         const lastPost =posts[posts.length - 1];
         const olderPosts = await getOlderPosts(lastPost.id, userId);
+        
         if (olderPosts.length < PAGE_SIZE){
             setNoMorePost(true);
         }
@@ -52,7 +54,8 @@ export default function usePosts(userId){
     useEffect(() => {
         getPosts({userId}).then((_posts) => {
             setPosts(_posts);
-            if(_posts.length < PAGE_SIZE){
+            console.log("post", _posts)
+            if(_posts.length <= PAGE_SIZE){
                 setNoMorePost(true);
             }
         });
