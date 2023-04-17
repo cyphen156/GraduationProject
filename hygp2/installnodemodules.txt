@@ -71,5 +71,5 @@ pod install --repo-update
 
 
 // 2023.03.27
-yarn add react-native-vector-icons/Ionicons
+yarn add react-native-ionicons
 yarn add react-native-paper
