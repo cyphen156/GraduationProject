@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { View, FlatList, Button } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import TeamContext from './TeamContext';
 
 const TeamListScreen = ({ navigation }) => {
   const [teams, setTeams] = useState([]);
+  const { teamId, setTeamId  } = useContext(TeamContext);
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
@@ -34,8 +36,11 @@ const TeamListScreen = ({ navigation }) => {
       <View>
         <Button
           title={item.name}
-          onPress={() => navigation.navigate('Chat', { teamId: item.id })}
-          />
+          onPress={() => {
+            setTeamId(item.id);
+            navigation.navigate('Chat');
+          }}
+        />
       </View>
     );
   };

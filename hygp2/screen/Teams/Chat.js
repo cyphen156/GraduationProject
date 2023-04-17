@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { View, StyleSheet} from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
@@ -6,12 +6,13 @@ import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import InviteButton from './InviteButton';
+import TeamContext from './TeamContext';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
-function Chat({ route, navigation }) {
-  const { teamId } = route.params;
+function Chat({ navigation }) {
+  const { teamId } = useContext(TeamContext);
   const [chatRoomName, setChatRoomName] = useState('');
 
   useEffect(() => {
