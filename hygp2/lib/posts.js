@@ -35,9 +35,11 @@ export async function getPosts({userId, mode, id} = {}) {
   return posts;
 }
 
-export async function getOlderPosts(user) {
+export async function getOlderPosts(id, userId) {
   return getPosts({
-    user,
+    id,
+    mode: 'older',
+    userId,
   });
 }
 
