@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import Search from "../screen/Search"
+import Search from "./Search"
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Chat from "./Teams/Chat";

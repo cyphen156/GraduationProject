@@ -37,10 +37,10 @@ function MainTab() {
             }}/>  
             <Tab.Screen name="GoogleLogin" component={GoogleSigninBTN} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
-            }}/>  */}
+            }}/>  
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
-            }}/>   
+            }}/>  */}
             <Tab.Screen name="HomeStack" component={HomeStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     

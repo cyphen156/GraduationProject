@@ -4,7 +4,7 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 
-const TeamListScreen = ({ navigation }) => {
+const TeamListScreen = ({ navigation }) => { 
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
