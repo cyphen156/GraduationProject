@@ -5,7 +5,7 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import InvitedFriend from './InviteFriend';
+import InviteButton from './InviteButton';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -22,10 +22,10 @@ function Chat({ route, navigation }) {
         title: doc.data().name,
         headerRight: () => (
           <>
-            <InvitedFriend
+            <InviteButton
                 style = {styles.block}
                 name="person-add"
-                onPress={() => navigation.push('FriendsList')}
+                onPress={() => navigation.push('InviteFriends')}
                />
           </>   
         ),

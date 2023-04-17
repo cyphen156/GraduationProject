@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Pressable, Platform, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function InvitedFriend({name, color, onPress}) {
+function InviteButton({name, color, onPress}) {
   return (
     <View style={styles.block}>
       <Pressable
@@ -21,7 +21,7 @@ function InvitedFriend({name, color, onPress}) {
   );
 }
 
-InvitedFriend.defaultProps = {
+InviteButton.defaultProps = {
   color: '#6200ee',
 };
 
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InvitedFriend;
+export default InviteButton;
