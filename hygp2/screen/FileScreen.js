@@ -39,15 +39,18 @@ function FileScreen(){
     );
 }
 
-    const renderItem = ({item}) => (
+    const renderItem = ({item}) => {
+    // 친구 id 가져오고, id에 맞는 게시물을 가져오기 해야함
+
+    return ( 
         <PostCard
-            createAt={item.createAt}
+            createdAt={item.createdAt}
             description={item.description}
             id={item.id}
             user={item.user}
             photoURL={item.photoURL}
             />
-    );
+    )};
 
     const styles = StyleSheet.create({
         container: {
