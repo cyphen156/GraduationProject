@@ -5,9 +5,26 @@ import { FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import usePosts from '../hooks/usePosts';
 import events from '../lib/events';
+import { useUserContext } from '../context/UserContext';
+import { friendIdSearch } from '../lib/friends';
+import firebase from '@react-native-firebase/app';
 
 function FileScreen(){
+    const {user, setUser} = useUserContext();
     const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} = usePosts();
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [idDoc, setIddoc] = useState([]);
+    const [friendArray, setFriendArray] = useState([]);
+
+
+    useEffect(() => {
+        // 친구 목록 가져오기
+        friendIdSearch(user.id).then((array) => {
+            setFriendArray(array);
+            console.log("friendArray : ", friendArray);
+        })
+    
+      }, [user, setFriendArray, posts]);
 
     useEffect(() => {
         //console.log("FileScreen", posts)
@@ -40,7 +57,8 @@ function FileScreen(){
 }
 
     const renderItem = ({item}) => {
-    // 친구 id 가져오고, id에 맞는 게시물을 가져오기 해야함
+    // 친구 id 가져오고, id에 맞는 게시물을 가져오기 해야함 
+
 
     return ( 
         <PostCard
@@ -49,7 +67,7 @@ function FileScreen(){
             id={item.id}
             user={item.user}
             photoURL={item.photoURL}
-            />
+        />
     )};
 
     const styles = StyleSheet.create({

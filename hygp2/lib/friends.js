@@ -23,17 +23,18 @@ export const friendsCollection = firestore().collection('friends');
   }
 
   // 컬렉션 feeds -> id 확인하기
-  export function friendIdSearch(id){
-    friendsCollection.get().then(function (querySnapshot){
-        querySnapshot.forEach(function (doc) {
-            if (doc.id == id){
-                //console.log(doc.id, '=>', doc.data()); 
-                console.log(doc.id, '=>', doc.data().id); 
-              return doc.data().id;
-            }
-            return false
-        });
-    });
+  export async function friendIdSearch(id){
+    const doc = await friendsCollection.doc(id).get();
+    console.log("doc : ", doc.data())
+    return doc.data();
+    // doc.then(function (querySnapshot){
+    //     querySnapshot.forEach(function (doc) {
+
+    //       console.log(doc.id, '=>', doc.data().id); 
+    //       return doc.data().id;
+          
+    //     });
+    // });
   }
 
   // 컬렉션 feeds -> id 있는지 확인 -> 추가

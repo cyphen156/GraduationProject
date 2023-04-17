@@ -54,7 +54,7 @@ export default function usePosts(userId){
     useEffect(() => {
         getPosts({userId}).then((_posts) => {
             setPosts(_posts);
-            console.log("post", _posts)
+            // console.log("post", _posts)
             if(_posts.length <= PAGE_SIZE){
                 setNoMorePost(true);
             }
