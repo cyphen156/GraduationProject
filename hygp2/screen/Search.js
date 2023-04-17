@@ -5,6 +5,7 @@ import LogContext from "../context/LogContext";
 import SearchContext from "../context/SearchContext";
 import EmptySearchResult from "../components/EmptySearchResult";
 
+
 function SearchScreen({navigation}){
     const {keyword} = useContext(SearchContext);
     const {logs} = useContext(LogContext);

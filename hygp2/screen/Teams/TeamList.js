@@ -5,7 +5,7 @@ import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import TeamContext from './TeamContext';
 
-const TeamListScreen = ({ navigation }) => {
+const TeamListScreen = ({ navigation }) => { 
   const [teams, setTeams] = useState([]);
   const { teamId, setTeamId  } = useContext(TeamContext);
 
