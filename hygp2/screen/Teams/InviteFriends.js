@@ -3,8 +3,8 @@ import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { friendIdSearch } from '../lib/friends';
 import { fromIdtoUser, getUserId } from '../lib/user';
-import { useUserContext } from '../context/UserContext';
-import Avatar from '../components/Avatar';
+import { useUserContext } from '../../context/UserContext';
+import Avatar from '../../components/Avatar';
 import {useNavigation, useNavigationState} from '@react-navigation/native'
 
 const InviteFriends = () => {
