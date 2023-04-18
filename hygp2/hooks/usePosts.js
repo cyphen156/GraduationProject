@@ -10,6 +10,7 @@ export default function usePosts(userId){
     const [refreshing, setRefreshing] = useState(false);
     const [friendArray, setFriendArray] = useState([]);
     const {user} = useUserContext();
+    const [ refresh, setRefresh ] = useState(false);
 
     const onLoadMore = async () => {
         if(noMorePost || !posts || posts.length < PAGE_SIZE){
@@ -77,6 +78,7 @@ export default function usePosts(userId){
 
     // 추가된 코드
     const onRefreshWithFriends = useCallback(async () => {
+        setRefresh(true);
         await fetchAndUpdateFriends();
         onRefresh();
     }, [fetchAndUpdateFriends, onRefresh]);
