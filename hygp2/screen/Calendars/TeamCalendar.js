@@ -7,6 +7,7 @@ import '@react-native-firebase/firestore';
 import CalendarView from '../../components/CalendarView';
 import TeamContext from '../Teams/TeamContext';
 import { Calendar } from 'react-native-calendars';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -32,12 +33,14 @@ function TeamCalendar({ navigation }) {
   const fetchTodos = async () => {
     // 모든 팀원의 Todos 가져오기
     const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
-
     const querySnapshot = await todosRef.get();
 
     const fetchedTodos = [];
     querySnapshot.forEach((doc) => {
-      fetchedTodos.push(doc.data());
+      const data = doc.data();
+      if (!isNaN(new Date(data.startDate).getTime())) {
+        fetchedTodos.push(data);
+      }
     });
 
     setTodos(fetchedTodos);
@@ -46,23 +49,57 @@ function TeamCalendar({ navigation }) {
   const markedDates = useMemo(
     () =>
       todos.reduce((acc, current) => {
-        const formattedDate = format(new Date(current.startDate), 'yyyy-MM-dd');
-        acc[formattedDate] = { marked: true };
+        const startDate = new Date(current.startDate);
+        if (!isNaN(startDate.getTime())) {
+          const formattedDate = format(startDate, 'yyyy-MM-dd');
+          acc[formattedDate] = { marked: true };
+        }
         return acc;
       }, {}),
     [todos],
   );
 
   const filteredTodos = todos.filter(
-    (todo) => format(new Date(todo.startDate), 'yyyy-MM-dd') === selectedDate,
+    (todo) => {
+      const startDate = new Date(todo.startDate);
+      if (!isNaN(startDate.getTime())) {
+        return format(startDate, 'yyyy-MM-dd') === selectedDate;
+      }
+      return false;
+    }
   );
 
   const onDateSelect = (date) => {
     setSelectedDate(date.dateString);
   };
+
+  const markedSelectedDate = {
+    ...markedDates,
+    [selectedDate]: {
+      selected: true,
+      marked: markedDates[selectedDate]?.marked,
+    },
+  };
+
   return (
     <View style={styles.container}>
-      <CalendarView markedDates={markedDates} onDayPress={onDateSelect} />
+      <Calendar
+        style={styles.calendar}
+        markedDates={markedSelectedDate}
+        markingType={'multi-period'}
+        onDayPress={onDateSelect}
+        theme={{
+          backgroundColor: '#ffffff',
+          calendarBackground: '#ffffff',
+          textSectionTitleColor: '#b6c1cd',
+          selectedDayBackgroundColor: '#00adf5',
+          selectedDayTextColor: '#ffffff',
+          todayTextColor: '#00adf5',
+          dayTextColor: '#2d4150',
+          textDisabledColor: '#d9e',
+          dotColor: '#aaaaaa',
+        }}
+      />   
       <ScrollView>
         {filteredTodos.map((todo, index) => (
           <TouchableOpacity key={index} onPress={() => navigation.navigate('TodoDetail', { todo })}>

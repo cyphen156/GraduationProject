@@ -7,7 +7,7 @@ import TeamListScreen from "./Teams/TeamList";
 import AgendaCalendar from "./Calendars/AgendaCalendar";
 import { useState } from "react";
 import TeamContext from "./Teams/TeamContext";
-import ChatStackNavigator from "./Teams/ChatStack";
+import TeamStackNavigator from "./Teams/TeamStack";
 import TeamCalendar from "./Calendars/TeamCalendar";
 import CreateTodos from "./Teams/CreateTodos";
 
@@ -27,8 +27,8 @@ function SubTab () {
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/> 
             <Tab.Screen
-                name="ChatStackNavigator"
-                component={ChatStackNavigator}
+                name="TeamStackNavigator"
+                component={TeamStackNavigator}
                 options={{
                     headerShown: false,
                     tabBarLabel: "Chat",
