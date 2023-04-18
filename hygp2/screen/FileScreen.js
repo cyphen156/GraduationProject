@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import PostCard from '../components/PostCard';
 import { FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
@@ -8,6 +8,7 @@ import events from '../lib/events';
 import { useUserContext } from '../context/UserContext';
 import { friendIdSearch } from '../lib/friends';
 import firebase from '@react-native-firebase/app';
+import { useIsFocused } from '@react-navigation/native';
 
 function FileScreen(){
     const {user, setUser} = useUserContext();
@@ -15,21 +16,24 @@ function FileScreen(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [idDoc, setIddoc] = useState([]);
     const [friendArray, setFriendArray] = useState([]);
+    const isFocused = useIsFocused();
 
-
+    // 최신화를 어떻게 해야 할까..
     useEffect(() => {
-        // 친구 목록 가져오기
-         if(!isLoading){
+        if(!isLoading){
+            idSearch().then(() => {
+                setIsLoading(true);
+            });
+        }
+      }, [user, friendArray ,isLoading, renderItem]);
+  
+    // 친구 목록 가져오기
+    const idSearch = async () => {
         friendIdSearch(user.id).then((array) => {
             setFriendArray(array);
-            console.log("friendArray : ", friendArray);
-            setIsLoading(true);
+            console.log("friendArray : ", friendArray);        
         })
-        
     }
-
-
-      }, [user, friendArray ,isLoading]);
 
     useEffect(() => {
         //console.log("FileScreen", posts)
