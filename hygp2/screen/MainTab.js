@@ -14,6 +14,7 @@ import SubTab from "./SubTab";
 import FileUpload from "../components/FileUpload";
 import FeedList from "../components/FeedList";
 import FriendsList from "./FriendsList";
+import MyCalendar from "./Teams/MyCalendar";
 
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
@@ -54,6 +55,9 @@ function MainTab() {
                 tabBarIcon: ({color, size}) => (<Icon name="business" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Calendar" component={CalendarScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
+            }}/> 
+            <Tab.Screen name="MyCalendar" component={MyCalendar} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
             }}/> 
             {/* <Tab.Screen name="Search" component={SearchScreen} options={{

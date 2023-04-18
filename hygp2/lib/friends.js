@@ -5,7 +5,7 @@ export const friendsCollection = firestore().collection('friends');
 
   // friend : 나의 user.id => 배열형태[상대방 user.id]
 
-  //피드 업데이트
+  //피드 업데이트z
   export function addFriend(id, uid) {
 
     return friendsCollection.doc(id).update({

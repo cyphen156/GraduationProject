@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { getNewerPosts, getOlderPosts, getPosts, PAGE_SIZE } from "../lib/posts";
 import {useUserContext} from '../context/UserContext';
 import usePostsEventEffect from './usePostsEventEffect';
+import { friendIdSearch } from '../lib/friends';
 
 export default function usePosts(userId){
     const [posts, setPosts] = useState(null);
@@ -14,7 +15,7 @@ export default function usePosts(userId){
         if(noMorePost || !posts || posts.length < PAGE_SIZE){
             return;
         }
-        const lastPost =posts[posts.length - 1];
+        const lastPost = posts[posts.length - 1];
         const olderPosts = await getOlderPosts(lastPost.id, userId);
         
         if (olderPosts.length < PAGE_SIZE){
@@ -22,20 +23,6 @@ export default function usePosts(userId){
         }
         setPosts(posts.concat(olderPosts));
     };
-
-    // const onRefresh = async () => {
-    //     if(!posts || posts.length === 0 || refreshing){
-    //         return;
-    //     }
-    //     const firstPost = posts[0];
-    //     setRefreshing(true);
-    //     const newerPosts = await getNewerPosts(firstPost.id, userId);
-    //     setRefreshing(false);
-    //     if (newerPosts.length === 0){
-    //         return;
-    //     }
-    //     setPosts(newerPosts.concat(posts));
-    // };
 
     const onRefresh = useCallback(async () => {
         if(!posts || posts.length === 0 || refreshing){
@@ -54,7 +41,6 @@ export default function usePosts(userId){
     useEffect(() => {
         getPosts({userId}).then((_posts) => {
             setPosts(_posts);
-            // console.log("post", _posts)
             if(_posts.length <= PAGE_SIZE){
                 setNoMorePost(true);
             }
@@ -70,7 +56,6 @@ export default function usePosts(userId){
     
     const updatePost = useCallback(
         ({postId, description}) => {
-            // id가 일치하는 포스트를 찾아서 description 변경
             const nextPosts = posts.map((post) =>
                 post.id === postId
                 ? {
@@ -90,6 +75,18 @@ export default function usePosts(userId){
         updatePost
     });
 
+    // 추가된 코드
+    const onRefreshWithFriends = useCallback(async () => {
+        await fetchAndUpdateFriends();
+        onRefresh();
+    }, [fetchAndUpdateFriends, onRefresh]);
+
+    async function fetchAndUpdateFriends() {
+        const friends = await friendIdSearch(user.id);
+        setFriendArray(friends.id);
+    }
+    // 추가된 코드 끝
+
     return {
         posts,
         noMorePost,
@@ -97,5 +94,6 @@ export default function usePosts(userId){
         onLoadMore,
         onRefresh,
         removePost,
+        onRefreshWithFriends, // 추가된 함수를 반환하여 외부에서 사용할 수 있도록 합니다.
     };
 }
