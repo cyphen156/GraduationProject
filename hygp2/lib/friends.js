@@ -22,19 +22,13 @@ export const friendsCollection = firestore().collection('friends');
     });
   }
 
-  // 컬렉션 feeds -> id 확인하기
+  // 컬렉션 feeds -> id 배열 가져오고 자신의 아이디 추가한 배열을 리턴
   export async function friendIdSearch(id){
-    const doc = await friendsCollection.doc(id).get();
-    console.log("doc : ", doc.data())
+    
+    const doc = await friendsCollection.doc(id).get(); 
+    doc.data().id.push(id);
     return doc.data();
-    // doc.then(function (querySnapshot){
-    //     querySnapshot.forEach(function (doc) {
-
-    //       console.log(doc.id, '=>', doc.data().id); 
-    //       return doc.data().id;
-          
-    //     });
-    // });
+ 
   }
 
   // 컬렉션 feeds -> id 있는지 확인 -> 추가

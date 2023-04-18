@@ -19,12 +19,17 @@ function FileScreen(){
 
     useEffect(() => {
         // 친구 목록 가져오기
+         if(!isLoading){
         friendIdSearch(user.id).then((array) => {
             setFriendArray(array);
             console.log("friendArray : ", friendArray);
+            setIsLoading(true);
         })
-    
-      }, [user, setFriendArray, posts]);
+        
+    }
+
+
+      }, [user, friendArray ,isLoading]);
 
     useEffect(() => {
         //console.log("FileScreen", posts)
@@ -36,39 +41,50 @@ function FileScreen(){
         };
     }, [onRefresh, removePost]);
     // keyExtractor : 각 항목 데이터 고유의 값을 설정해준다.
-    return (
-        <FlatList
-            data={posts}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.container}
-            onEndReached={onLoadMore}
-            onEndReachedThreshold={0.75}
-            ListFooterComponent= {
-                !noMorePost && (
-                    <ActivityIndicator style={styles.spinner} size={32} color="#6200ee" />
-                )
-            } 
-            refreshControl={
-                <RefreshControl onRefresh={onRefresh} refreshing={refreshing}/>  
-            }
-        />          
-    );
-}
 
     const renderItem = ({item}) => {
-    // 친구 id 가져오고, id에 맞는 게시물을 가져오기 해야함 
+        // 친구 id 가져오고, id에 맞는 게시물을 가져오기 해야함 
+        const idArray = friendArray.id;
+
+        for(id of idArray){  
+            if(id === item.user.id){
+                return ( 
+                    <PostCard
+                        createdAt={item.createdAt}
+                        description={item.description}
+                        id={item.id}
+                        user={item.user}
+                        photoURL={item.photoURL}
+                    />
+                );
+            }
+        }
+        
+    }
+
+    if(isLoading){
+        return (
+            <FlatList
+                data={posts}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={styles.container}
+                onEndReached={onLoadMore}
+                onEndReachedThreshold={0.75}
+                ListFooterComponent= {
+                    !noMorePost && (
+                        <ActivityIndicator style={styles.spinner} size={32} color="#6200ee" />
+                    )
+                } 
+                refreshControl={
+                    <RefreshControl onRefresh={onRefresh} refreshing={refreshing}/>  
+                }
+            />          
+        );
+    }
+}
 
 
-    return ( 
-        <PostCard
-            createdAt={item.createdAt}
-            description={item.description}
-            id={item.id}
-            user={item.user}
-            photoURL={item.photoURL}
-        />
-    )};
 
     const styles = StyleSheet.create({
         container: {
