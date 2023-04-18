@@ -12,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 function FileScreen() {
   const { user, setUser } = useUserContext();
-  const { posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost } = usePosts();
+  const { posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost, onRefreshWithFriends } = usePosts();
   const [isLoading, setIsLoading] = useState(false);
   const [idDoc, setIddoc] = useState([]);
   const [friendArray, setFriendArray] = useState([]);
@@ -31,6 +31,7 @@ function FileScreen() {
   useEffect(() => {
     if (isFocused) {
       fetchAndUpdateFriends();
+      onRefreshWithFriends();
     }
   }, [isFocused, fetchAndUpdateFriends]);
 
