@@ -1,100 +1,86 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable, Button, Image } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { friendIdSearch, removeFriend } from '../lib/friends';
-import { fromIdtoUser, getUserId } from '../lib/user';
 import { useUserContext } from '../context/UserContext';
 import Avatar from '../components/Avatar';
 import {useNavigation, useNavigationState} from '@react-navigation/native'
 import usePosts from '../hooks/usePosts';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import EmptyFriend from '../components/EmptyFriend';
 
 const FriendsList = () => {
   const {user, setUser} = useUserContext();
   const [friendArray, setFriendArray] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [idDoc, setIddoc] = useState([]);
-  let data = [];
+  const [isLoading, setIsLoading] = useState(false);
+  const [idDoc, setIdDoc] = useState([]);
   const navigation = useNavigation();
-  const [refresh, setRefresh] = useState(false);
-  const { onRefreshWithFriends } = usePosts();
 
   useEffect(() => {
-    if (!isLoading) {
-      firestore().collection('friends').get().then(function (querySnapshot){
-        querySnapshot.forEach(function (doc) {
-          if (doc.id == user.id){
-            setFriendArray(doc.data().id);
-            console.log("friendArray :" ,friendArray)
-          }       
-        });
+    firestore().collection('friends').get().then(function (querySnapshot){
+      querySnapshot.forEach(function (doc) {
+        if (doc.id == user.id){
+          setFriendArray(doc.data().id);
+        }       
       });
-    }
-  }, [user, isLoading]);
-  
+    });
+  }, [user]);
+
   useEffect(() => {
-    if (friendArray.length > 0) {
-      userData().then(() => {});
+    if (friendArray.length > 0 && !isLoading) {
+      setIsLoading(true);
+      Promise.all(
+        friendArray.map(async (id) => {
+          const snapshot = await firestore().collection('user').doc(id).get();
+          return snapshot.data();
+        })
+      ).then((data) => {
+        setIdDoc(data);
+        setIsLoading(false); 
+      });
     }
   }, [friendArray]);
-  
-  const userData = async() => {
-    friendArray.forEach( async (id) => {
-      firestore().collection('user').doc(id).get()
-      .then((snapshot) => {
-        data.push(snapshot.data())
-        if(data.length === friendArray.length){
-          setIddoc(data)
-          setIsLoading(true); 
-        }        
-      });
-    })
-  }
 
-  const renderItem = ({item}) =>{
+  const renderItem = ({item}) => {
     const friendId = item.id;
     return (
-      <>
-        <Pressable style ={styles.item} 
-        onPress={()=>  navigation.navigate('UserProfile', {
-          userInfo: item,
-        })}>
-          <Avatar style={styles.PhotoImage} source={item.photoURL && {uri: item.photoURL}} />
-          <Text style = {styles.title}>{item.displayName}</Text>
-          <View style={{flexDirection: 'row-reverse', marginLeft: 'auto'}}>
+      <Pressable style={styles.item} onPress={() => navigation.navigate('UserProfile', {userInfo: item})}>
+        <Avatar style={styles.PhotoImage} source={item.photoURL && {uri: item.photoURL}} />
+        <Text style={styles.title}>{item.displayName}</Text>
+        <View style={{flexDirection: 'row-reverse', marginLeft: 'auto'}}>
           <Icon
-              color="#9e9e9e" 
-              name="cancel"
-              size={20}
-              onPress={() => {
-                removeFriend(user.id, friendId)
-                setIsLoading(true); // 버튼 클릭 시 isLoading 상태를 갱신함으로써 화면을 새로고침합니다.
-                navigation.goBack();
-                
-              }}
-            />
-          </View>
-        </Pressable>
-      </>
-    )
-  }
-
-  if(isLoading){
-    return (
-      <View>
-        <Text style={styles.displayName}>친구</Text>
-
-        <FlatList
-          data ={idDoc}
-          renderItem= {renderItem}
-          keyExtractor ={(item) => item.id}
-          extraData={refresh}
+            color="#9e9e9e" 
+            name="cancel"
+            size={20}
+            onPress={() => {
+              removeFriend(user.id, friendId);
+              setIsLoading(true);
+              navigation.goBack();
+            }}
           />
-      </View>
+        </View>
+      </Pressable>
     );
   };
-}
 
+  if(friendArray.length === 0){
+    return(
+    <EmptyFriend />
+    )
+  }else{
+    return (
+        <View>
+          <Text style={styles.displayName}>친구</Text>
+          <FlatList
+            data={idDoc}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+          />
+        </View>
+      );
+    };
+}
 const styles = StyleSheet.create({
   block: {flex: 1},
   separator: {
