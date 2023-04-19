@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable, Button, Image } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import { friendIdSearch, removeFriend } from '../lib/friends';
+import { removeFriend } from '../lib/friends';
 import { useUserContext } from '../context/UserContext';
 import Avatar from '../components/Avatar';
-import {useNavigation, useNavigationState} from '@react-navigation/native'
-import usePosts from '../hooks/usePosts';
+import {useNavigation} from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EmptyFriend from '../components/EmptyFriend';
 
@@ -15,7 +14,7 @@ const FriendsList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [idDoc, setIdDoc] = useState([]);
   const navigation = useNavigation();
-
+  let remove;
   useEffect(() => {
     firestore().collection('friends').get().then(function (querySnapshot){
       querySnapshot.forEach(function (doc) {
@@ -29,17 +28,21 @@ const FriendsList = () => {
   useEffect(() => {
     if (friendArray.length > 0 && !isLoading) {
       setIsLoading(true);
+
       Promise.all(
         friendArray.map(async (id) => {
           const snapshot = await firestore().collection('user').doc(id).get();
           return snapshot.data();
         })
       ).then((data) => {
+        console.log("data :" ,data)
         setIdDoc(data);
         setIsLoading(false); 
       });
     }
   }, [friendArray]);
+  
+ 
 
   const renderItem = ({item}) => {
     const friendId = item.id;
