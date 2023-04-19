@@ -13,43 +13,36 @@ import TeamStackNavigator from './TeamStack';
 const Stack = createNativeStackNavigator();
 
 const TeamListScreen = ({ navigation }) => { 
-    <>
-    <Stack.Navigator>
-      <Stack.Screen name="TeamList" component={TeamListScreen} options={
-        {title: 'TeamList',headerTitleAlign: 'center', headerLeft: () => (
-          <>
-          <IconLeftButton
-              name="Profile"
-              onPress={() => navigation.navigate('Profile')
-            }
-              />
-              </>),
-
+  useEffect(() => {
+    navigation.setOptions({
+        title: 'TeamList', headerTitleAlign: 'center',
+        headerLeft: () => (
+            <>
+            <IconLeftButton
+                name="Profile"
+                onPress={() => navigation.navigate('Profile')
+              }
+                />
+                </>),
         headerRight: () => (
-          <>
-          <IconRightButton
-                    name="search"
-                    onPress={() => navigation.navigate('FriendsList')}
-                    />
-                <IconRightButton
-                    name="person-add"
-                    onPress={() => navigation.navigate('FriendsAdd')}
-                    />
-                <IconRightButton
-                    name="settings"
-                    onPress={() => navigation.navigate('Setting')}
-                    />      
-                 </> )}} 
-             />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen
-        name='TeamStackNavigator'
-        component={TeamStackNavigator}
-        options={{title: 'TeamList'}}
-      />       
-    </Stack.Navigator>
-    </>
-
+          <View style={{flexDirection: 'row'}}>
+            <IconRightButton
+                name="search"
+                onPress={() => navigation.navigate('FriendsList')}
+                />
+            <IconRightButton
+                name="person-add"
+                onPress={() => navigation.navigate('FriendsAdd')}
+                />
+            <IconRightButton
+                name="settings"
+                onPress={() => navigation.navigate('Setting')}
+                />      
+             </View>   
+        ),
+    });
+    },[navigation])
+   
 
   const [teams, setTeams] = useState([]);
   const { teamId, setTeamId  } = useContext(TeamContext);

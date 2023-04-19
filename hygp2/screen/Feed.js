@@ -11,6 +11,36 @@ function FeedScreen (){
     
     const navigation = useNavigation();
     const {feeds} = useContext(LogContext);
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: 'Feed', headerTitleAlign: 'center',
+            headerLeft: () => (
+                <>
+                <IconLeftButton
+                    name="Profile"
+                    onPress={() => navigation.navigate('Profile')
+                  }
+                    />
+                    </>),
+            headerRight: () => (
+              <View style={{flexDirection: 'row'}}>
+                <IconRightButton
+                    name="search"
+                    onPress={() => navigation.navigate('FriendsList')}
+                    />
+                <IconRightButton
+                    name="person-add"
+                    onPress={() => navigation.navigate('FriendsAdd')}
+                    />
+                <IconRightButton
+                    name="settings"
+                    onPress={() => navigation.navigate('Setting')}
+                    />      
+                 </View>   
+            ),
+        });
+        },[navigation])
     
     useEffect(() => { 
         console.log(feeds)
@@ -23,37 +53,6 @@ function FeedScreen (){
         if (hidden != isBottom) {setHidden(isBottom)};
     }
 
-
-    useEffect(() => {
-        navigation.setOptions({
-            title: 'Feed', headerTitleAlign: 'center',
-            headerLeft: () => (
-                <>
-                <IconLeftButton
-                    name="Profile"
-                    onPress={() => navigation.push('Profile')
-                  }
-                    />
-                    </>),
-            headerRight: () => (
-                <>
-                <IconRightButton
-                    name="search"
-                    onPress={() => navigation.push('FriendsList')}
-                    />
-                <IconRightButton
-                    name="person-add"
-                    onPress={() => navigation.push('FriendsAdd')}
-                    />
-                <IconRightButton
-                    name="settings"
-                    onPress={() => navigation.push('Setting')}
-                    />      
-                 </>   
-            ),
-        });
-        },[navigation])
-
     return (
         <>
         <View style={styles.block}>
@@ -62,6 +61,8 @@ function FeedScreen (){
         </View>
         </>
     );
+
+    
 }
 
 const styles = StyleSheet.create({

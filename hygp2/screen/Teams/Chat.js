@@ -7,11 +7,45 @@ import '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import InviteButton from './InviteButton';
 import TeamContext from './TeamContext';
+import IconRightButton from '../../components/IconRightButton';
+import IconLeftButton from '../../components/IconLeftButton';
+
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
 function Chat({ navigation }) {
+
+  useEffect(() => {
+    navigation.setOptions({
+        title: 'Chat', headerTitleAlign: 'center',
+        headerLeft: () => (
+            <>
+            <IconLeftButton
+                name="Profile"
+                onPress={() => navigation.navigate('Profile')
+              }
+                />
+                </>),
+        headerRight: () => (
+          <View style={{flexDirection: 'row'}}>
+            <IconRightButton
+                name="search"
+                onPress={() => navigation.navigate('FriendsList')}
+                />
+            <IconRightButton
+                name="person-add"
+                onPress={() => navigation.navigate('FriendsAdd')}
+                />
+            <IconRightButton
+                name="settings"
+                onPress={() => navigation.navigate('Setting')}
+                />      
+             </View>   
+        ),
+    });
+    },[navigation])
+
   const { teamId } = useContext(TeamContext);
   const [chatRoomName, setChatRoomName] = useState('');
 

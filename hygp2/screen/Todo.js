@@ -13,18 +13,10 @@ import IconRightButton from '../components/IconRightButton';
 import AsyncStorage from '@react-native-community/async-storage';
 
 function Todo() {
-  const today = new Date();
-
-  const [todos, setTodos] = useState([
-    {id: 1, text: 'Ex)작업환경 설정', done: true},
-    {id: 2, text: 'Ex)투두리스트 하나더만들기', done: true},
-  ]);
-
-  const navigation = useNavigation();
 
   useEffect(() => {
     navigation.setOptions({
-        title: 'TodoList', headerTitleAlign: 'center',
+        title: 'Todos', headerTitleAlign: 'center',
         headerLeft: () => (
             <>
             <IconLeftButton
@@ -34,7 +26,7 @@ function Todo() {
                 />
                 </>),
         headerRight: () => (
-            <>
+          <View style={{flexDirection: 'row'}}>
             <IconRightButton
                 name="search"
                 onPress={() => navigation.navigate('FriendsList')}
@@ -47,10 +39,21 @@ function Todo() {
                 name="settings"
                 onPress={() => navigation.navigate('Setting')}
                 />      
-             </>   
+             </View>   
         ),
     });
-  },[navigation])
+    },[navigation])
+    
+  const today = new Date();
+
+  const [todos, setTodos] = useState([
+    {id: 1, text: 'Ex)작업환경 설정', done: true},
+    {id: 2, text: 'Ex)투두리스트 하나더만들기', done: true},
+  ]);
+
+  const navigation = useNavigation();
+
+  
 
   /* useEffect(() => {
     TodosStorage
@@ -112,8 +115,8 @@ function Todo() {
   };
 
   return (
-    <SafeAreaView edges={['bottom']} style={style.block}>
-      <DateHead date={today} />
+    <SafeAreaView edges={['bottom']} style={style.block}>     
+      <DateHead date={today} />      
       {todos.length === 0? (
        <Empty />
       ) : (

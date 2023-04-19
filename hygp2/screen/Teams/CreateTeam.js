@@ -21,7 +21,7 @@ useEffect(() => {
               />
               </>),
       headerRight: () => (
-          <>
+        <View style={{flexDirection: 'row'}}>
           <IconRightButton
               name="search"
               onPress={() => navigation.navigate('FriendsList')}
@@ -34,7 +34,7 @@ useEffect(() => {
               name="settings"
               onPress={() => navigation.navigate('Setting')}
               />      
-           </>   
+           </View>   
       ),
   });
   },[navigation])

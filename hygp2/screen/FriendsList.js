@@ -8,6 +8,10 @@ import Avatar from '../components/Avatar';
 import {useNavigation, useNavigationState} from '@react-navigation/native'
 import usePosts from '../hooks/usePosts';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import InviteFriends from './Teams/InviteFriends';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
+
+
 
 const FriendsList = () => {
   const {user, setUser} = useUserContext();
@@ -21,7 +25,7 @@ const FriendsList = () => {
 
   useEffect(() => {
     if(friendArray !== [])
-    userData().then(() => {
+    userData().then(() => { 
     });
 
     if(!isLoading){
@@ -35,8 +39,6 @@ const FriendsList = () => {
       });
     });
   }
-
-
   }, [user, friendArray, isLoading, setIddoc, removeFriend]);
 
   const userData = async() => {
@@ -53,7 +55,6 @@ const FriendsList = () => {
         }        
       });
     })
-
   }
 
   const renderItem = ({item}) =>{
@@ -87,18 +88,20 @@ const FriendsList = () => {
     return (
       <View>
         <Text style={styles.displayName}>친구</Text>
-
         <FlatList
           data ={idDoc}
           renderItem= {renderItem}
           keyExtractor ={(item) => item.id}
           extraData={refresh}
           />
+        <Button title="채팅 초대" onPress={InviteFriends}  />
       </View>
+      
+      
     );
   };
 }
-
+  
 const styles = StyleSheet.create({
   block: {flex: 1},
   separator: {
