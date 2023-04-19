@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import FileScreen from './FileScreen';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View, Text} from 'react-native';
 import CameraButton from '../components/CameraButton';
 import ProfileScreen from './MyProfileScreen';
 import PostScreen from './PostScreen';
@@ -9,25 +9,25 @@ import IconLeftButton from '../components/IconLeftButton';
 import {useNavigation} from '@react-navigation/native'
 import SearchScreen from './Search';
 import Icon from "react-native-vector-icons/MaterialIcons";
-
+import { useUserContext } from '../context/UserContext';
+import Avatar from '../components/Avatar';
 
 const Stack = createNativeStackNavigator();
 
 function HomeStack() {
   const navigation = useNavigation();
-
+  const {user} = useUserContext();
   return (
     <>
     <Stack.Navigator>
       <Stack.Screen name="File" component={FileScreen} options={
         {title: '게시물',headerTitleAlign: 'center', headerLeft: () => (
           <>
-          <IconLeftButton
-              name="Profile"
-              onPress={() => navigation.push('Profile')
-            }
-              />
-              </>),
+          <Pressable style={styles.profile}  onPress={() => navigation.push('Profile')}>
+            <Avatar source={user.photoURL && {uri: user.photoURL}} />
+          </Pressable>
+          </>
+          ),
 
         headerRight: () => (
           <>
@@ -58,5 +58,18 @@ function HomeStack() {
   );
   
 }
+const styles = StyleSheet.create({
+  profile: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  displayName: {
+    lineHeight: 16,
+    fontSize: 16,
+    marginLeft: 8,
+    fontWeight: 'bold',
+  },
+
+});
 
 export default HomeStack;
