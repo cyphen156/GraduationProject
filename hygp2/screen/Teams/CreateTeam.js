@@ -11,12 +11,12 @@ const CreateTeamScreen = ({ navigation }) => {
 
 useEffect(() => {
   navigation.setOptions({
-      title: 'CreateTeam',
+      title: 'CreateTeam', headerTitleAlign: 'center',
       headerLeft: () => (
           <>
           <IconLeftButton
               name="Profile"
-              onPress={() => navigation.push('Profile')
+              onPress={() => navigation.navigate('Profile')
             }
               />
               </>),
@@ -24,15 +24,15 @@ useEffect(() => {
           <>
           <IconRightButton
               name="search"
-              onPress={() => navigation.push('FriendsList')}
+              onPress={() => navigation.navigate('FriendsList')}
               />
           <IconRightButton
               name="person-add"
-              onPress={() => navigation.push('FriendsAdd')}
+              onPress={() => navigation.navigate('FriendsAdd')}
               />
           <IconRightButton
               name="settings"
-              onPress={() => navigation.push('Setting')}
+              onPress={() => navigation.navigate('Setting')}
               />      
            </>   
       ),

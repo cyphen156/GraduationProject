@@ -10,6 +10,7 @@ import TodosStorage from '../storages/TodosStorage';
 import { useNavigation } from "@react-navigation/native";
 import IconLeftButton from '../components/IconLeftButton';
 import IconRightButton from '../components/IconRightButton';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function Todo() {
   const today = new Date();
@@ -28,7 +29,7 @@ function Todo() {
             <>
             <IconLeftButton
                 name="Profile"
-                onPress={() => navigation.push('Profile')
+                onPress={() => navigation.navigate('Profile')
               }
                 />
                 </>),
@@ -36,27 +37,27 @@ function Todo() {
             <>
             <IconRightButton
                 name="search"
-                onPress={() => navigation.push('FriendsList')}
+                onPress={() => navigation.navigate('FriendsList')}
                 />
             <IconRightButton
                 name="person-add"
-                onPress={() => navigation.push('FriendsAdd')}
+                onPress={() => navigation.navigate('FriendsAdd')}
                 />
             <IconRightButton
                 name="settings"
-                onPress={() => navigation.push('Setting')}
+                onPress={() => navigation.navigate('Setting')}
                 />      
              </>   
         ),
     });
   },[navigation])
 
-  useEffect(() => {
+  /* useEffect(() => {
     TodosStorage
       .get()
       .then(setTodos)
       .catch(console.error);
-  }, []);
+  }, []); */
 
   useEffect(() => {
     TodosStorage.set(todos).catch(console.error);
@@ -67,13 +68,15 @@ function Todo() {
       try {
         const rawTodos = await AsyncStorage.getItem('todos');
         const savedTodos = JSON.parse(rawTodos);
-        setTodos(savedTodos);
-      } catch (e) {
+        if(savedTodos){
+          setTodos(savedTodos);
+
+      }} catch (e) {
         console.log('Failed to load todos');
       }
     }
     load();
-  }, []);
+  }, [])
 
   useEffect(() => {
     async function save() {
@@ -88,7 +91,7 @@ function Todo() {
 
   const onInsert = text => {
     const nextId =
-      todos.length > 0 ? Math.max(...todos.map(todo => todo.id)) + 1 : 1;               
+    todos.reduce((acc, cur) => cur.id > acc ? cur.id : acc, 0) + 1;               
       const todo = {
         id: nextId,
         text,
