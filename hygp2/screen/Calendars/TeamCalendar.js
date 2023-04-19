@@ -1,12 +1,11 @@
 import { format } from 'date-fns';
 import { useState, useMemo, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import CalendarView from '../../components/CalendarView';
 import TeamContext from '../Teams/TeamContext';
-import { Calendar } from 'react-native-calendars';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();

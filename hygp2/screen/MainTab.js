@@ -14,7 +14,7 @@ import SubTab from "./SubTab";
 import FileUpload from "../components/FileUpload";
 import FeedList from "../components/FeedList";
 import FriendsList from "./FriendsList";
-import MyCalendar from "./Teams/MyCalendar";
+import MyCalendar from "./Calendars/MyCalendar";
 
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
