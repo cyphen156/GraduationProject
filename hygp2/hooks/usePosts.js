@@ -5,12 +5,12 @@ import usePostsEventEffect from './usePostsEventEffect';
 import { friendIdSearch } from '../lib/friends';
 
 export default function usePosts(userId){
-    const [posts, setPosts] = useState(null);
-    const [noMorePost, setNoMorePost] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
-    const [friendArray, setFriendArray] = useState([]);
-    const {user} = useUserContext();
-    const [ refresh, setRefresh ] = useState(false);
+    const [posts, setPosts] = useState(null); //게시물
+    const [noMorePost, setNoMorePost] = useState(false);// 더 이상 불러올 게시물이 없음을 나타내는 상태
+    const [refreshing, setRefreshing] = useState(false); //새로고침 중인지를 나타내는 상태
+    const [friendArray, setFriendArray] = useState([]); //친구 ID 배열
+    const {user} = useUserContext(); // 훅을 사용하여 현재 사용자 가져옴
+    const [ refresh, setRefresh ] = useState(false); 
 
     const onLoadMore = async () => {
         if(noMorePost || !posts || posts.length < PAGE_SIZE){
@@ -69,25 +69,25 @@ export default function usePosts(userId){
         },[posts],
     );
 
-    usePostsEventEffect({
+    usePostsEventEffect({ // 게시물 이벤트를 처리 : 새로고침, 삭제, 업데이트 함수를 전달받는다.
         refresh: onRefresh,
         removePost,
         enabled: !userId || userId === user.id,
         updatePost
     });
 
-    // 추가된 코드
+    // 친구 목록을 업데이트한 후에 게시물 목록을 새로고침
     const onRefreshWithFriends = useCallback(async () => {
         setRefresh(true);
         await fetchAndUpdateFriends();
         onRefresh();
     }, [fetchAndUpdateFriends, onRefresh]);
 
+    // 파이어베이스에서 친구 ID 배열값들을 가져오는 함수
     async function fetchAndUpdateFriends() {
         const friends = await friendIdSearch(user.id);
         setFriendArray(friends.id);
     }
-    // 추가된 코드 끝
 
     return {
         posts,

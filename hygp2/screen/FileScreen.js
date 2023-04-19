@@ -10,6 +10,7 @@ import { friendIdSearch } from '../lib/friends';
 import firebase from '@react-native-firebase/app';
 import { useIsFocused } from '@react-navigation/native';
 
+// 게시물 화면
 function FileScreen() {
   const { user, setUser } = useUserContext();
   const { posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost, onRefreshWithFriends } = usePosts();
