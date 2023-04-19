@@ -20,40 +20,35 @@ const FriendsList = () => {
   const { onRefreshWithFriends } = usePosts();
 
   useEffect(() => {
-    if(friendArray !== [])
-    userData().then(() => {
-    });
-
-    if(!isLoading){
-      // 프렌즈 컬렉션 : 내 id => id 배열 값 가져오기 
-     firestore().collection('friends').get().then(function (querySnapshot){
-      querySnapshot.forEach(function (doc) {
+    if (!isLoading) {
+      firestore().collection('friends').get().then(function (querySnapshot){
+        querySnapshot.forEach(function (doc) {
           if (doc.id == user.id){
-              //console.log(doc.id, '=>', doc.data().id); 
-              setFriendArray(doc.data().id);
+            setFriendArray(doc.data().id);
+            console.log("friendArray :" ,friendArray)
           }       
+        });
       });
-    });
-  }
-
-
-  }, [user, friendArray, isLoading, setIddoc, removeFriend]);
-
-  const userData = async() => {
-   
-     friendArray.forEach( async (id) => {
+    }
+  }, [user, isLoading]);
   
+  useEffect(() => {
+    if (friendArray.length > 0) {
+      userData().then(() => {});
+    }
+  }, [friendArray]);
+  
+  const userData = async() => {
+    friendArray.forEach( async (id) => {
       firestore().collection('user').doc(id).get()
       .then((snapshot) => {
         data.push(snapshot.data())
-        //setIddoc(data)
         if(data.length === friendArray.length){
           setIddoc(data)
           setIsLoading(true); 
         }        
       });
     })
-
   }
 
   const renderItem = ({item}) =>{
@@ -75,6 +70,7 @@ const FriendsList = () => {
                 removeFriend(user.id, friendId)
                 setIsLoading(true); // 버튼 클릭 시 isLoading 상태를 갱신함으로써 화면을 새로고침합니다.
                 navigation.goBack();
+                
               }}
             />
           </View>
