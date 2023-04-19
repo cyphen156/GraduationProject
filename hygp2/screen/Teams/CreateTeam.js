@@ -3,42 +3,8 @@ import { View, TextInput, Button, Alert } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-import { useEffect } from 'react';
-import IconRightButton from '../../components/IconRightButton';
-import IconLeftButton from '../../components/IconLeftButton';
 
 const CreateTeamScreen = ({ navigation }) => {
-
-useEffect(() => {
-  navigation.setOptions({
-      title: 'CreateTeam',
-      headerLeft: () => (
-          <>
-          <IconLeftButton
-              name="Profile"
-              onPress={() => navigation.push('Profile')
-            }
-              />
-              </>),
-      headerRight: () => (
-          <>
-          <IconRightButton
-              name="search"
-              onPress={() => navigation.push('FriendsList')}
-              />
-          <IconRightButton
-              name="person-add"
-              onPress={() => navigation.push('FriendsAdd')}
-              />
-          <IconRightButton
-              name="settings"
-              onPress={() => navigation.push('Setting')}
-              />      
-           </>   
-      ),
-  });
-  },[navigation])
-
   const [teamName, setTeamName] = useState('');
 
   const handleCreateTeam = () => {
