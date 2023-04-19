@@ -4,8 +4,52 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import TeamContext from './TeamContext';
+import IconLeftButton from '../../components/IconLeftButton';
+import IconRightButton from '../../components/IconRightButton';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ProfileScreen from '../MyProfileScreen';
+
+const Stack = createNativeStackNavigator();
 
 const TeamListScreen = ({ navigation }) => { 
+    <>
+    <Stack.Navigator>
+      <Stack.Screen name="TeanList" component={TeamListScreen} options={
+        {title: 'TeamList',headerTitleAlign: 'center', headerLeft: () => (
+          <>
+          <IconLeftButton
+              name="Profile"
+              onPress={() => navigation.push('Profile')
+            }
+              />
+              </>),
+
+        headerRight: () => (
+          <>
+          <IconRightButton
+                    name="search"
+                    onPress={() => navigation.push('FriendsList')}
+                    />
+                <IconRightButton
+                    name="person-add"
+                    onPress={() => navigation.push('FriendsAdd')}
+                    />
+                <IconRightButton
+                    name="settings"
+                    onPress={() => navigation.push('Setting')}
+                    />      
+                 </> )}} 
+             />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen
+        name='TeamList'
+        component={TeamListScreen}
+        options={{title: 'TeamList'}}
+      />       
+    </Stack.Navigator>
+    </>
+
+
   const [teams, setTeams] = useState([]);
   const { teamId, setTeamId  } = useContext(TeamContext);
 

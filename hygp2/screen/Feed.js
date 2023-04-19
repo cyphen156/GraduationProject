@@ -3,10 +3,13 @@ import { StyleSheet, View} from "react-native";
 import LogContext from "../context/LogContext";
 import FloatingWriteButton from "../components/FloatingWriteButton";
 import FeedList from "../components/FeedList";
-
+import IconLeftButton from "../components/IconLeftButton";
+import IconRightButton from "../components/IconRightButton";
+import { useNavigation } from "@react-navigation/native";
 
 function FeedScreen (){
     
+    const navigation = useNavigation();
     const {feeds} = useContext(LogContext);
     
     useEffect(() => { 
@@ -19,6 +22,38 @@ function FeedScreen (){
     const onScrolledToBottom = (isBottom) => {
         if (hidden != isBottom) {setHidden(isBottom)};
     }
+
+
+    useEffect(() => {
+        navigation.setOptions({
+            title: 'Feed', headerTitleAlign: 'center',
+            headerLeft: () => (
+                <>
+                <IconLeftButton
+                    name="Profile"
+                    onPress={() => navigation.push('Profile')
+                  }
+                    />
+                    </>),
+            headerRight: () => (
+                <>
+                <IconRightButton
+                    name="search"
+                    onPress={() => navigation.push('FriendsList')}
+                    />
+                <IconRightButton
+                    name="person-add"
+                    onPress={() => navigation.push('FriendsAdd')}
+                    />
+                <IconRightButton
+                    name="settings"
+                    onPress={() => navigation.push('Setting')}
+                    />      
+                 </>   
+            ),
+        });
+        },[navigation])
+
     return (
         <>
         <View style={styles.block}>

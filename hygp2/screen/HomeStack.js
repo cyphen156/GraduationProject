@@ -1,4 +1,3 @@
-import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import FileScreen from './FileScreen';
 import {StyleSheet, View} from 'react-native';
@@ -33,12 +32,20 @@ function HomeStack() {
         headerRight: () => (
           <>
           <IconRightButton
-              name="search"
-              onPress={() => navigation.push('FriendsList')}
-              />
-             
-             </>)}} 
+                    name="search"
+                    onPress={() => navigation.push('FriendsList')}
+                    />
+                <IconRightButton
+                    name="person-add"
+                    onPress={() => navigation.push('FriendsAdd')}
+                    />
+                <IconRightButton
+                    name="settings"
+                    onPress={() => navigation.push('Setting')}
+                    />      
+                 </> )}} 
              />
+             
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen
         name='Post'

@@ -7,6 +7,9 @@ import AddTodo from '../components/AddTodo';
 import Empty from '../components/Empty';
 import TodoList from '../components/TodoList';
 import TodosStorage from '../storages/TodosStorage';
+import { useNavigation } from "@react-navigation/native";
+import IconLeftButton from '../components/IconLeftButton';
+import IconRightButton from '../components/IconRightButton';
 
 function Todo() {
   const today = new Date();
@@ -15,6 +18,38 @@ function Todo() {
     {id: 1, text: 'Ex)작업환경 설정', done: true},
     {id: 2, text: 'Ex)투두리스트 하나더만들기', done: true},
   ]);
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+        title: 'TodoList', headerTitleAlign: 'center',
+        headerLeft: () => (
+            <>
+            <IconLeftButton
+                name="Profile"
+                onPress={() => navigation.push('Profile')
+              }
+                />
+                </>),
+        headerRight: () => (
+            <>
+            <IconRightButton
+                name="search"
+                onPress={() => navigation.push('FriendsList')}
+                />
+            <IconRightButton
+                name="person-add"
+                onPress={() => navigation.push('FriendsAdd')}
+                />
+            <IconRightButton
+                name="settings"
+                onPress={() => navigation.push('Setting')}
+                />      
+             </>   
+        ),
+    });
+  },[navigation])
 
   useEffect(() => {
     TodosStorage

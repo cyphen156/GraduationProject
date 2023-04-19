@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import {View, StyleSheet, TextInput, Image, TouchableOpacity, Platform, TouchableNativeFeedback, Keyboard} from 'react-native';
+import IconLeftButton from "./IconLeftButton";
+import IconRightButton from "./IconRightButton";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
 
 function AddTodo({onInsert}) {
     const [text, setText] = useState('');
-
+    const navigation = useNavigation();
+    
     const onPress = () => {
         onInsert(text);
         setText('');

@@ -6452,7 +6452,7 @@ react-native-document-picker@^8.2.0:
 
 react-native-easy-toast@^2.3.0:
   version "2.3.0"
-  resolved "https://registry.npmjs.org/react-native-easy-toast/-/react-native-easy-toast-2.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-easy-toast/-/react-native-easy-toast-2.3.0.tgz#84572156f2cb3afbb73806eef46799a98a943843"
   integrity sha512-+tn+6HyxudUtm+KPMidtHnheewDMS7i12HIKiRptk4M7R10jCvR4Tb6cVL8dYDA5ldWS97/kweSlLimPAb3Zyg==
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
