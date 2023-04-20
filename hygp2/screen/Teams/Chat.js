@@ -9,6 +9,8 @@ import InviteButton from './InviteButton';
 import TeamContext from './TeamContext';
 import IconRightButton from '../../components/IconRightButton';
 import IconLeftButton from '../../components/IconLeftButton';
+import { useUserContext } from '../../context/UserContext';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const firestore = firebase.firestore();
@@ -73,6 +75,7 @@ function Chat({ navigation }) {
   }, [teamId, navigation]);
 
   const currentUser = auth.currentUser; // 현재 로그인한 사용자 정보 가져오기
+  const {user} = useUserContext(); // 이걸로 가져오면 현재 유저 아이디, 닉네임, 포토그림 다 가져옴
   const [messages, setMessages] = useState([]);
   const [senders, setSenders] = useState([]);
 
@@ -119,6 +122,7 @@ function Chat({ navigation }) {
     };
   }, [teamId]);
 
+  // 채팅 보내기
   const onSend = useCallback((newMessages = []) => {
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const message = newMessages[0];
@@ -126,9 +130,9 @@ function Chat({ navigation }) {
       text: message.text,
       createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
       user: {
-        _id: currentUser.uid, // 현재 로그인한 사용자의 UID 사용
-        name: currentUser.displayName,
-        avatar: currentUser.photoURL,
+        _id: user.id, // 현재 로그인한 사용자의 UID 사용
+        name: user.displayName,
+        avatar: user.photoURL,
       },
     });
   }, [teamId, currentUser]);
@@ -165,7 +169,7 @@ function Chat({ navigation }) {
           return (
             <Send {...props}>
               <View style={{ marginRight: 10, marginBottom: 5 }}>
-                <Ionicons name="ios-send" size={32} color="#0084ff" />
+                <Icon name="send" size={32} color="#0084ff" />
               </View>
             </Send>
           );
@@ -184,7 +188,7 @@ function Chat({ navigation }) {
               {...props}
               wrapperStyle={{
                 left: {
-                  backgroundColor: '#f0f0f0',
+                  backgroundColor: '#a7cfdf',
                 },
                 right: {
                   backgroundColor: '#0084ff',

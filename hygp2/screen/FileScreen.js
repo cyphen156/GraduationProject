@@ -24,14 +24,16 @@ function FileScreen() {
       setFriendArray(friends.id);
       setIsLoading(true);
     } catch (error) {
+      console.log("user", user.id)
       console.error('Error fetching and updating friends:', error);
     }
   }, [user]);
 
   useEffect(() => {
+    console.log("게시물")
     if (isFocused) {
       fetchAndUpdateFriends();
-      onRefreshWithFriends();
+      //onRefreshWithFriends();
     }
   }, [isFocused, fetchAndUpdateFriends]);
 

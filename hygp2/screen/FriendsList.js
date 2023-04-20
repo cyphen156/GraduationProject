@@ -14,7 +14,7 @@ const FriendsList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [idDoc, setIdDoc] = useState([]);
   const navigation = useNavigation();
-  let remove;
+  
   useEffect(() => {
     firestore().collection('friends').get().then(function (querySnapshot){
       querySnapshot.forEach(function (doc) {

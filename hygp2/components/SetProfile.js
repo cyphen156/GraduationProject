@@ -12,6 +12,7 @@ import storage from '@react-native-firebase/storage'
 import  Avatar  from  './Avatar';
 import firestore from '@react-native-firebase/firestore'
 import Toast from 'react-native-easy-toast';
+import { emptyFriend } from "../lib/friends";
 
 function SetupProfile(){
 
@@ -66,7 +67,7 @@ function SetupProfile(){
 
             createUser(user);
             setUser(user);
-
+            emptyFriend(user.id);
         }else{
             toastRef.current.show('닉네임 확인 해주세요.');
             
@@ -124,6 +125,8 @@ function SetupProfile(){
         });
 
     };
+
+
 
     return(
         <View style={styles.block}>

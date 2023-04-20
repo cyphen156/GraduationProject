@@ -5,7 +5,7 @@ export const friendsCollection = firestore().collection('friends');
 
   // friend : 나의 user.id => 배열형태[상대방 user.id]
 
-  //피드 업데이트z
+  //친구 업데이트z
   export function addFriend(id, uid) {
 
     return friendsCollection.doc(id).update({
@@ -14,7 +14,7 @@ export const friendsCollection = firestore().collection('friends');
     });
   }
 
-  //피드 생성 : 피드 처음 생성 할 경우 사용하면 된다.
+  //친구 생성 : 친구 처음 생성 할 경우 사용하면 된다.
   export function createFriend(id ,uid){
 
     return friendsCollection.doc(id).set({
@@ -22,6 +22,14 @@ export const friendsCollection = firestore().collection('friends');
     });
   }
 
+
+  // 빈 friends 생성
+  export function emptyFriend(id){
+
+    return friendsCollection.doc(id).set({
+      id: firestore.FieldValue.arrayUnion(),
+    });
+  }
   // 컬렉션 feeds -> id 배열 가져오고 자신의 아이디 추가한 배열을 리턴
   export async function friendIdSearch(id){
     
