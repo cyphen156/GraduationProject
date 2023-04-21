@@ -9,6 +9,8 @@ import IconRightButton from '../../components/IconRightButton';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProfileScreen from '../MyProfileScreen';
 import TeamStackNavigator from './TeamStack';
+import FloatingWriteButton from '../../components/FloatingWriteButton';
+import TeamCreateButton from '../../components/TeamCreateButton';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +95,12 @@ const TeamListScreen = ({ navigation }) => {
     );
   };
 
+  const [hidden, setHidden] = useState(false);
+
+  const onScrolledToBottom = (isBottom) => {
+      if (hidden != isBottom) {setHidden(isBottom)};
+  }
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -102,9 +110,12 @@ const TeamListScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={styles.block}>
       <Text style={styles.teamName}>그룹 방</Text>
-      <FlatList data={teams} renderItem={renderItem} keyExtractor={item => item.id} />
+      <FlatList data={teams} renderItem={renderItem} 
+        keyExtractor={item => item.id} 
+        onScrolledToBottom={onScrolledToBottom}/>
+        <TeamCreateButton hidden={hidden} />
     </View>
   );
 };
@@ -123,6 +134,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
   },
+  block: {
+    flex: 1,
+    zIndex: 0,
+},
 });
 
 

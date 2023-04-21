@@ -11,32 +11,8 @@ const CreateTeamScreen = ({ navigation }) => {
 
 useEffect(() => {
   navigation.setOptions({
-      title: 'CreateTeam', headerTitleAlign: 'center',
-      headerLeft: () => (
-          <>
-            <IconLeftButton
-                name="Profile"
-                onPress={() => navigation.navigate('Profile')
-              }
-              />
-          </>
-          ),
-      headerRight: () => (
-        <View style={{flexDirection: 'row'}}>
-          <IconRightButton
-              name="search"
-              onPress={() => navigation.navigate('FriendsList')}
-              />
-          <IconRightButton
-              name="person-add"
-              onPress={() => navigation.navigate('FriendsAdd')}
-              />
-          <IconRightButton
-              name="settings"
-              onPress={() => navigation.navigate('Setting')}
-              />      
-           </View>   
-      ),
+      title: '팀 생성', headerTitleAlign: 'center',
+      
   });
   },[navigation])
 

@@ -20,11 +20,15 @@ import FriendsAddScreen from "./FriendsAddScreen";
 import FriendsList from "./FriendsList";
 import SubTab from "./SubTab";
 import TeamContext from "./Teams/TeamContext";
+import TeamListScreen from "./Teams/TeamList";
+import {useNavigation} from '@react-navigation/native'
+import CalendarScreen from "./Calendar";
+import CreateTeamScreen from "./Teams/CreateTeam";
 
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
-    
+    const navigation = useNavigation();
     const {user, setUser} = useUserContext();
     const [teamId, setTeamId] = useState(null);
 
@@ -61,7 +65,7 @@ function RootStack() {
                       name="Upload"
                       component={UploadScreen}
                       options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}                    
-                     />
+                    />
                      <Stack.Screen 
                       name="Setting"
                       component={SettingScreen}
@@ -86,6 +90,16 @@ function RootStack() {
                       name='Modify'
                       component={ModifyScreen}
                       options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
+                      />
+                      <Stack.Screen
+                      name='Calendar'
+                      component={CalendarScreen}
+                      options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
+                      />
+                      <Stack.Screen
+                      name='CreateTeam'
+                      component={CreateTeamScreen}
+                      options={{title: '팀 생성', headerBackTitle: '뒤로가기'}}
                       />
                 </>
             ) : (
