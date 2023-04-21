@@ -38,7 +38,7 @@ useEffect(() => {
           [user.uid]: true
         });
         //navigation.navigate('Chat', { teamId: docRef.id });
-        navigation.navigate('TeamList');
+        navigation.goBack();
       })
       .catch(error => {
         console.error(error);

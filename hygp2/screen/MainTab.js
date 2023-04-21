@@ -52,7 +52,7 @@ function MainTab() {
                 tabBarIcon: ({color, size}) => (<Icon name="rule" size={size} color={color} />),
             }}/>  
             <Tab.Screen name="TeamList" component={TeamListScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="business" size={size} color={color} />),
+                tabBarIcon: ({color, size}) => (<Icon name="groups" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Calendar" component={CalendarScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
