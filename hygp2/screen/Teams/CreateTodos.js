@@ -6,6 +6,7 @@ import '@react-native-firebase/firestore';
 import IconRightButton from '../../components/IconRightButton';
 import IconLeftButton from '../../components/IconLeftButton';
 import { useEffect } from 'react';
+import WriteTeamTodos from '../../components/WriteTeamTodos';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -43,9 +44,11 @@ function CreateTodos({ navigation }) {
     },[navigation])
 
   const [task, setTask] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
 
+  const [endDate, setEndDate] =useState(log ? new Date(log.date) : new Date());
+  const [startDate, setStartDate] = useState(log ? new Date(log.date) : new Date());
+  const log = new Date();
+  console.log("startDate", startDate)
   const addTodo = async () => {
     const uid = auth.currentUser.uid;
     const teamId = "your_team_id"; // TODO: Replace with the actual teamId from context or navigation params
@@ -59,8 +62,8 @@ function CreateTodos({ navigation }) {
 
     // Reset fields and navigate back
     setTask('');
-    setStartDate('');
-    setEndDate('');
+    setStartDate(log);
+    setEndDate(log);
     navigation.goBack();
   };
 
@@ -69,10 +72,13 @@ function CreateTodos({ navigation }) {
       <Text>Task</Text>
       <TextInput value={task} onChangeText={setTask} />
       <Text>Start Date</Text>
-      <TextInput value={startDate} onChangeText={setStartDate} />
-
+      <WriteTeamTodos 
+                    date={startDate}
+                    onChangeDate={setStartDate} />
       <Text>End Date</Text>
-      <TextInput value={endDate} onChangeText={setEndDate} />
+      <WriteTeamTodos 
+                    date={endDate}
+                    onChangeDate={setEndDate} />
 
       <Button title="Add Todo" onPress={addTodo} />
     </View>
