@@ -47,15 +47,15 @@ function MainTab() {
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
             }}/>  */}
-            <Tab.Screen name="HomeStack" component={HomeStack} options={{
+            <Tab.Screen name="게시물" component={HomeStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     
-            <Tab.Screen name="Feed" component={FeedScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+            <Tab.Screen name="내가 할 일" component={FeedScreen} options={{
+                tabBarIcon: ({color, size}) => (<Icon name="rule" size={size} color={color} />),
             }}/>
-            <Tab.Screen name="Todo" component={Todo} options={{
+            {/* <Tab.Screen name="Todo" component={Todo} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="receipt" size={size} color={color} />),
-            }}/> 
+            }}/>   */}
             <Tab.Screen name="TeamList" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="business" size={size} color={color} />),
             }}/>

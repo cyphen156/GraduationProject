@@ -1,20 +1,24 @@
 import { useContext, useState, useEffect } from "react";
-import { StyleSheet, View} from "react-native";
+import { StyleSheet, Text, View} from "react-native";
 import LogContext from "../context/LogContext";
 import FloatingWriteButton from "../components/FloatingWriteButton";
 import FeedList from "../components/FeedList";
 import IconLeftButton from "../components/IconLeftButton";
 import IconRightButton from "../components/IconRightButton";
 import { useNavigation } from "@react-navigation/native";
+import DateHead from '../components/DateHead';
+import Empty from '../components/Empty';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function FeedScreen (){
     
     const navigation = useNavigation();
     const {feeds} = useContext(LogContext);
+    const today = new Date();
 
     useEffect(() => {
         navigation.setOptions({
-            title: 'Feed', headerTitleAlign: 'center',
+            title: '내가 할 일', headerTitleAlign: 'center',
             headerLeft: () => (
                 <>
                 <IconLeftButton
@@ -40,7 +44,7 @@ function FeedScreen (){
                  </View>   
             ),
         });
-        },[navigation])
+        },[navigation, feeds])
     
     useEffect(() => { 
         console.log(feeds)
@@ -49,20 +53,20 @@ function FeedScreen (){
     console.log("Feed 화면", feeds);
 
     const [hidden, setHidden] = useState(false);
+
     const onScrolledToBottom = (isBottom) => {
         if (hidden != isBottom) {setHidden(isBottom)};
     }
 
     return (
         <>
-        <View style={styles.block}>
-            <FeedList feeds={feeds} onScrolledToBottom={onScrolledToBottom} />
-            <FloatingWriteButton hidden={hidden} />
-        </View>
-        </>
+    <View style={styles.block}>     
+        <DateHead date={today} />    
+        <FeedList feeds={feeds} onScrolledToBottom={onScrolledToBottom} />
+        <FloatingWriteButton hidden={hidden} />
+    </View>
+    </>
     );
-
-    
 }
 
 const styles = StyleSheet.create({
