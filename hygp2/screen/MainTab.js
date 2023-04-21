@@ -15,12 +15,14 @@ import FileUpload from "../components/FileUpload";
 import FeedList from "../components/FeedList";
 import FriendsList from "./FriendsList";
 import MyCalendar from "./Teams/MyCalendar";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import TeamListScreen from "./Teams/TeamList";
 
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
 
 const Tab = createBottomTabNavigator();
-
+const Stack = createNativeStackNavigator();
 
 /** 메인 화면 아래 탭 */
 function MainTab() {
@@ -29,10 +31,13 @@ function MainTab() {
 
     return (
 
-        <Tab.Navigator screenOptions={{
-            headerShown: false,
-            tabBarShowLabel: true,
-            tabBarActiveTintColor: '#e91e63'}}>     
+        <Tab.Navigator 
+            screenOptions={{
+                headerShown: false,
+                tabBarShowLabel: true,
+                tabBarActiveTintColor: '#e91e63'
+                }}
+            >     
             {/* <Tab.Screen name="Home" component={HomeScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
             }}/>  
@@ -51,7 +56,7 @@ function MainTab() {
             <Tab.Screen name="Todo" component={Todo} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="receipt" size={size} color={color} />),
             }}/> 
-            <Tab.Screen name="ProjectRoom" component={SubTab} options={{
+            <Tab.Screen name="TeamList" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="business" size={size} color={color} />),
             }}/>
             <Tab.Screen name="Calendar" component={CalendarScreen} options={{

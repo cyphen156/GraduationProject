@@ -15,54 +15,48 @@ import CreateTodos from "./Teams/CreateTodos";
 const Tab = createBottomTabNavigator();
 
 function SubTab () {
-    const [teamId, setTeamId] = useState(null);
     return (
-        <TeamContext.Provider value = {{teamId, setTeamId}}>
             <Tab.Navigator screenOptions={{
                 headerShown: true,
                 tabBarShowLabel: true,
                 tabBarActiveTintColor: '#e91e63'}
             }>
-            <Tab.Screen name="search" component={Search} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
-            <Tab.Screen
-                name="TeamStackNavigator"
-                component={TeamStackNavigator}
-                options={{
-                    headerShown: false,
-                    tabBarLabel: "Chat",
-                    tabBarIcon: ({ color, size }) => (
-                    <Icon name="view-stream" size={size} color={color} />
-                    ),
-                }}
-            />            
-            <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
-            <Tab.Screen name="TeamList" component={TeamListScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
-            <Tab.Screen name="CreateTodos" 
-                component={CreateTodos} 
-                options={{
-                    tabBarLabel: 'CreateTodos',
+                <Tab.Screen name="search" component={Search} options={{
                     tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
-            <Tab.Screen name="TeamCalendar" 
-                component={AgendaCalendar} 
-                options={{
-                    tabBarLabel: 'TeamCalendar',
+                }}/> 
+                <Tab.Screen
+                    name="TeamStackNavigator"
+                    component={TeamStackNavigator}
+                    options={{
+                        headerShown: false,
+                        tabBarLabel: "Chat",
+                        tabBarIcon: ({ color, size }) => (
+                        <Icon name="view-stream" size={size} color={color} />
+                        ),
+                    }}
+                />            
+                <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
                     tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
-            <Tab.Screen name="TeamCalendar2" 
-                component={TeamCalendar} 
-                options={{
-                    tabBarLabel: 'TeamCalendar2',
-                    tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> 
-        </Tab.Navigator>
-    </TeamContext.Provider>
+                }}/> 
+                <Tab.Screen name="CreateTodos" 
+                    component={CreateTodos} 
+                    options={{
+                        tabBarLabel: 'CreateTodos',
+                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                }}/> 
+                <Tab.Screen name="TeamCalendar" 
+                    component={AgendaCalendar} 
+                    options={{
+                        tabBarLabel: 'TeamCalendar',
+                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                }}/> 
+                <Tab.Screen name="TeamCalendar2" 
+                    component={TeamCalendar} 
+                    options={{
+                        tabBarLabel: 'TeamCalendar2',
+                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                }}/> 
+            </Tab.Navigator>
     )
 }
 

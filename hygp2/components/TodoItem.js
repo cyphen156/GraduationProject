@@ -41,7 +41,7 @@ function TodoItem({id, text, done, onToggle, onRemove}) {
                 ) : (
                     <View style={styles.removePlaceholder} />
                 )}
-                </View>
+            </View>
             );
         }
 

@@ -76,7 +76,10 @@ const TeamListScreen = ({ navigation }) => {
           title={item.name}
           onPress={() => {
             setTeamId(item.id);
-            navigation.navigate('TeamStackNavigator', { screen: 'Chat' });
+            navigation.push("SubTab", { 
+              screen: 'TeamStackNavigator', 
+              params:{ 
+                screen: 'Chat' }});
           }}
         />
       </View>

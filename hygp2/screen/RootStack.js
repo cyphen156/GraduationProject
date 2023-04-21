@@ -8,7 +8,7 @@ import MainTab from "./MainTab";
 import FileScreen from "./FileScreen";
 import {subscribeAuth} from '../lib/auth';
 import {getUser} from '../lib/user';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UploadScreen from "./UploadScreen";
 import MyProfileScreen from "./MyProfileScreen";
 import SettingScreen from "./SettingScreen";
@@ -18,12 +18,15 @@ import UserProfileScreen from "./UserProfileScreen";
 import UpdateProfile from "../components/UpdateProfile";
 import FriendsAddScreen from "./FriendsAddScreen";
 import FriendsList from "./FriendsList";
+import SubTab from "./SubTab";
+import TeamContext from "./Teams/TeamContext";
 
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
     
     const {user, setUser} = useUserContext();
+    const [teamId, setTeamId] = useState(null);
 
     useEffect(() => {
         // 컴포넌트 첫 로딩 시 로그인 상태를 확인하고 UserContext에 적용
@@ -44,10 +47,12 @@ function RootStack() {
       }, [setUser]);
 
     return (
+      <TeamContext.Provider value = {{teamId, setTeamId}}>
         <Stack.Navigator>     
             {user ? (
                 <>
                     <Stack.Screen name="MainTab" component={MainTab} options={{headerShown: false}} />
+                    <Stack.Screen name="SubTab" component={SubTab} options={{headerShown: false}} />
                     <Stack.Screen name="Write" component={WriteScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="MyProflie" component={MyProfileScreen}/>
                     <Stack.Screen name="UserProfile" component={UserProfileScreen}  />
@@ -89,7 +94,8 @@ function RootStack() {
                     <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
                 </>
             )}       
-         </Stack.Navigator>
+        </Stack.Navigator>
+      </TeamContext.Provider>
     );
 }
 

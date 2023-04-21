@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TextInput, Button, Alert } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -14,12 +14,13 @@ useEffect(() => {
       title: 'CreateTeam', headerTitleAlign: 'center',
       headerLeft: () => (
           <>
-          <IconLeftButton
-              name="Profile"
-              onPress={() => navigation.navigate('Profile')
-            }
+            <IconLeftButton
+                name="Profile"
+                onPress={() => navigation.navigate('Profile')
+              }
               />
-              </>),
+          </>
+          ),
       headerRight: () => (
         <View style={{flexDirection: 'row'}}>
           <IconRightButton
@@ -40,6 +41,7 @@ useEffect(() => {
   },[navigation])
 
   const [teamName, setTeamName] = useState('');
+  const [teamBody, setTeamBody] = useState('');
 
   const handleCreateTeam = () => {
     if (!teamName.trim()) {
@@ -68,15 +70,53 @@ useEffect(() => {
   };
 
   return (
-    <View>
-      <TextInput
+    <View style={styles.block}>
+      <TextInput 
         placeholder="Team name"
         value={teamName}
         onChangeText={setTeamName}
+        style={styles.title}
       />
-      <Button title="Create Team" onPress={handleCreateTeam} />
+      <TextInput
+        placeholder="Team 설명"
+        value={teamBody}
+        onChangeText={setTeamBody}
+        style={styles.body}
+        multiline
+        textAlignVertical="top"
+      />
+      <Button title="Create Team"
+       onPress={handleCreateTeam}
+       style={styles.button} 
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  block: {
+    flex: 1,
+    padding: 16,     
+    backgroundColor: '#fafafa',
+    borderColor: '#00000' 
+  },
+  title: {
+    paddingVertical: 0,
+    fontSize: 18,
+    marginBottom: 16,
+    color: '#263238',
+    fontWeight: 'bold',
+    textDecorationLine: 'line-through',
+  },
+  body: {
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 16,
+    color: '#263238',
+  },
+  button: {
+    height: '20%'
+  }
+});
 
 export default CreateTeamScreen;
