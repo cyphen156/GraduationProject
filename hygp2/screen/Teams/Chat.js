@@ -1,14 +1,11 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet} from 'react-native';
+import { View, StyleSheet, Text} from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import InviteButton from './InviteButton';
 import TeamContext from './TeamContext';
-import IconRightButton from '../../components/IconRightButton';
-import IconLeftButton from '../../components/IconLeftButton';
 import { useUserContext } from '../../context/UserContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -17,36 +14,6 @@ const firestore = firebase.firestore();
 const auth = firebase.auth();
 
 function Chat({ navigation }) {
-
-  useEffect(() => {
-    navigation.setOptions({
-        title: 'Chat', headerTitleAlign: 'center',
-        headerLeft: () => (
-            <>
-            <IconLeftButton
-                name="Profile"
-                onPress={() => navigation.navigate('Profile')
-              }
-                />
-                </>),
-        headerRight: () => (
-          <View style={{flexDirection: 'row'}}>
-            <IconRightButton
-                name="search"
-                onPress={() => navigation.navigate('FriendsList')}
-                />
-            <IconRightButton
-                name="person-add"
-                onPress={() => navigation.navigate('FriendsAdd')}
-                />
-            <IconRightButton
-                name="settings"
-                onPress={() => navigation.navigate('Setting')}
-                />      
-             </View>   
-        ),
-    });
-    },[navigation])
 
   const { teamId } = useContext(TeamContext);
   const [chatRoomName, setChatRoomName] = useState('');
@@ -160,9 +127,17 @@ function Chat({ navigation }) {
         renderAvatar={(props) => {
           const sender = senders.find((s) => s._id === props.currentMessage.user._id);
           if (sender._id === currentUser.uid) {
-            return <Avatar {...props} name="나" />;
+            return (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Avatar {...props} name="나"/>
+              </View>
+              );
           } else {
-            return <Avatar {...props} avatar={sender.avatar} />;
+            return (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Avatar {...props} avatar={sender.avatar} />
+            </View>
+            );
           }
         }}
         renderSend={(props) => {
@@ -183,26 +158,44 @@ function Chat({ navigation }) {
           );
         }}
         renderBubble={(props) => {
+          const currentMessageUserId = props.currentMessage.user._id;
+          const previousMessageUserId = props.previousMessage.user?._id;
+          const shouldDisplayUsername =
+          currentMessageUserId !== previousMessageUserId;
           return (
-            <Bubble
-              {...props}
-              wrapperStyle={{
-                left: {
-                  backgroundColor: '#a7cfdf',
-                },
-                right: {
-                  backgroundColor: '#0084ff',
-                },
-              }}
-              textStyle={{
-                left: {
-                  color: '#000',
-                },
-                right: {
-                  color: '#fff',
-                },
-              }}
-            />
+            <View>
+              {shouldDisplayUsername &&
+                (currentMessageUserId === currentUser.uid ? (
+                  <Text style={{ textAlign: "right", marginRight: 5, marginBottom: 16  }}>나</Text>
+                ) : (
+                  <Text style={{ marginLeft: 5, marginBottom: 16 }}>
+                    {
+                      senders.find(
+                        (s) => s._id === props.currentMessage.user._id
+                      )?.name || props.currentMessage.user.name
+                    }
+                  </Text>
+                ))}
+              <Bubble
+                {...props}
+                wrapperStyle={{
+                  left: {
+                    backgroundColor: '#a7cfdf',
+                  },
+                  right: {
+                    backgroundColor: '#0084ff',
+                  },
+                }}
+                textStyle={{
+                  left: {
+                    color: '#000',
+                  },
+                  right: {
+                    color: '#fff',
+                  },
+                }}
+              />
+            </View>
           );
         }}
         placeholder={`메시지 보내기 (${chatRoomName})`}
