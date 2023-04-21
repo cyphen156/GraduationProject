@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -7,6 +7,7 @@ import IconRightButton from '../../components/IconRightButton';
 import IconLeftButton from '../../components/IconLeftButton';
 import { useEffect } from 'react';
 import WriteTeamTodos from '../../components/WriteTeamTodos';
+import TeamContext from './TeamContext';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -43,6 +44,7 @@ function CreateTodos({ navigation }) {
     });
     },[navigation])
 
+  const { teamId } = useContext(TeamContext);
   const [task, setTask] = useState('');
 
   const [endDate, setEndDate] =useState(log ? new Date(log.date) : new Date());
@@ -51,8 +53,6 @@ function CreateTodos({ navigation }) {
   console.log("startDate", startDate)
   const addTodo = async () => {
     const uid = auth.currentUser.uid;
-    const teamId = "your_team_id"; // TODO: Replace with the actual teamId from context or navigation params
-
     await firestore.collection(`teams`).doc(teamId).collection("todos").add({
       task,
       uid,
