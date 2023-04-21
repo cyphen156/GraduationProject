@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { View, FlatList, Button } from 'react-native';
+import { View, FlatList, Button, Pressable , StyleSheet , Text} from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -71,23 +71,25 @@ const TeamListScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <View>
-        <Button
-          title={item.name}
-          onPress={() => {
-            setTeamId(item.id);
-            navigation.push("SubTab", { 
-              screen: 'TeamStackNavigator', 
-              params:{ 
-                screen: 'Chat' }});
-          }}
-        />
-      </View>
+      <Pressable style={styles.itemContainer}
+      onPress={() => {
+        setTeamId(item.id);
+        navigation.push("SubTab", { 
+          screen: 'TeamStackNavigator', 
+          params:{ 
+            screen: 'Chat' }});
+      }}>
+        <View>
+          <Text style={styles.teamName}>{item.name}</Text>
+          <Text>{item.description}</Text>
+        </View>
+      </Pressable>
     );
   };
 
   return (
     <View>
+      <Text style={styles.teamName}>그룹 방</Text>
       <FlatList
         data={teams}
         renderItem={renderItem}
@@ -96,5 +98,22 @@ const TeamListScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#FFF',
+    borderBottomColor: '#E5E5E5',
+    borderBottomWidth: 1,
+  },
+  teamName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 10,
+  },
+});
+
 
 export default TeamListScreen;

@@ -17,6 +17,7 @@ import FriendsList from "./FriendsList";
 import MyCalendar from "./Teams/MyCalendar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TeamListScreen from "./Teams/TeamList";
+import CreateTeamScreen from "./Teams/CreateTeam";
 
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
@@ -53,9 +54,9 @@ function MainTab() {
             <Tab.Screen name="내가 할 일" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="rule" size={size} color={color} />),
             }}/>
-            {/* <Tab.Screen name="Todo" component={Todo} options={{
+            <Tab.Screen name="팀 생성" component={CreateTeamScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="receipt" size={size} color={color} />),
-            }}/>   */}
+            }}/>   
             <Tab.Screen name="TeamList" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="business" size={size} color={color} />),
             }}/>
