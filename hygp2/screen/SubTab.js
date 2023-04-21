@@ -35,9 +35,9 @@ function SubTab () {
                         ),
                     }}
                 />            
-                <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
+                {/* <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
                     tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
+                }}/>  */}
                 <Tab.Screen name="CreateTodos" 
                     component={CreateTodos} 
                     options={{

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { View, FlatList, Button, Pressable , StyleSheet , Text} from 'react-native';
+import { View, FlatList, Button, Pressable , StyleSheet , Text, ActivityIndicator} from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -12,73 +12,79 @@ import TeamStackNavigator from './TeamStack';
 
 const Stack = createNativeStackNavigator();
 
-const TeamListScreen = ({ navigation }) => { 
+const TeamListScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
-        title: 'TeamList', headerTitleAlign: 'center',
-        headerLeft: () => (
-            <>
-            <IconLeftButton
-                name="Profile"
-                onPress={() => navigation.navigate('Profile')
-              }
-                />
-                </>),
-        headerRight: () => (
-          <View style={{flexDirection: 'row'}}>
-            <IconRightButton
-                name="search"
-                onPress={() => navigation.navigate('FriendsList')}
-                />
-            <IconRightButton
-                name="person-add"
-                onPress={() => navigation.navigate('FriendsAdd')}
-                />
-            <IconRightButton
-                name="settings"
-                onPress={() => navigation.navigate('Setting')}
-                />      
-             </View>   
-        ),
+      title: 'TeamList',
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <>
+          <IconLeftButton
+            name="Profile"
+            onPress={() => navigation.navigate('Profile')}
+          />
+        </>
+      ),
+      headerRight: () => (
+        <View style={{ flexDirection: 'row' }}>
+          <IconRightButton
+            name="search"
+            onPress={() => navigation.navigate('FriendsList')}
+          />
+          <IconRightButton
+            name="person-add"
+            onPress={() => navigation.navigate('FriendsAdd')}
+          />
+          <IconRightButton
+            name="settings"
+            onPress={() => navigation.navigate('Setting')}
+          />
+        </View>
+      ),
     });
-    },[navigation])
-   
+  }, [navigation]);
 
   const [teams, setTeams] = useState([]);
-  const { teamId, setTeamId  } = useContext(TeamContext);
+  const [loading, setLoading] = useState(true);
+  const { teamId, setTeamId } = useContext(TeamContext);
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
     const teamsRef = firebase.firestore().collection('teams');
-  
+
     const unsubscribe = teamsRef.onSnapshot(async querySnapshot => {
       const teams = [];
-  
+
       for (const doc of querySnapshot.docs) {
         const invitedUsersRef = doc.ref.collection('invitedUsers').doc(user.uid);
         const invitedUser = await invitedUsersRef.get();
-        
+
         if (invitedUser.exists) {
           teams.push({ id: doc.id, ...doc.data() });
         }
       }
-  
+
       setTeams(teams);
+      setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, []);
 
   const renderItem = ({ item }) => {
     return (
-      <Pressable style={styles.itemContainer}
-      onPress={() => {
-        setTeamId(item.id);
-        navigation.push("SubTab", { 
-          screen: 'TeamStackNavigator', 
-          params:{ 
-            screen: 'Chat' }});
-      }}>
+      <Pressable
+        style={styles.itemContainer}
+        onPress={() => {
+          setTeamId(item.id);
+          navigation.push('SubTab', {
+            screen: 'TeamStackNavigator',
+            params: {
+              screen: 'Chat',
+            },
+          });
+        }}
+      >
         <View>
           <Text style={styles.teamName}>{item.name}</Text>
           <Text>{item.description}</Text>
@@ -87,14 +93,18 @@ const TeamListScreen = ({ navigation }) => {
     );
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <View>
       <Text style={styles.teamName}>그룹 방</Text>
-      <FlatList
-        data={teams}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+      <FlatList data={teams} renderItem={renderItem} keyExtractor={item => item.id} />
     </View>
   );
 };
