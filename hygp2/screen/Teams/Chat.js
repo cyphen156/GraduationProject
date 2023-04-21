@@ -123,7 +123,7 @@ function Chat({ navigation }) {
             backgroundColor: '#f0f0f0',
           },
         }}
-        renderUsernameOnMessage={true}
+        //renderUsernameOnMessage={true}
         renderAvatar={(props) => {
           const sender = senders.find((s) => s._id === props.currentMessage.user._id);
           if (sender._id === currentUser.uid) {
@@ -162,20 +162,23 @@ function Chat({ navigation }) {
           const previousMessageUserId = props.previousMessage.user?._id;
           const shouldDisplayUsername =
           currentMessageUserId !== previousMessageUserId;
+
+          const sender = senders.find((s) => s._id === props.currentMessage.user._id);
+          const displayName = sender === currentUser.uid ? "나" : sender?.name || props.currentMessage.user.name;
+  
           return (
             <View>
-              {shouldDisplayUsername &&
-                (currentMessageUserId === currentUser.uid ? (
-                  <Text style={{ textAlign: "right", marginRight: 5, marginBottom: 16  }}>나</Text>
-                ) : (
-                  <Text style={{ marginLeft: 5, marginBottom: 16 }}>
-                    {
-                      senders.find(
-                        (s) => s._id === props.currentMessage.user._id
-                      )?.name || props.currentMessage.user.name
-                    }
-                  </Text>
-                ))}
+              {shouldDisplayUsername && (
+                <Text
+                  style={
+                    currentMessageUserId === currentUser.uid
+                      ? { textAlign: "right", marginRight: 5, marginBottom: 16 }
+                      : { marginLeft: 5, marginBottom: 16 }
+                  }
+                >
+                  {displayName}
+                </Text>
+              )}
               <Bubble
                 {...props}
                 wrapperStyle={{
