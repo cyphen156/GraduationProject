@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@firebase/database": "^0.14.4",
+    "@freakycoder/react-native-bounceable": "^1.0.3",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/datetimepicker": "^6.7.5",
     "@react-native-community/masked-view": "^0.1.11",
@@ -32,6 +33,7 @@
     "ionicons": "^7.1.0",
     "react": "18.2.0",
     "react-native": "0.71.3",
+    "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-calendars": "^1.1275.0",
     "react-native-document-picker": "^8.2.0",
     "react-native-easy-toast": "^2.3.0",

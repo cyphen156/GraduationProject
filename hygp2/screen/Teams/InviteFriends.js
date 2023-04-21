@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
+import React, { useState, useEffect, useContext, use } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Pressable, Button } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { friendIdSearch } from '../lib/friends';
 import { fromIdtoUser, getUserId } from '../lib/user';
 import { useUserContext } from '../../context/UserContext';
 import Avatar from '../../components/Avatar';
 import {useNavigation, useNavigationState} from '@react-navigation/native'
+import InviteButton from './InviteButton';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import RNBounceable from "@freakycoder/react-native-bounceable";
 
 const InviteFriends = () => {
   console.log('InviteFriends');
@@ -15,6 +18,8 @@ const InviteFriends = () => {
   const [idDoc, setIddoc] = useState([]);
   let data = [];
   const navigation = useNavigation();
+  let bouncyCheckboxRef = null;
+  const [checkboxState, setCheckboxState] = React.useState(false);
 
 
   useEffect(() => {
@@ -65,6 +70,16 @@ const InviteFriends = () => {
         })}>
           <Avatar style={styles.PhotoImage} source={item.photoURL && {uri: item.photoURL}} />
           <Text style = {styles.title}>{item.displayName}</Text>
+          <View style={styles.container}>
+      <BouncyCheckbox
+          style={{ marginTop: 10 }}
+          justifyContent='flex-end'
+          isChecked={checkboxState}
+          size={25}
+          fillColor="#2E9AFE"
+          onPress={() => setCheckboxState(!checkboxState)}         
+      />  
+    </View>
         </Pressable>
     )
   }
@@ -73,12 +88,25 @@ const InviteFriends = () => {
     return (
       <View>
         <Text style={styles.displayName}>친구</Text>
-
         <FlatList
           data ={idDoc}
           renderItem= {renderItem}
           keyExtractor ={(item) => item.id}
           />
+          <RNBounceable
+        style={{
+          marginTop: 16,
+          height: 50,
+          width: "100%",
+          backgroundColor: "#2E9AFE",
+          borderRadius: 12,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => bouncyCheckboxRef?.onPress(InviteButton)}
+      >
+        <Text style={{ color: "#fff" }}>채팅 초대</Text> 
+      </RNBounceable>
       </View>
     );
   };
