@@ -24,6 +24,15 @@ function Chat({ navigation }) {
       setChatRoomName(doc.data().name);
       navigation.setOptions({ 
         title: doc.data().name,
+        headerLeft: () => (
+          <>
+          <Icon
+            name="west"
+            size={25}
+            marginRight={20}
+            onPress={() => navigation.pop()}
+            />
+              </>),
         headerRight: () => (
           <>
             <InviteButton
