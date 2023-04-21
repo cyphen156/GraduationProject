@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useReducer } from "react";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const initialState = {mode: 'date', visible: false};
     function reducer(state, action) {
@@ -43,6 +44,7 @@ function WriteTeamTodos({date, onChangeDate}) {
                 
             <View style={styles.center}>
                 <Pressable onPress={() => open('date')}>
+                <Icon name="event" size={25} />
                 <Text>
                     {format(new Date(date), 'PPP', {
                     locale: ko,
@@ -51,6 +53,7 @@ function WriteTeamTodos({date, onChangeDate}) {
                 </Pressable>
                 <View style={styles.separator} />
                 <Pressable onPress={() => open('time')}>
+                <Icon name="alarm" size={25} />
                 <Text>{format(new Date(date), 'p', {locale: ko})}</Text>
                 </Pressable>
             </View>
@@ -84,7 +87,8 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         alignItems: 'center',
-        justifyContent: 'center',
+        //justifyContent: 'center',
+        marginLeft: 20,
         zIndex: -1,
         flexDirection: 'row',
       },

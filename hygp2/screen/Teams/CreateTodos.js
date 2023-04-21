@@ -69,19 +69,29 @@ function CreateTodos({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Task</Text>
-      <TextInput value={task} onChangeText={setTask} />
-      <Text>Start Date</Text>
+      
+      <TextInput 
+        style={styles.input}
+        placeholder="제목" 
+        placeholderTextColor="#BBBBBB" 
+        value={task} 
+        onChangeText={setTask} 
+        />
+
+      <Text style={styles.boldText}>시작</Text>
       <WriteTeamTodos 
                     date={startDate}
                     onChangeDate={setStartDate} />
-      <Text>End Date</Text>
+      <Text style={styles.boldText}>끝</Text>
       <WriteTeamTodos 
                     date={endDate}
                     onChangeDate={setEndDate} />
 
-      <Button title="Add Todo" onPress={addTodo} />
+      <View style={styles.buttonContainer}>
+        <Button title="그룹 할 일 생성" onPress={addTodo} />
+      </View>
     </View>
+    
   );
 }
 
@@ -89,6 +99,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  boldText : {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    marginTop: 24,
+    color: '#555555',
+  },
+  buttonContainer: {
+    marginTop: 'auto',
+    
+  },
+  input: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    borderBottomWidth: 2,
+    borderBottomColor: '#BBBBBB',
+    marginBottom: 32,
+    paddingBottom: 8,
   },
 });
 
