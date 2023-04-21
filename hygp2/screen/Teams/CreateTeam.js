@@ -61,7 +61,8 @@ useEffect(() => {
         invitedUsersRef.doc(user.uid).set({
           [user.uid]: true
         });
-        navigation.navigate('Chat', { teamId: docRef.id });
+        //navigation.navigate('Chat', { teamId: docRef.id });
+        navigation.navigate('TeamList');
       })
       .catch(error => {
         console.error(error);

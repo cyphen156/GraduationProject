@@ -27,14 +27,11 @@ const Stack = createNativeStackNavigator();
 
 /** 메인 화면 아래 탭 */
 function MainTab() {
-    
-    const {user} = useUserContext();
-
     return (
 
         <Tab.Navigator 
             screenOptions={{
-                headerShown: false,
+                headerShown: true,
                 tabBarShowLabel: true,
                 tabBarActiveTintColor: '#e91e63'
                 }}
@@ -48,7 +45,7 @@ function MainTab() {
             <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
                 tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
             }}/>  */}
-            <Tab.Screen name="게시물" component={HomeStack} options={{
+            <Tab.Screen name="게시물" component={HomeStack} options={{ headerShown: false,
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     
             <Tab.Screen name="내가 할 일" component={FeedScreen} options={{
