@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Platform} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Platform, Pressable} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import DateHead from '../components/DateHead';
 import AddTodo from '../components/AddTodo';
@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import IconLeftButton from '../components/IconLeftButton';
 import IconRightButton from '../components/IconRightButton';
 import AsyncStorage from '@react-native-community/async-storage';
+import Avatar from '../components/Avatar';
 
 function Todo() {
 
@@ -19,11 +20,9 @@ function Todo() {
         title: 'Todos', headerTitleAlign: 'center',
         headerLeft: () => (
             <>
-            <IconLeftButton
-                name="Profile"
-                onPress={() => navigation.navigate('Profile')
-              }
-                />
+            <Pressable style={styles.profile}  onPress={() => navigation.push('Profile')}>
+              <Avatar source={user.photoURL && {uri: user.photoURL}} size={38} />
+            </Pressable>
                 </>),
         headerRight: () => (
           <View style={{flexDirection: 'row'}}>

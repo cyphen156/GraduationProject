@@ -11,24 +11,27 @@ import ProfileScreen from '../MyProfileScreen';
 import TeamStackNavigator from './TeamStack';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import TeamCreateButton from '../../components/TeamCreateButton';
+import Avatar from "../../components/Avatar";
+import { useUserContext } from "../../context/UserContext";
 
 const Stack = createNativeStackNavigator();
 
 const TeamListScreen = ({ navigation }) => {
+
+  const {user} = useUserContext();
   useEffect(() => {
     navigation.setOptions({
       title: 'TeamList',
       headerTitleAlign: 'center',
       headerLeft: () => (
         <>
-          <IconLeftButton
-            name="Profile"
-            onPress={() => navigation.navigate('Profile')}
-          />
+          <Pressable style={styles.profile}  onPress={() => navigation.push('Profile')}>
+            <Avatar source={user.photoURL && {uri: user.photoURL}} size={38} />
+          </Pressable>
         </>
       ),
       headerRight: () => (
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.settings}>
           <IconRightButton
             name="search"
             onPress={() => navigation.navigate('FriendsList')}
@@ -71,7 +74,7 @@ const TeamListScreen = ({ navigation }) => {
     });
 
     return () => unsubscribe();
-  }, [navigation]);
+  }, [navigation, teams]);
 
   useEffect(() => {
   
@@ -147,7 +150,14 @@ const styles = StyleSheet.create({
   block: {
     flex: 1,
     zIndex: 0,
-},
+  },
+  profile: {
+    marginLeft: 16,
+  },
+  settings : {
+    marginRight: 16,
+    flexDirection: 'row',
+  }
 });
 
 
