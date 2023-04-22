@@ -18,13 +18,13 @@ function CreateTodos({ navigation }) {
     navigation.setOptions({
         title: 'CreateTodos', headerTitleAlign: 'center',
         headerLeft: () => (
-            <>
+          <>
             <IconLeftButton
                 name="Profile"
                 onPress={() => navigation.navigate('Profile')
               }
-                />
-                </>),
+            />
+          </>),
         headerRight: () => (
           <View style={{flexDirection: 'row'}}>
             <IconRightButton

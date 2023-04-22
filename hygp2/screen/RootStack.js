@@ -91,7 +91,7 @@ function RootStack() {
                       component={ModifyScreen}
                       options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
                       />
-                      <Stack.Screen
+                      {/* <Stack.Screen
                       name='Calendar'
                       component={CalendarScreen}
                       options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
@@ -100,7 +100,7 @@ function RootStack() {
                       name='CreateTeam'
                       component={CreateTeamScreen}
                       options={{title: '팀 생성', headerBackTitle: '뒤로가기'}}
-                      />
+                      /> */}
                 </>
             ) : (
                 <>

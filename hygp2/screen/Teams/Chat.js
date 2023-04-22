@@ -135,6 +135,13 @@ function Chat({ navigation }) {
         //renderUsernameOnMessage={true}
         renderAvatar={(props) => {
           const sender = senders.find((s) => s._id === props.currentMessage.user._id);
+          if (!sender) {
+            return (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Avatar {...props} name="알 수 없음" />
+              </View>
+            );
+          }
           if (sender._id === currentUser.uid) {
             return (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
