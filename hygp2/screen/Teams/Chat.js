@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet, Text} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -9,14 +9,14 @@ import TeamContext from './TeamContext';
 import { useUserContext } from '../../context/UserContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
-function Chat({ navigation }) {
+function Chat({navigation}) {
 
   const { teamId } = useContext(TeamContext);
   const [chatRoomName, setChatRoomName] = useState('');
+  const [host, setHost] = useState(false);
 
   useEffect(() => {
     const teamsRef = firestore.collection('teams');
@@ -39,7 +39,12 @@ function Chat({ navigation }) {
                 style = {styles.block}
                 name="person-add"
                 onPress={() => navigation.push('InviteFriends')}
-               />
+              />
+            <Icon
+            name="logout"
+            size={25}
+            onPress={exitButton}
+            />
           </>   
         ),
       });
@@ -48,7 +53,7 @@ function Chat({ navigation }) {
     return () => {
       unsubscribe();
     };
-  }, [teamId, navigation]);
+  }, [teamId, navigation, host]);
 
   const currentUser = auth.currentUser; // 현재 로그인한 사용자 정보 가져오기
   const {user} = useUserContext(); // 이걸로 가져오면 현재 유저 아이디, 닉네임, 포토그림 다 가져옴
@@ -78,12 +83,17 @@ function Chat({ navigation }) {
     };
   }, [teamId]);
 
-  // 채팅방 구성원 가져오기
+  // 채팅방 구성원 가져오기, 방장 구분 하기
   useEffect(() => {
     const chatUsersRef = firestore.collection('teams').doc(teamId).collection('invitedUsers');
     const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
       const newSenders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
+        if(user.id === Object.keys(data)[0] && Object.values(data)[0] === true){
+          console.log("채팅방 데이터2:", data)
+          setHost(true);
+        }
+      
         return {
           _id: doc.id,
           name: data.name,
@@ -96,8 +106,8 @@ function Chat({ navigation }) {
     return () => {
       unsubscribe();
     };
-  }, [teamId]);
-
+  }, [teamId, host]);
+ 
   // 채팅 보내기
   const onSend = useCallback((newMessages = []) => {
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
@@ -112,6 +122,17 @@ function Chat({ navigation }) {
       },
     });
   }, [teamId, currentUser]);
+  
+  // 나가기 버튼
+  const exitButton = () => {
+    if(host){
+      console.log("나가기 버튼", host)
+      const chatUsersRef = firestore.collection('teams').doc(teamId).delete();
+      navigation.pop();
+    }
+    console.log("방장 아님", host)
+
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -135,6 +156,7 @@ function Chat({ navigation }) {
         //renderUsernameOnMessage={true}
         renderAvatar={(props) => {
           const sender = senders.find((s) => s._id === props.currentMessage.user._id);
+          console.log("sender : ", sender)
           if (sender._id === currentUser.uid) {
             return (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
