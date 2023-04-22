@@ -50,26 +50,34 @@ const TeamListScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const { teamId, setTeamId } = useContext(TeamContext);
 
-  useEffect(() => {
+  const refresh = useEffect(() => {
     const user = firebase.auth().currentUser;
     const teamsRef = firebase.firestore().collection('teams');
+
+    const unsubscribe = teamsRef.onSnapshot(async querySnapshot => {
+      const teams = [];
+
+      for (const doc of querySnapshot.docs) {
+        const invitedUsersRef = doc.ref.collection('invitedUsers').doc(user.uid);
+        const invitedUser = await invitedUsersRef.get();
+
+        if (invitedUser.exists) {
+          teams.push({ id: doc.id, ...doc.data() });
+        }
+      }
+
+      setTeams(teams);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [navigation]);
+
+  useEffect(() => {
+  
     const unsubscribe = navigation.addListener('focus', () => {
       // 데이터 다시 불러오기
-      teamsRef.onSnapshot(async querySnapshot => {
-        const teams = [];
-  
-        for (const doc of querySnapshot.docs) {
-          const invitedUsersRef = doc.ref.collection('invitedUsers').doc(user.uid);
-          const invitedUser = await invitedUsersRef.get();
-  
-          if (invitedUser.exists) {
-            teams.push({ id: doc.id, ...doc.data() });
-          }
-        }
-  
-        setTeams(teams);
-        setLoading(false);
-      });
+      refresh;
     });
   
     return unsubscribe;

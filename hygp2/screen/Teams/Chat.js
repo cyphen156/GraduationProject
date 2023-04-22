@@ -129,6 +129,7 @@ function Chat({navigation}) {
     if(host){
       console.log("나가기 버튼", host)
       // 하위 컬렉션 직접 지워야 함. 
+      //firestore.collection('teams').doc(teamId).collection('invitedUsers').delete();
       firestore.collection('teams').doc(teamId).delete();
       navigation.pop();
     }
