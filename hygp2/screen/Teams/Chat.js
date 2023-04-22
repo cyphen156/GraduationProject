@@ -9,6 +9,7 @@ import TeamContext from './TeamContext';
 import { useUserContext } from '../../context/UserContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
@@ -127,11 +128,17 @@ function Chat({navigation}) {
   const exitButton = () => {
     if(host){
       console.log("나가기 버튼", host)
-      const chatUsersRef = firestore.collection('teams').doc(teamId).delete();
+      // 하위 컬렉션 직접 지워야 함. 
+      firestore.collection('teams').doc(teamId).delete();
       navigation.pop();
     }
-    console.log("방장 아님", host)
-
+    else{
+      console.log("방장 아님", host)
+      const chatUsersRef = firestore.collection('teams').doc(teamId)
+      .collection('invitedUsers')
+      .doc(user.id).delete();
+      navigation.pop();
+    }
   }
 
   return (
@@ -156,7 +163,6 @@ function Chat({navigation}) {
         //renderUsernameOnMessage={true}
         renderAvatar={(props) => {
           const sender = senders.find((s) => s._id === props.currentMessage.user._id);
-<<<<<<< HEAD
           if (!sender) {
             return (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -164,9 +170,6 @@ function Chat({navigation}) {
               </View>
             );
           }
-=======
-          console.log("sender : ", sender)
->>>>>>> 012eb721249a4db4f122e205c09c3fe4739ae83c
           if (sender._id === currentUser.uid) {
             return (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
