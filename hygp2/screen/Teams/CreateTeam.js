@@ -28,14 +28,31 @@ useEffect(() => {
 
     firebase.firestore().collection('teams').add({
       name: teamName,
+      discription: teamBody,
       createdBy: user.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
-      .then(docRef => {
-        firebase.firestore().collection(`teams/${docRef.id}/messages`);
+      .then(async docRef => {
+        const messagesRef = firebase.firestore().collection(`teams/${docRef.id}/messages`);
         const invitedUsersRef = firebase.firestore().collection(`teams/${docRef.id}/invitedUsers`);
-        invitedUsersRef.doc(user.uid).set({
-          [user.uid]: true
+        await invitedUsersRef.doc(user.uid).set({
+          userData: {
+            id: user.uid,
+            displayName: user.displayName,
+            //email: user.email,
+            photoURL: user.photoURL
+          },
+          ishost: true
+        });
+        await messagesRef.add({
+          text: "팀이 생성되었습니다.",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          user: {
+            id: user.uid,
+            displayName: user.displayName,
+            //email: user.email,
+            photoURL: user.photoURL
+          }
         });
         //navigation.navigate('Chat', { teamId: docRef.id });
         navigation.goBack();

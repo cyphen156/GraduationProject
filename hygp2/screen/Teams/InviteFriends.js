@@ -25,56 +25,65 @@ const InviteFriends = () => {
   const navigation = useNavigation();
   const [usersToInvite, setUsersToInvite] = useState([]);
 
-  useEffect(() => {
-   
-    if(!isLoading){
-      // 프렌즈 컬렉션 : 내 id => id 배열 값 가져오기 
-      firestore.collection('friends').get().then(function (querySnapshot){
-      querySnapshot.forEach(function (doc) {
-          if (doc.id == user.id){
-              //console.log(doc.id, '=>', doc.data().id); 
-              setFriendArray(doc.data().id);
-          }       
+  const userData = async () => {
+    friendArray.forEach(async (id) => {
+      firestore.collection('user').doc(id).get().then((snapshot) => {
+        data.push(snapshot.data());
+        if (data.length === friendArray.length) {
+          setIddoc(data);
+          setIsLoading(true);
+        }
       });
     });
-  }  
+  };
 
-  const userData = async() => {
-     friendArray.forEach( async (id) => {
-      firestore().collection('user').doc(id).get()
-      .then((snapshot) => {
-        data.push(snapshot.data())
-        //setIddoc(data)
-        if(data.length === friendArray.length){
-          setIddoc(data)
-          setIsLoading(true); 
-        }        
+  useEffect(() => {
+    if (!isLoading) {
+      // 프렌즈 컬렉션 : 내 id => id 배열 값 가져오기
+      firestore.collection('friends').get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          if (doc.id == user.id) {
+            //console.log(doc.id, '=>', doc.data().id);
+            setFriendArray(doc.data().id);
+          }
+        });
       });
-    })
-  }
-  
-  if (friendArray !== []) {
-    (async () => {
-      await userData();
-      setIsLoading(true);
-    })();
-  }
-}, [user, friendArray, setIsLoading, setIddoc]);
-
-
+    }
+    if (friendArray !== []) {
+      (async () => {
+        await userData();
+        setIsLoading(true);
+      })();
+    }
+  }, [user, friendArray, setIsLoading, setIddoc]);
 
   const inviteUsersToTeam = async () => {
     if (usersToInvite.length > 0) {
       const batch = firestore.batch();
-      const teamRef = firestore().collection('Teams').doc(teamId);
+      const teamRef = firestore.collection('teams').doc(teamId);
       const invitedUsersRef = teamRef.collection("invitedUsers");
+      const messagesRef = teamRef.collection("messages");
   
+      //친구 추가 로직완성
       usersToInvite.forEach((user) => {
         const newUserRef = invitedUsersRef.doc(user.id);
-        batch.set(newUserRef, user);
+        const userDataWithHostField = { userData: user, ishost: false };
+        batch.set(newUserRef, userDataWithHostField);
+
+        //초대메세지 ...-> 수정할 사항 디코에 메모
+        messagesRef.add({
+          text: `${user.displayName}님 환영합니다.`,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          user: {
+            id: user.id,
+            displayName: user.displayName,
+            //email: user.email,
+            photoURL: user.photoURL
+          }
+        });
       });
-  
       await batch.commit();
+      navigation.goBack();
     }
   };
 
