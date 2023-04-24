@@ -1,15 +1,13 @@
 import { format } from 'date-fns';
 import { useState, useMemo, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import CalendarView from '../../components/CalendarView';
 import TeamContext from '../Teams/TeamContext';
-import { Calendar } from 'react-native-calendars';
 
 const firestore = firebase.firestore();
-const auth = firebase.auth();
 
 function TeamCalendar({ navigation }) {
   const { teamId } = useContext(TeamContext);
@@ -32,14 +30,19 @@ function TeamCalendar({ navigation }) {
   const fetchTodos = async () => {
     // 모든 팀원의 Todos 가져오기
     const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
-
+  
     const querySnapshot = await todosRef.get();
-
+  
     const fetchedTodos = [];
     querySnapshot.forEach((doc) => {
-      fetchedTodos.push(doc.data());
+      const data = doc.data();
+      fetchedTodos.push({
+        ...data,
+        startDate: data.startDate.toDate(),
+        endDate: data.endDate.toDate(),
+      });
     });
-
+  
     setTodos(fetchedTodos);
   };
 
@@ -54,12 +57,13 @@ function TeamCalendar({ navigation }) {
   );
 
   const filteredTodos = todos.filter(
-    (todo) => format(new Date(todo.startDate), 'yyyy-MM-dd') === selectedDate,
+    (todo) => format(todo.startDate, 'yyyy-MM-dd') === selectedDate,
   );
 
   const onDateSelect = (date) => {
     setSelectedDate(date.dateString);
   };
+
   return (
     <View style={styles.container}>
       <CalendarView markedDates={markedDates} onDayPress={onDateSelect} />

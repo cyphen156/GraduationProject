@@ -8,6 +8,7 @@ import IconLeftButton from '../../components/IconLeftButton';
 import { useEffect } from 'react';
 import WriteTeamTodos from '../../components/WriteTeamTodos';
 import TeamContext from './TeamContext';
+import { useUserContext } from '../../context/UserContext';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -43,25 +44,28 @@ function CreateTodos({ navigation }) {
         ),
     });
     },[navigation])
-
+  const {user}= useUserContext();
   const { teamId } = useContext(TeamContext);
-  const [task, setTask] = useState('');
-
+  const [task, setTask] = useState();
+  const [discription, setDiscription] = useState();
   const [endDate, setEndDate] =useState(log ? new Date(log.date) : new Date());
   const [startDate, setStartDate] = useState(log ? new Date(log.date) : new Date());
   const log = new Date();
   console.log("startDate", startDate)
   const addTodo = async () => {
-    const uid = auth.currentUser.uid;
+    const startDateTimestamp = firebase.firestore.Timestamp.fromDate(startDate);
+    const endDateTimestamp = firebase.firestore.Timestamp.fromDate(endDate);
+
     await firestore.collection(`teams`).doc(teamId).collection("todos").add({
       task,
-      uid,
-      startDate,
-      endDate,
+      worker: user.displayName,
+      startDate: startDateTimestamp,
+      endDate: endDateTimestamp,
     });
 
     // Reset fields and navigate back
     setTask('');
+    setDiscription('');
     setStartDate(log);
     setEndDate(log);
     navigation.goBack();
@@ -69,7 +73,6 @@ function CreateTodos({ navigation }) {
 
   return (
     <View style={styles.container}>
-      
       <TextInput 
         style={styles.input}
         placeholder="제목" 
@@ -77,7 +80,13 @@ function CreateTodos({ navigation }) {
         value={task} 
         onChangeText={setTask} 
         />
-
+      <TextInput 
+        style={styles.input}
+        placeholder="설명" 
+        placeholderTextColor="#BBBBBB" 
+        value={discription} 
+        onChangeText={setDiscription} 
+        />
       <Text style={styles.boldText}>시작</Text>
       <WriteTeamTodos 
                     date={startDate}
@@ -86,12 +95,10 @@ function CreateTodos({ navigation }) {
       <WriteTeamTodos 
                     date={endDate}
                     onChangeDate={setEndDate} />
-
       <View style={styles.buttonContainer}>
         <Button title="그룹 할 일 생성" onPress={addTodo} />
       </View>
     </View>
-    
   );
 }
 

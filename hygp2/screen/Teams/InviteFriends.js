@@ -71,16 +71,16 @@ const InviteFriends = () => {
         batch.set(newUserRef, userDataWithHostField);
 
         //초대메세지 ...-> 수정할 사항 디코에 메모
-        messagesRef.add({
-          text: `${user.displayName}님 환영합니다.`,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          user: {
-            id: user.id,
-            displayName: user.displayName,
-            //email: user.email,
-            photoURL: user.photoURL
-          }
-        });
+      //   messagesRef.add({
+      //     text: `${user.displayName}님 환영합니다.`,
+      //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      //     user: {
+      //       id: user.id,
+      //       displayName: user.displayName,
+      //       //email: user.email,
+      //       photoURL: user.photoURL
+      //     }
+      //   });
       });
       await batch.commit();
       navigation.goBack();

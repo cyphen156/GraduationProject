@@ -2,9 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Search from "./Search"
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import CreateTeamScreen from "./Teams/CreateTeam";
 import TeamListScreen from "./Teams/TeamList";
-import AgendaCalendar from "./Calendars/AgendaCalendar";
 import { useState } from "react";
 import TeamContext from "./Teams/TeamContext";
 import TeamStackNavigator from "./Teams/TeamStack";
@@ -34,10 +32,7 @@ function SubTab () {
                         <Icon name="view-stream" size={size} color={color} />
                         ),
                     }}
-                />            
-                {/* <Tab.Screen name="CreateTeam" component={CreateTeamScreen} options={{
-                    tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/>  */}
+                />
                 <Tab.Screen name="CreateTodos" 
                     component={CreateTodos} 
                     options={{
@@ -45,15 +40,9 @@ function SubTab () {
                         tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 }}/> 
                 <Tab.Screen name="TeamCalendar" 
-                    component={AgendaCalendar} 
-                    options={{
-                        tabBarLabel: 'TeamCalendar',
-                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
-                <Tab.Screen name="TeamCalendar2" 
                     component={TeamCalendar} 
                     options={{
-                        tabBarLabel: 'TeamCalendar2',
+                        tabBarLabel: 'TeamCalendar',
                         tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 }}/> 
             </Tab.Navigator>

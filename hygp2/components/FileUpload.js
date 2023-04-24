@@ -76,18 +76,6 @@ const navigation = useNavigation();
 return (
     <View style={styles.mainBody}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ fontSize: 30, textAlign: 'center' }}>
-          React Native File Upload Example
-        </Text>
-        <Text
-          style={{
-            fontSize: 25,
-            marginTop: 20,
-            marginBottom: 30,
-            textAlign: 'center',
-          }}>
-          www.aboutreact.com
-        </Text>
       </View>
       {/*Showing the data of selected Single file*/}
       {singleFile != null ? (

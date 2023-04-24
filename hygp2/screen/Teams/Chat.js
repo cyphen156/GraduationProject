@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Button } from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -8,6 +8,7 @@ import InviteButton from './InviteButton';
 import TeamContext from './TeamContext';
 import { useUserContext } from '../../context/UserContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import FileUpload from '../../components/FileUpload';
 
 
 const firestore = firebase.firestore();
@@ -90,7 +91,7 @@ function Chat({navigation}) {
     const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
       const newSenders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        if(user.id === Object.keys(data)[0] && Object.values(data)[0] === true){
+        if (doc.id === user.id && data.ishost === true) {
           console.log("채팅방 데이터2:", data)
           setHost(true);
         }
@@ -125,12 +126,32 @@ function Chat({navigation}) {
   }, [teamId, currentUser]);
   
   // 나가기 버튼
-  const exitButton = () => {
-    if(host){
-      console.log("나가기 버튼", host)
+  const exitButton = async () => {
+    if (host) {
+      console.log("나가기 버튼", host);
+  
+      const deleteCollection = async (collectionRef) => {
+        const query = collectionRef.limit(100);
+        const querySnapshot = await query.get();
+  
+        const batchSize = querySnapshot.size;
+        if (batchSize === 0) {
+          return;
+        }
+  
+        const batch = firestore.batch();
+        querySnapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+  
+        await batch.commit();
+        await deleteCollection(collectionRef);
+      };
       // 하위 컬렉션 직접 지워야 함. 
-      //firestore.collection('teams').doc(teamId).collection('invitedUsers').delete();
-      firestore.collection('teams').doc(teamId).delete();
+      await deleteCollection(firestore.collection('teams').doc(teamId).collection('invitedUsers'));
+      await deleteCollection(firestore.collection('teams').doc(teamId).collection('messages'));
+      await deleteCollection(firestore.collection('teams').doc(teamId).collection('todos'));
+      await firestore.collection('teams').doc(teamId).delete();
       navigation.pop();
     }
     else{
@@ -142,9 +163,17 @@ function Chat({navigation}) {
     }
   }
 
+   const renderActions = () => {
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Icon  name="add" size={50} color="#0084ff"/>
+      </View>
+    );
+  };
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
+        renderActions={renderActions}
         messages={messages}
         onSend={onSend}
         user={{
@@ -202,6 +231,8 @@ function Chat({navigation}) {
             />
           );
         }}
+ 
+
         renderBubble={(props) => {
           const currentMessageUserId = props.currentMessage.user._id;
           const previousMessageUserId = props.previousMessage.user?._id;
@@ -243,11 +274,14 @@ function Chat({navigation}) {
                   },
                 }}
               />
+          
             </View>
           );
         }}
         placeholder={`메시지 보내기 (${chatRoomName})`}
       />
+      
+      <FileUpload/>
     </View>
   );
 }

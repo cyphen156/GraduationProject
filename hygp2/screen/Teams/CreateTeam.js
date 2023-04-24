@@ -6,6 +6,7 @@ import '@react-native-firebase/firestore';
 import { useEffect } from 'react';
 import IconRightButton from '../../components/IconRightButton';
 import IconLeftButton from '../../components/IconLeftButton';
+import { useUserContext } from '../../context/UserContext';
 
 const CreateTeamScreen = ({ navigation }) => {
 
@@ -18,26 +19,25 @@ useEffect(() => {
 
   const [teamName, setTeamName] = useState('');
   const [teamBody, setTeamBody] = useState('');
-
+  const { user } = useUserContext();
   const handleCreateTeam = () => {
     if (!teamName.trim()) {
       Alert.alert('Error', 'Please enter a valid team name');
       return;
     }
-    const user = firebase.auth().currentUser;
 
     firebase.firestore().collection('teams').add({
       name: teamName,
       discription: teamBody,
-      createdBy: user.uid,
+      createdBy: user.id,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
       .then(async docRef => {
         const messagesRef = firebase.firestore().collection(`teams/${docRef.id}/messages`);
         const invitedUsersRef = firebase.firestore().collection(`teams/${docRef.id}/invitedUsers`);
-        await invitedUsersRef.doc(user.uid).set({
+        await invitedUsersRef.doc(user.id).set({
           userData: {
-            id: user.uid,
+            id: user.id,
             displayName: user.displayName,
             //email: user.email,
             photoURL: user.photoURL
@@ -48,7 +48,7 @@ useEffect(() => {
           text: "팀이 생성되었습니다.",
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           user: {
-            id: user.uid,
+            id: user.id,
             displayName: user.displayName,
             //email: user.email,
             photoURL: user.photoURL
