@@ -54,15 +54,11 @@ const navigation = useNavigation();
       const reference = storage().ref(` /file/${user.id}/${v4()}.${extension}`);
       console.log(`파일 업로드 : ${extension}, ${reference}` );
       if (Platform.OS === 'android'){
-        // await reference.putString(message2, 'base64', {
-        //   contentType: fileToUpload[0].type,
-        // });
-
-      const task = reference.putString(base64, 'base64', metadata);
-      task.on('state_changed', taskSnapshot => {
-        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
-      });
-      await task;
+        const task = reference.putString(base64, 'base64', metadata);
+        task.on('state_changed', taskSnapshot => {
+          console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+        });
+        await task;
       } 
       else {
         await reference.putFile(fileToUpload[0].uri);
