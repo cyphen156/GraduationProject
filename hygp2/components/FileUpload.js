@@ -13,10 +13,13 @@ import { createFile } from '../lib/files';
 import {useUserContext} from '../context/UserContext';
 import {v4} from 'uuid';
 import { PermissionsAndroid } from 'react-native';
+import RNFetchBlob from 'rn-fetch-blob';
 
 function FileUpload() {
 
 const [singleFile, setSingleFile] = useState(null);
+const [blob, setBlob] = useState(null);
+const [metadata, setMetadata] = useState(null);
 const {user} = useUserContext();
 const navigation = useNavigation();
 
@@ -28,26 +31,45 @@ const navigation = useNavigation();
       console.log('Permission denied');
       return;
     }
+     
     if (singleFile != null) {
       // If file selected then create FormData
       const fileToUpload = singleFile;
       // navigation.pop();
+      if (!fileToUpload[0].uri) {
+        console.error('DocumentPicker Error: URI not found');
+        return;
+      }
 
+      // 파일을 Blob 형태로 변환
+      const {uri} = fileToUpload[0];
+      const path = uri.startsWith('file://') ? uri.slice(7) : uri; // file:// 접두사 제거
+      const base64 = await RNFetchBlob.fs.readFile(path, 'base64');
+      const metadata = {
+        contentType: fileToUpload[0].type,
+      };
+      console.log("fileToUpload : ", fileToUpload)
+      // Firebase Storage에 업로드
       const extension = fileToUpload[0].name.split('.').pop(); // 확장자
       const reference = storage().ref(` /file/${user.id}/${v4()}.${extension}`);
       console.log(`파일 업로드 : ${extension}, ${reference}` );
-      const message2 = '5b6p5Y+344GX44G+44GX44Gf77yB44GK44KB44Gn44Go44GG77yB';
-
       if (Platform.OS === 'android'){
-          await reference.putString(message2, 'base64', {
-            contentType: fileToUpload[0].type,
-          });
-        } else {
-          await reference.putFile(fileToUpload[0].uri);
-        }
-        const photoURL = await reference.getDownloadURL();
-        console.log("photoURL : ", photoURL);
-        // await createFile({user, fileToUpload , photoURL});
+        // await reference.putString(message2, 'base64', {
+        //   contentType: fileToUpload[0].type,
+        // });
+
+      const task = reference.putString(base64, 'base64', metadata);
+      task.on('state_changed', taskSnapshot => {
+        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+      });
+      await task;
+      } 
+      else {
+        await reference.putFile(fileToUpload[0].uri);
+      }
+      const photoURL = await reference.getDownloadURL();
+      console.log("photoURL : ", photoURL);
+      // await createFile({user, fileToUpload , photoURL});
       }
   }, [singleFile, user, navigation]);
 
@@ -59,16 +81,14 @@ const navigation = useNavigation();
         // Provide which type of file you want user to pick
         type: [DocumentPicker.types.allFiles],
         // There can me more options as well
-        // DocumentPicker.types.allFiles
-        // DocumentPicker.types.images
-        // DocumentPicker.types.plainText
-        // DocumentPicker.types.audio
-        // DocumentPicker.types.pdf
+
       });
+
       // Printing the log realted to the file
       console.log('res : ' + JSON.stringify(res));
       // Setting the state to show single file attributes
-      setSingleFile(res);
+
+    setSingleFile(res);
     } catch (err) {
       setSingleFile(null);
       // Handling any exception (If any)
