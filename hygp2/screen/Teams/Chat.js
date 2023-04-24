@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
-import { GiftedChat, Avatar, Send, SystemMessage, Bubble } from 'react-native-gifted-chat';
+import { View, StyleSheet, Text, Button, Image } from 'react-native';
+import { GiftedChat, Avatar, Send, SystemMessage, Bubble, Message } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -115,17 +115,9 @@ function Chat({navigation}) {
   const onSend = useCallback((newMessages = []) => {
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const message = newMessages[0];
+    console.log("onSend : " ,message)
     if (message.file) {
-      // 파일 메시지를 전송합니다.
-      chatMessagesRef.add({
-        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
-        file: message.file,
-        user: {
-          _id: user.id, // 현재 로그인한 사용자의 UID 사용
-          name: user.displayName,
-          avatar: user.photoURL,
-        },
-      });
+      
     } else {
       // 일반 메시지 전송
       chatMessagesRef.add({
@@ -193,26 +185,49 @@ function Chat({navigation}) {
 
     //Upload File누르면 데이터 받아옴
     const uploadImage = (url, fileName, user) => {
-      
       setIsCheck((e) => !e);
-      const onSend = newMessages => setMessages(GiftedChat.append(messages, newMessages));
-      console.log("user",user);
       user = {
         _id: user.id,
         name: user.displayName,
         avatar: user.photoURL,
       };
-        const message = {
-          _id: uuidv4(), // 랜덤한 값을 생성하여 메시지의 _id로 지정
-          user,
-          text: fileName,
-          file: url,
-        };
-    
-      setMessages(previousMessages => GiftedChat.append(previousMessages, message));
-      console.log("chat messages: ",messages);
+      const message = {
+        _id: uuidv4(),
+        user,
+        text: fileName,
+        file: url,
+        createdAt: new Date(),
+      };
+      const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
+      chatMessagesRef.add({
+        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+        file: message.file,
+        text: fileName,
+        user,
+      }).then(() => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, message));
+        CustomMessage(message);
+      }).catch((error) => {
+        console.log("Error sending message: ", error);
+      });
+     
     }
-  
+
+    const CustomMessage = (props) => {
+      const { currentMessage } = props;
+    
+      if (currentMessage.file) {
+        return (
+        
+          <View style={{ padding: 5 }}>
+            <Image source={{ uri: currentMessage.file }} style={{ width: 200, height: 200 }} />
+          </View>
+        );
+      }
+    
+      return <Message {...props} />;
+    };
+
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
@@ -228,6 +243,7 @@ function Chat({navigation}) {
         renderAvatarOnTop={true}
         showUserAvatar={true}
         messagesContainerStyle={{ backgroundColor: '#f0f0f0' }}
+        renderMessage={(messageProps) => <CustomMessage {...messageProps} />}
         listViewProps={{
           style: {
             backgroundColor: '#f0f0f0',
@@ -235,6 +251,7 @@ function Chat({navigation}) {
         }}
         //renderUsernameOnMessage={true}
         renderAvatar={(props) => {
+          //console.log("props : ",props)
           const sender = senders.find((s) => s._id === props.currentMessage.user._id);
           if (!sender) {
             return (
@@ -257,6 +274,7 @@ function Chat({navigation}) {
             );
           }
         }}
+        // 채팅 보내기
         renderSend={(props) => {
           return (
             <Send {...props}>
