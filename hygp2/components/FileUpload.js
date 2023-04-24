@@ -14,14 +14,16 @@ import {useUserContext} from '../context/UserContext';
 import {v4} from 'uuid';
 import { PermissionsAndroid } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
+import firestore from '@react-native-firebase/firestore';
 
-function FileUpload() {
+function FileUpload({teamId, onClick}) {
 
 const [singleFile, setSingleFile] = useState(null);
 const [blob, setBlob] = useState(null);
 const [metadata, setMetadata] = useState(null);
 const {user} = useUserContext();
 const navigation = useNavigation();
+const teamsId = teamId;
 
  const uploadImage = useCallback(async () => {
 
@@ -51,7 +53,9 @@ const navigation = useNavigation();
       console.log("fileToUpload : ", fileToUpload)
       // Firebase Storage에 업로드
       const extension = fileToUpload[0].name.split('.').pop(); // 확장자
-      const reference = storage().ref(` /file/${user.id}/${v4()}.${extension}`);
+      let fileName = v4();
+      const reference = storage().ref(` /file/${user.id}/${fileName}.${extension}`);
+      fileName = `${fileName}.${extension}`
       console.log(`파일 업로드 : ${extension}, ${reference}` );
       if (Platform.OS === 'android'){
         const task = reference.putString(base64, 'base64', metadata);
@@ -63,9 +67,19 @@ const navigation = useNavigation();
       else {
         await reference.putFile(fileToUpload[0].uri);
       }
-      const photoURL = await reference.getDownloadURL();
-      console.log("photoURL : ", photoURL);
-      // await createFile({user, fileToUpload , photoURL});
+      const photoURL = await reference.getDownloadURL().then(url => {
+        // file컬렉션 만들기
+        firestore().collection(`teams`).doc(teamsId).collection("files").add({
+          id : user.id,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          photoURL : url,
+          fileName : fileName,
+            })
+          //Chat.js로 데이터 옮기기
+          onClick(url, fileName, user);
+          return url;
+        } 
+      );
       }
   }, [singleFile, user, navigation]);
 
@@ -77,7 +91,6 @@ const navigation = useNavigation();
         // Provide which type of file you want user to pick
         type: [DocumentPicker.types.allFiles],
         // There can me more options as well
-
       });
 
       // Printing the log realted to the file
@@ -98,6 +111,27 @@ const navigation = useNavigation();
       }
     }
   };
+
+
+const downloadFile = async (photoURL, fileName) => {
+  const dirs = RNFetchBlob.fs.dirs;
+  const localPath = `${dirs.DownloadDir}/${fileName}`;
+  
+  try {
+    const response = await RNFetchBlob.config({
+      fileCache: true,
+      appendExt: 'png',
+      path: localPath,
+    }).fetch('GET', photoURL);
+
+    console.log('File downloaded to:', response.path());
+  } catch (err) {
+    console.error('Download failed:', err);
+  }
+};
+
+// 파일 다운로드 실행
+// downloadFile(photoURL, result.name);
   //권한 부여
   const requestPermission = async () => {
     try {
@@ -115,6 +149,15 @@ const navigation = useNavigation();
       return false;
     }
   };
+
+  // fileName, url을 Chat.js로 보내야 함.
+  // const handleClick = () => {
+  //   let data = 1 ;
+  //   data += 1;
+  //   onClick(data);
+  //   console.log(data)
+  // };
+
 return (
     <View style={styles.mainBody}>
       <View style={{ alignItems: 'center' }}>
@@ -143,6 +186,13 @@ return (
         activeOpacity={0.5}
         onPress={uploadImage}>
         <Text style={styles.buttonTextStyle}>Upload File</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        activeOpacity={0.5}
+        onPress={downloadFile}
+        >
+           <Text style={styles.buttonTextStyle}>다운로드</Text>
       </TouchableOpacity>
     </View>
   );

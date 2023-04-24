@@ -9,7 +9,7 @@ import TeamContext from './TeamContext';
 import { useUserContext } from '../../context/UserContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FileUpload from '../../components/FileUpload';
-
+import { v4 as uuidv4 } from 'uuid';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -19,7 +19,7 @@ function Chat({navigation}) {
   const { teamId } = useContext(TeamContext);
   const [chatRoomName, setChatRoomName] = useState('');
   const [host, setHost] = useState(false);
-  const [isCheck, setCheck] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
 
   useEffect(() => {
     const teamsRef = firestore.collection('teams');
@@ -110,20 +110,35 @@ function Chat({navigation}) {
       unsubscribe();
     };
   }, [teamId, host]);
- 
+
   // 채팅 보내기
   const onSend = useCallback((newMessages = []) => {
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const message = newMessages[0];
-    chatMessagesRef.add({
-      text: message.text,
-      createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
-      user: {
-        _id: user.id, // 현재 로그인한 사용자의 UID 사용
-        name: user.displayName,
-        avatar: user.photoURL,
-      },
-    });
+    if (message.file) {
+      // 파일 메시지를 전송합니다.
+      chatMessagesRef.add({
+        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+        file: message.file,
+        user: {
+          _id: user.id, // 현재 로그인한 사용자의 UID 사용
+          name: user.displayName,
+          avatar: user.photoURL,
+        },
+      });
+    } else {
+      // 일반 메시지 전송
+      chatMessagesRef.add({
+        text: message.text,
+        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+        user: {
+          _id: user.id, // 현재 로그인한 사용자의 UID 사용
+          name: user.displayName,
+          avatar: user.photoURL,
+        },
+      });
+    }
+
   }, [teamId, currentUser]);
   
   // 나가기 버튼
@@ -170,11 +185,34 @@ function Chat({navigation}) {
         <Icon  name="add" size={50} color="#0084ff"
          // e로 상태값을 받아왔다. 클릭시 상태값은 !상태값이므로 값이 반전된다 false -> true
          onPress={() => {
-          setCheck((e) => !e);
+          setIsCheck((e) => !e);
         }}/>
       </View>
     );
   };
+
+    //Upload File누르면 데이터 받아옴
+    const uploadImage = (url, fileName, user) => {
+      
+      setIsCheck((e) => !e);
+      const onSend = newMessages => setMessages(GiftedChat.append(messages, newMessages));
+      console.log("user",user);
+      user = {
+        _id: user.id,
+        name: user.displayName,
+        avatar: user.photoURL,
+      };
+        const message = {
+          _id: uuidv4(), // 랜덤한 값을 생성하여 메시지의 _id로 지정
+          user,
+          text: fileName,
+          file: url,
+        };
+    
+      setMessages(previousMessages => GiftedChat.append(previousMessages, message));
+      console.log("chat messages: ",messages);
+    }
+  
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
@@ -286,7 +324,7 @@ function Chat({navigation}) {
         placeholder={`메시지 보내기 (${chatRoomName})`}
       />
         {isCheck && (
-         <FileUpload />
+          <FileUpload onClick={uploadImage} teamId={teamId}/>
         )}      
     </View>
   );
