@@ -76,6 +76,7 @@ function Chat({navigation}) {
             text: data.text,
             createdAt: data.createdAt.toDate(),
             user: data.user,
+            file: data.file,
           };
         });
         setMessages(newMessages);
@@ -210,15 +211,13 @@ function Chat({navigation}) {
       }).catch((error) => {
         console.log("Error sending message: ", error);
       });
-     
     }
 
     const CustomMessage = (props) => {
       const { currentMessage } = props;
-    
+      //console.log("currentMessage", currentMessage)
       if (currentMessage.file) {
         return (
-        
           <View style={{ padding: 5 }}>
             <Image source={{ uri: currentMessage.file }} style={{ width: 200, height: 200 }} />
           </View>
@@ -228,6 +227,20 @@ function Chat({navigation}) {
       return <Message {...props} />;
     };
 
+    const renderMessage = (props) => {
+      const { currentMessage } = props;
+      if (currentMessage.file) {
+        return (
+          <View style={{ padding: 5 }}>
+            <Image
+              source={{ uri: currentMessage.file }}
+              style={{ width: 200, height: 200 }}
+            />
+          </View>
+        );
+      }
+      return <Message {...props} />;
+    };
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
@@ -243,12 +256,14 @@ function Chat({navigation}) {
         renderAvatarOnTop={true}
         showUserAvatar={true}
         messagesContainerStyle={{ backgroundColor: '#f0f0f0' }}
-        renderMessage={(messageProps) => <CustomMessage {...messageProps} />}
+        renderMessage={renderMessage}
         listViewProps={{
           style: {
             backgroundColor: '#f0f0f0',
           },
         }}
+        
+        
         //renderUsernameOnMessage={true}
         renderAvatar={(props) => {
           //console.log("props : ",props)
