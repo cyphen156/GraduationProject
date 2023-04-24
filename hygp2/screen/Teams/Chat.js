@@ -19,6 +19,7 @@ function Chat({navigation}) {
   const { teamId } = useContext(TeamContext);
   const [chatRoomName, setChatRoomName] = useState('');
   const [host, setHost] = useState(false);
+  const [isCheck, setCheck] = useState(false);
 
   useEffect(() => {
     const teamsRef = firestore.collection('teams');
@@ -166,7 +167,11 @@ function Chat({navigation}) {
    const renderActions = () => {
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Icon  name="add" size={50} color="#0084ff"/>
+        <Icon  name="add" size={50} color="#0084ff"
+         // e로 상태값을 받아왔다. 클릭시 상태값은 !상태값이므로 값이 반전된다 false -> true
+         onPress={() => {
+          setCheck((e) => !e);
+        }}/>
       </View>
     );
   };
@@ -280,8 +285,9 @@ function Chat({navigation}) {
         }}
         placeholder={`메시지 보내기 (${chatRoomName})`}
       />
-      
-      <FileUpload/>
+        {isCheck && (
+         <FileUpload />
+        )}      
     </View>
   );
 }

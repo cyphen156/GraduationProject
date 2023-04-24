@@ -12,6 +12,7 @@ import storage from '@react-native-firebase/storage';
 import { createFile } from '../lib/files';
 import {useUserContext} from '../context/UserContext';
 import {v4} from 'uuid';
+import { PermissionsAndroid } from 'react-native';
 
 function FileUpload() {
 
@@ -20,11 +21,17 @@ const {user} = useUserContext();
 const navigation = useNavigation();
 
  const uploadImage = useCallback(async () => {
-    // Check if any file is selected or not
+
+    // 권한 요청
+    const hasPermission = await requestPermission();
+    if (!hasPermission) {
+      console.log('Permission denied');
+      return;
+    }
     if (singleFile != null) {
       // If file selected then create FormData
       const fileToUpload = singleFile;
-      //navigation.pop();
+      // navigation.pop();
 
       const extension = fileToUpload[0].name.split('.').pop(); // 확장자
       const reference = storage().ref(` /file/${user.id}/${v4()}.${extension}`);
@@ -39,9 +46,11 @@ const navigation = useNavigation();
           await reference.putFile(fileToUpload[0].uri);
         }
         const photoURL = await reference.getDownloadURL();
-        await createFile({user, fileToUpload , photoURL});
+        console.log("photoURL : ", photoURL);
+        // await createFile({user, fileToUpload , photoURL});
       }
   }, [singleFile, user, navigation]);
+
 // file:///data/user/0/com.hygp2/cache/rn_image_picker_lib_temp_17a66d7d-f21d-4900-9b1a-66b6275d14ab.jpg
   const selectFile = async () => {
     // Opening Document Picker to select one file
@@ -73,6 +82,23 @@ const navigation = useNavigation();
       }
     }
   };
+  //권한 부여
+  const requestPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission',
+          message: 'App needs access to your storage to upload files.',
+          buttonPositive: 'OK',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
 return (
     <View style={styles.mainBody}>
       <View style={{ alignItems: 'center' }}>
@@ -86,8 +112,8 @@ return (
           {'\n'}
           File Size: {singleFile[0].size ? singleFile[0].size : ''}
           {'\n'}
-          URI: {singleFile[0].uri ? singleFile[0].uri : ''}
-          {'\n'}
+          {/* URI: {singleFile[0].uri ? singleFile[0].uri : ''}
+          {'\n'} */}
         </Text>
       ) : null}
       <TouchableOpacity
@@ -108,9 +134,9 @@ return (
 
 const styles = StyleSheet.create({
     mainBody: {
-      flex: 1,
+      flex: 0.7,
       justifyContent: 'center',
-      padding: 20,
+  
     },
     buttonStyle: {
       backgroundColor: '#307ecc',
