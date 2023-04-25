@@ -113,23 +113,6 @@ const teamsId = teamId;
   };
 
 
-const downloadFile = async (photoURL, fileName) => {
-  const dirs = RNFetchBlob.fs.dirs;
-  const localPath = `${dirs.DownloadDir}/${fileName}`;
-  
-  try {
-    const response = await RNFetchBlob.config({
-      fileCache: true,
-      appendExt: 'png',
-      path: localPath,
-    }).fetch('GET', photoURL);
-
-    console.log('File downloaded to:', response.path());
-  } catch (err) {
-    console.error('Download failed:', err);
-  }
-};
-
 // 파일 다운로드 실행
 // downloadFile(photoURL, result.name);
   //권한 부여
@@ -186,13 +169,6 @@ return (
         activeOpacity={0.5}
         onPress={uploadImage}>
         <Text style={styles.buttonTextStyle}>Upload File</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.buttonStyle}
-        activeOpacity={0.5}
-        onPress={downloadFile}
-        >
-           <Text style={styles.buttonTextStyle}>다운로드</Text>
       </TouchableOpacity>
     </View>
   );

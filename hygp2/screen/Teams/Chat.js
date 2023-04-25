@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet, Text, Button, Image } from 'react-native';
+import { View, StyleSheet, Text, Button, Image, Pressable } from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble, Message } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -10,6 +10,7 @@ import { useUserContext } from '../../context/UserContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FileUpload from '../../components/FileUpload';
 import { v4 as uuidv4 } from 'uuid';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -206,39 +207,61 @@ function Chat({navigation}) {
         text: fileName,
         user,
       }).then(() => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, message));
-        CustomMessage(message);
+        //setMessages(previousMessages => GiftedChat.append(previousMessages, message));
       }).catch((error) => {
         console.log("Error sending message: ", error);
       });
     }
+    //파일 다운로드 하기
+    const downloadFile = async (photoURL, fileName) => {
+      const dirs = RNFetchBlob.fs.dirs;
+      const localPath = `${dirs.DownloadDir}/${fileName}`;
+      
+      try {
+        const response = await RNFetchBlob.config({
+          fileCache: true,
+          appendExt: 'png',
+          path: localPath,
+        }).fetch('GET', photoURL);
 
-    const CustomMessage = (props) => {
-      const { currentMessage } = props;
-      //console.log("currentMessage", currentMessage)
-      if (currentMessage.file) {
-        return (
-          <View style={{ padding: 5 }}>
-            <Image source={{ uri: currentMessage.file }} style={{ width: 200, height: 200 }} />
-          </View>
-        );
+        console.log('File downloaded to:', response.path());
+      } catch (err) {
+        console.error('Download failed:', err);
       }
-    
-      return <Message {...props} />;
     };
 
+    // message에 파일이 있는 경우
     const renderMessage = (props) => {
       const { currentMessage } = props;
       if (currentMessage.file) {
-        return (
-          <View style={{ padding: 5 }}>
-            <Image
-              source={{ uri: currentMessage.file }}
-              style={{ width: 200, height: 200 }}
-            />
-          </View>
-        );
-      }
+        const extension = currentMessage.text.split('.');
+        switch (extension[1]) {
+          case "png":
+          case "jpg":
+          case "jpeg":
+            return (
+              <View style={{ padding: 5 }}>
+                <Image 
+                  source={{uri : currentMessage.file}}
+                  style={{ width: 200, height: 200 }}
+                />
+              </View>
+            );
+
+          default:
+            return (
+              <Pressable 
+                style={{ padding: 5 }}
+                onPress={() => downloadFile(currentMessage.file, currentMessage.text)}>
+                <Image 
+                  source={require('../../assets/images/fileImg.png')}
+                  style={{ width: 50, height: 50 }}
+                />
+                <Text>{currentMessage.text}</Text>
+              </Pressable>
+            );
+        }
+      } 
       return <Message {...props} />;
     };
   return (
