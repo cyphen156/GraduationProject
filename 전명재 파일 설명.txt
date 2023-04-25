@@ -3,39 +3,3 @@
 2. 그룹 삭제(방장이 나가면 삭제)
 3. 그룹에서 나가기(방장 제외)
 /////////////////////////
-
-먼저, 이미 업로드된 파일의 참조를 가져옵니다. 이를 위해 파일이 저장된 경로를 알아야 합니다. 이 예에서는 result.name을 사용하여 파일의 참조를 가져옵니다.
-
-import storage from '@react-native-firebase/storage';
-
-const reference = storage().ref(result.name);
-
-파일의 다운로드 URL을 가져옵니다. 이 URL을 사용하여 파일을 다운로드할 수 있습니다.
-
-const downloadURL = await reference.getDownloadURL();
-
-다운로드 URL을 사용하여 파일을 다운로드합니다. 이 작업에는 rn-fetch-blob 
-라이브러리를 사용할 수 있습니다. 다운로드할 로컬 경로를 지정하고 config 메서드를 
-사용하여 다운로드를 설정한 다음, 다운로드 URL로 요청을 보냅니다.
-
-import RNFetchBlob from 'rn-fetch-blob';
-
-const downloadFile = async (downloadURL, fileName) => {
-  const dirs = RNFetchBlob.fs.dirs;
-  const localPath = `${dirs.DownloadDir}/${fileName}`;
-  
-  try {
-    const response = await RNFetchBlob.config({
-      fileCache: true,
-      appendExt: 'png',
-      path: localPath,
-    }).fetch('GET', downloadURL);
-
-    console.log('File downloaded to:', response.path());
-  } catch (err) {
-    console.error('Download failed:', err);
-  }
-};
-
-// 파일 다운로드 실행
-downloadFile(downloadURL, result.name);

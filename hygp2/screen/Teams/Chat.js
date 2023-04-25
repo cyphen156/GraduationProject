@@ -78,6 +78,7 @@ function Chat({navigation}) {
             createdAt: data.createdAt.toDate(),
             user: data.user,
             file: data.file,
+            size: data.size,
           };
         });
         setMessages(newMessages);
@@ -117,7 +118,6 @@ function Chat({navigation}) {
   const onSend = useCallback((newMessages = []) => {
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const message = newMessages[0];
-    console.log("onSend : " ,message)
     if (message.file) {
       
     } else {
@@ -186,18 +186,20 @@ function Chat({navigation}) {
   };
 
     //Upload File누르면 데이터 받아옴
-    const uploadImage = (url, fileName, user) => {
+    const uploadImage = (url, fileName, user, size) => {
       setIsCheck((e) => !e);
       user = {
         _id: user.id,
         name: user.displayName,
         avatar: user.photoURL,
       };
+
       const message = {
         _id: uuidv4(),
         user,
         text: fileName,
         file: url,
+        size: size,
         createdAt: new Date(),
       };
       const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
@@ -205,6 +207,7 @@ function Chat({navigation}) {
         createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
         file: message.file,
         text: fileName,
+        size: message.size,
         user,
       }).then(() => {
         //setMessages(previousMessages => GiftedChat.append(previousMessages, message));
@@ -230,11 +233,19 @@ function Chat({navigation}) {
       }
     };
 
+    // 파일 용량 변환
+    const sizeConversion = (filesize) => {
+      var text = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+      var e = Math.floor(Math.log(filesize) / Math.log(1024));
+      return (filesize / Math.pow(1024, e)).toFixed(2) + " " + text[e];
+    };
     // message에 파일이 있는 경우
     const renderMessage = (props) => {
       const { currentMessage } = props;
       if (currentMessage.file) {
         const extension = currentMessage.text.split('.');
+
+        // 이미지 파일
         switch (extension[1]) {
           case "png":
           case "jpg":
@@ -247,17 +258,20 @@ function Chat({navigation}) {
                 />
               </View>
             );
-
+          // 나머지 파일
           default:
             return (
               <Pressable 
-                style={{ padding: 5 }}
-                onPress={() => downloadFile(currentMessage.file, currentMessage.text)}>
+                style={styles.file}
+                onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}>
                 <Image 
                   source={require('../../assets/images/fileImg.png')}
-                  style={{ width: 50, height: 50 }}
+                  style={{ width: 35, height: 35, }}
                 />
-                <Text>{currentMessage.text}</Text>
+                <View style={{ flexDirection: 'column', padding: 10}}>
+                  <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
+                  <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
+                </View>
               </Pressable>
             );
         }
@@ -391,6 +405,13 @@ const styles = StyleSheet.create({
   block: {
     marginRight: 16,
   },
+  file: {
+    padding: 5,
+    flexDirection: 'row', 
+    backgroundColor: '#fff' , 
+    margin: 10, 
+    alignItems: 'center',
+  }
 });
 
 export default Chat;

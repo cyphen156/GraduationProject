@@ -33,11 +33,10 @@ const teamsId = teamId;
       console.log('Permission denied');
       return;
     }
-     
+    
     if (singleFile != null) {
       // If file selected then create FormData
       const fileToUpload = singleFile;
-      // navigation.pop();
       if (!fileToUpload[0].uri) {
         console.error('DocumentPicker Error: URI not found');
         return;
@@ -45,12 +44,12 @@ const teamsId = teamId;
 
       // 파일을 Blob 형태로 변환
       const {uri} = fileToUpload[0];
+      const size = fileToUpload[0].size
       const path = uri.startsWith('file://') ? uri.slice(7) : uri; // file:// 접두사 제거
       const base64 = await RNFetchBlob.fs.readFile(path, 'base64');
       const metadata = {
         contentType: fileToUpload[0].type,
       };
-      console.log("fileToUpload : ", fileToUpload)
       // Firebase Storage에 업로드
       const extension = fileToUpload[0].name.split('.').pop(); // 확장자
       let fileName = v4();
@@ -68,36 +67,24 @@ const teamsId = teamId;
         await reference.putFile(fileToUpload[0].uri);
       }
       const photoURL = await reference.getDownloadURL().then(url => {
-        // file컬렉션 만들기
-        firestore().collection(`teams`).doc(teamsId).collection("files").add({
-          id : user.id,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          photoURL : url,
-          fileName : fileName,
-            })
           //Chat.js로 데이터 옮기기
-          onClick(url, fileName, user);
-          return url;
+          onClick(url, fileName, user, size);
         } 
       );
       }
   }, [singleFile, user, navigation]);
 
-// file:///data/user/0/com.hygp2/cache/rn_image_picker_lib_temp_17a66d7d-f21d-4900-9b1a-66b6275d14ab.jpg
+  // 파일 선택
   const selectFile = async () => {
-    // Opening Document Picker to select one file
+
     try {
       const res = await DocumentPicker.pick({
-        // Provide which type of file you want user to pick
         type: [DocumentPicker.types.allFiles],
-        // There can me more options as well
       });
 
-      // Printing the log realted to the file
       console.log('res : ' + JSON.stringify(res));
-      // Setting the state to show single file attributes
 
-    setSingleFile(res);
+      setSingleFile(res);
     } catch (err) {
       setSingleFile(null);
       // Handling any exception (If any)
@@ -112,9 +99,6 @@ const teamsId = teamId;
     }
   };
 
-
-// 파일 다운로드 실행
-// downloadFile(photoURL, result.name);
   //권한 부여
   const requestPermission = async () => {
     try {
@@ -132,14 +116,6 @@ const teamsId = teamId;
       return false;
     }
   };
-
-  // fileName, url을 Chat.js로 보내야 함.
-  // const handleClick = () => {
-  //   let data = 1 ;
-  //   data += 1;
-  //   onClick(data);
-  //   console.log(data)
-  // };
 
 return (
     <View style={styles.mainBody}>
@@ -162,13 +138,13 @@ return (
         style={styles.buttonStyle}
         activeOpacity={0.5}
         onPress={selectFile}>
-        <Text style={styles.buttonTextStyle}>Select File</Text>
+        <Text style={styles.buttonTextStyle}>파일 선택</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.buttonStyle}
         activeOpacity={0.5}
         onPress={uploadImage}>
-        <Text style={styles.buttonTextStyle}>Upload File</Text>
+        <Text style={styles.buttonTextStyle}>파일 업로드</Text>
       </TouchableOpacity>
     </View>
   );
@@ -198,9 +174,10 @@ const styles = StyleSheet.create({
       fontSize: 16,
     },
     textStyle: {
+      borderRadius: 20,
       backgroundColor: '#fff',
       fontSize: 15,
-      marginTop: 16,
+      marginTop: 5,
       marginLeft: 35,
       marginRight: 35,
       textAlign: 'center',
