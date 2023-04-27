@@ -2,6 +2,7 @@ import Chat from "./Chat";
 import InviteFriends from "./InviteFriends";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+
 const TeamStack = createNativeStackNavigator();
 
 function TeamStackNavigator() {

@@ -24,6 +24,7 @@ import TeamListScreen from "./Teams/TeamList";
 import {useNavigation} from '@react-navigation/native'
 import CalendarScreen from "./Calendar";
 import CreateTeamScreen from "./Teams/CreateTeam";
+import TodoDetail from "./Teams/TodoDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -101,6 +102,7 @@ function RootStack() {
                       component={CreateTeamScreen}
                       options={{title: '팀 생성', headerBackTitle: '뒤로가기'}}
                       /> 
+                        <Stack.Screen name="TodoDetail" component={TodoDetail} />
                 </>
             ) : (
                 <>

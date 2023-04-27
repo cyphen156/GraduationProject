@@ -1,11 +1,13 @@
 import { eachDayOfInterval, format, startOfDay } from 'date-fns';
 import { useState, useMemo, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import CalendarView from '../../components/CalendarView';
 import TeamContext from '../Teams/TeamContext';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const firestore = firebase.firestore();
 
@@ -14,6 +16,8 @@ function TeamCalendar({ navigation }) {
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const colors = ["#00adf5", "#f0e68c", "#5f9ea0", "#ffa500"]; // 다양한 색상 배열 추가
+  const [taskState, setTaskState] = useState(false); // 작업 진행, 완료 토글버튼
+  const navigation2 = useNavigation(); 
 
   useEffect(() => {
     const teamsRef = firestore.collection('teams');
@@ -131,6 +135,31 @@ function TeamCalendar({ navigation }) {
   //   setSelectedDate(date.dateString);
   // };
 
+  // 작업 진행 버튼
+  const toggleIsDone = () => {
+    setTaskState((e) => !e); 
+  }
+  //삭제 버튼
+  const onAskRemove = () => {
+    Alert.alert(
+      '삭제',
+      '정말로 삭제하시겠어요?',
+      [
+        {text: '취소', style: 'cancel'},
+        {
+          text: '삭제',
+          onPress: () => {
+            onRemove(log?.id);
+            navigation.pop();
+          },
+          style: 'destructive',
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  };
   return (
     <View style={styles.container}>
       {/* <View style={styles.calendarContainer}> */}
@@ -144,15 +173,25 @@ function TeamCalendar({ navigation }) {
         {filteredTodos.map((todo, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => navigation.navigate("TodoDetail", { todo })}
+          
           >
             <View style={styles.todoItem}>
               <Text style={styles.todoTitle}>{todo.task}</Text>
-              <Text style={styles.todoText}>작업자: {todo.worker}</Text>
+              <View style={styles.todoMeta}>
+                <Text style={styles.todoText}>작업자: {todo.worker}</Text>
+                <View style={styles.icons}>
+                    <Button title={taskState ? '진행 중' : '완료'} onPress={toggleIsDone} />
+                  <Icon name="edit" size={25} 
+                    style={{ marginRight: 5 }} 
+                    onPress={() => navigation.navigate("TodoDetail", { todo })}
+                  />
+                </View>
+              </View>
             </View>
           </TouchableOpacity>
-        ))}
-      </ScrollView>
+      ))}
+    </ScrollView>
+
     </View>
   );
 }
@@ -160,27 +199,34 @@ function TeamCalendar({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  calendarContainer: {
-    flex: 1,
+    backgroundColor: "#fff",
   },
   scrollView: {
-    flexGrow: 1,
+    padding: 20,
   },
   todoItem: {
+    marginBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    borderBottomColor: "#ccc",
+    paddingBottom: 10,
   },
   todoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  todoMeta: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   todoText: {
+    flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: "#888",
+  },
+  icons: {
+    flexDirection: "row",
+    alignItems: 'center',
   },
 });
 
