@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { View, StyleSheet, Text, Button, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Button, Image, Pressable, TouchableOpacity } from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble, Message } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -263,20 +263,22 @@ function Chat({navigation}) {
         // 나머지 파일
         default:
           return (
-            <Pressable 
+            <TouchableOpacity 
               style={currentUser.uid === currentMessage.user._id ? 
-                { backgroundColor:'white', paddingHorizontal: 55, paddingVertical:5, flexDirection: 'row', size: 10, alignItems: "flex-end" }
-                 : { backgroundColor:'white', paddingHorizontal: 55, paddingVertical:5, flexDirection: 'row', size: 10, alignItems: "flex-start"}}
+                {  width: 250, backgroundColor:'white', marginHorizontal: 20, padding: 20, paddingVertical:5,marginVertical: 10, flexDirection: 'row', size: 10, alignItems: "flex-end" }
+                 : { width: 250, backgroundColor:'white', marginHorizontal: 20, padding: 20, paddingVertical:5, marginVertical: 10, flexDirection: 'row', size: 10, alignItems: "flex-start"}}
               onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}>
-              <Image 
-                source={require('../../assets/images/fileImg.png')}
-                style={{ width: 35, height: 35, }}
-              />
-              <View style={{ flexDirection: 'column', padding: 10}}>
-                <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
-                <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
+              <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+                <Image 
+                  source={require('../../assets/images/fileImg.png')}
+                  style={{ width: 35, height: 35}}
+                />
+                <View style={{ flexDirection: 'column', padding: 10, width: 200}}>
+                  <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
+                  <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
+                </View>
               </View>
-            </Pressable>
+            </TouchableOpacity>
           );
       }
     } 
@@ -409,13 +411,6 @@ const styles = StyleSheet.create({
   block: {
     marginRight: 16,
   },
-  file: {
-    padding: 5,
-    flexDirection: 'row', 
-    backgroundColor: '#fff' , 
-    margin: 10, 
-    alignItems: 'center',
-  }
 });
 
 export default Chat;
