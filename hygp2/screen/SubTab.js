@@ -9,6 +9,7 @@ import TeamStackNavigator from "./Teams/TeamStack";
 import TeamCalendar from "./Calendars/TeamCalendar";
 import TeamCalendar2 from "./Calendars/TeamCalendar2";
 import CreateTodos from "./Teams/CreateTodos";
+import TeamDashboard from "./Teams/TeamDashboard";
 
 
 const Tab = createBottomTabNavigator();
@@ -51,7 +52,13 @@ function SubTab () {
                     options={{
                         tabBarLabel: 'TeamCalendar2',
                         tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
+                }}/>
+                <Tab.Screen name="TeamDashboard" 
+                    component={TeamDashboard}
+                    options={{
+                        tabBarLabel: 'TeamDashboard',
+                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                }}/>  
             </Tab.Navigator>
     )
 }
