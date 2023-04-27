@@ -13,8 +13,16 @@ import { useUserContext } from '../../context/UserContext';
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
-function CreateTodos({ navigation }) {
+function CreateTodos({ navigation, route }) {
 
+  const {user}= useUserContext();
+  const { teamId } = useContext(TeamContext);
+  const [task, setTask] = useState();
+  const [discription, setDiscription] = useState();
+  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [todoId, setTodoId] = useState(route.params?.todoId); // todoId 값을 받는다.
+  
   useEffect(() => {
     navigation.setOptions({
         title: 'CreateTodos', headerTitleAlign: 'center',
@@ -29,46 +37,65 @@ function CreateTodos({ navigation }) {
         headerRight: () => (
           <View style={{flexDirection: 'row'}}>
             <IconRightButton
-                name="search"
-                onPress={() => navigation.navigate('FriendsList')}
-                />
+              name="search"
+              onPress={() => navigation.navigate('FriendsList')}
+              />
             <IconRightButton
-                name="person-add"
-                onPress={() => navigation.navigate('FriendsAdd')}
-                />
+              name="person-add"
+              onPress={() => navigation.navigate('FriendsAdd')}
+            />
             <IconRightButton
-                name="settings"
-                onPress={() => navigation.navigate('Setting')}
-                />      
-             </View>   
+              name="settings"
+              onPress={() => navigation.navigate('Setting')}
+            />      
+          </View>   
         ),
     });
-    },[navigation])
-  const {user}= useUserContext();
-  const { teamId } = useContext(TeamContext);
-  const [task, setTask] = useState();
-  const [discription, setDiscription] = useState();
-  const [endDate, setEndDate] =useState(log ? new Date(log.date) : new Date());
-  const [startDate, setStartDate] = useState(log ? new Date(log.date) : new Date());
-  const log = new Date();
-  console.log("startDate", startDate)
-  const addTodo = async () => {
+    if (todoId) { // todoId가 있다면, 기존의 할 일을 불러온다.
+      const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
+      todosRef.doc(todoId).get().then((doc) => {
+        const data = doc.data();
+        setTask(data.task);
+        setDiscription(data.discription);
+        setStartDate(data.startDate.toDate());
+        setEndDate(data.endDate.toDate());
+      });
+    }
+  }, [todoId, teamId, navigation]);
+  
+  const saveTodo = async () => {
     const startDateTimestamp = firebase.firestore.Timestamp.fromDate(startDate);
     const endDateTimestamp = firebase.firestore.Timestamp.fromDate(endDate);
+    const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
 
-    await firestore.collection(`teams`).doc(teamId).collection("todos").add({
-      task,
-      worker: user.displayName,
-      startDate: startDateTimestamp,
-      endDate: endDateTimestamp,
-    });
+    if (todoId) { // todoId가 있다면, 기존의 할 일을 업데이트한다.
+      await todosRef.doc(todoId).update({
+        task,
+        discription,
+        worker: user.displayName,
+        startDate: startDateTimestamp,
+        endDate: endDateTimestamp,
+      });
+    } else { // todoId가 없다면, 새로운 할 일을 생성한다.
+      const docRef = await todosRef.add({
+        task,
+        discription,
+        worker: user.displayName,
+        startDate: startDateTimestamp,
+        endDate: endDateTimestamp,
+      });
+
+      // Set the new todoId
+      setTodoId(docRef.id);
+    }
 
     // Reset fields and navigate back
     setTask('');
     setDiscription('');
-    setStartDate(log);
-    setEndDate(log);
+    setStartDate(new Date());
+    setEndDate(new Date());
     navigation.goBack();
+    setTodoId(null);
   };
 
   return (
@@ -89,14 +116,14 @@ function CreateTodos({ navigation }) {
         />
       <Text style={styles.boldText}>시작</Text>
       <WriteTeamTodos 
-                    date={startDate}
-                    onChangeDate={setStartDate} />
+        date={startDate}
+        onChangeDate={setStartDate} />
       <Text style={styles.boldText}>끝</Text>
       <WriteTeamTodos 
-                    date={endDate}
-                    onChangeDate={setEndDate} />
+        date={endDate}
+        onChangeDate={setEndDate} />
       <View style={styles.buttonContainer}>
-        <Button title="그룹 할 일 생성" onPress={addTodo} />
+        <Button title="그룹 할 일 생성" onPress={saveTodo} />
       </View>
     </View>
   );

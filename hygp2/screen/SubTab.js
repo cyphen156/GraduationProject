@@ -7,9 +7,7 @@ import { useState } from "react";
 import TeamContext from "./Teams/TeamContext";
 import TeamStackNavigator from "./Teams/TeamStack";
 import TeamCalendar from "./Calendars/TeamCalendar";
-import TeamCalendar2 from "./Calendars/TeamCalendar2";
 import CreateTodos from "./Teams/CreateTodos";
-
 
 const Tab = createBottomTabNavigator();
 
@@ -46,12 +44,6 @@ function SubTab () {
                         tabBarLabel: 'TeamCalendar',
                         tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 }}/>
-                <Tab.Screen name="TeamCalendar2" 
-                    component={TeamCalendar2}
-                    options={{
-                        tabBarLabel: 'TeamCalendar2',
-                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
             </Tab.Navigator>
     )
 }

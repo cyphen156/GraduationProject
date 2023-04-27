@@ -17,7 +17,6 @@ function TeamCalendar({ navigation }) {
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const colors = ["#00adf5", "#f0e68c", "#5f9ea0", "#ffa500"]; // 다양한 색상 배열 추가
   const [taskState, setTaskState] = useState(false); // 작업 진행, 완료 토글버튼
-  const navigation2 = useNavigation(); 
 
   useEffect(() => {
     const teamsRef = firestore.collection('teams');
@@ -33,12 +32,13 @@ function TeamCalendar({ navigation }) {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         fetchedTodos.push({
+          id: doc.id, // Document ID를 추가합니다.
           ...data,
           startDate: data.startDate.toDate(),
           endDate: data.endDate.toDate(),
         });
       });
-  
+
       setTodos(fetchedTodos);
     });
   
@@ -47,35 +47,6 @@ function TeamCalendar({ navigation }) {
       unsubscribeTodos();
     };
   }, [teamId, navigation]);
-
-  // const fetchTodos = async () => {
-  //   // 모든 팀원의 Todos 가져오기
-  //   const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
-  
-  //   const querySnapshot = await todosRef.get();
-  
-  //   const fetchedTodos = [];
-  //   querySnapshot.forEach((doc) => {
-  //     const data = doc.data();
-  //     fetchedTodos.push({
-  //       ...data,
-  //       startDate: data.startDate.toDate(),
-  //       endDate: data.endDate.toDate(),
-  //     });
-  //   });
-  
-  //   setTodos(fetchedTodos);
-  // };
-  // 하루만 쓸때 사용하던 캘린더 마킹
-  // const markedDates = useMemo(
-  //   () =>
-  //     todos.reduce((acc, current) => {
-  //       const formattedDate = format(new Date(current.startDate), 'yyyy-MM-dd');
-  //       acc[formattedDate] = { marked: true };
-  //       return acc;
-  //     }, {}),
-  //   [todos],
-  // );
 
   // 시작일과 종료일사이 interver 마킹 
   const markedDates = useMemo(() => {
@@ -170,28 +141,27 @@ function TeamCalendar({ navigation }) {
         />
       {/* </View> */}
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {filteredTodos.map((todo, index) => (
-          <TouchableOpacity
-            key={index}
-          
-          >
-            <View style={styles.todoItem}>
-              <Text style={styles.todoTitle}>{todo.task}</Text>
-              <View style={styles.todoMeta}>
-                <Text style={styles.todoText}>작업자: {todo.worker}</Text>
-                <View style={styles.icons}>
+        {filteredTodos.map((todo) => {
+          const { id } = todo;
+          return(
+            <TouchableOpacity key={id}>
+              <View style={styles.todoItem}>
+                <Text style={styles.todoTitle}>{todo.task}</Text>
+                <View style={styles.todoMeta}>
+                  <Text style={styles.todoText}>작업자: {todo.worker}</Text>
+                  <View style={styles.icons}>
                     <Button title={taskState ? '진행 중' : '완료'} onPress={toggleIsDone} />
-                  <Icon name="edit" size={25} 
-                    style={{ marginRight: 5 }} 
-                    onPress={() => navigation.navigate("TodoDetail", { todo })}
-                  />
+                    <Icon name="edit" size={25} 
+                      style={{ marginRight: 5 }} 
+                      onPress={() => navigation.navigate("CreateTodos", { todoId: id })}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-      ))}
+            </TouchableOpacity>
+          )}
+        )}
     </ScrollView>
-
     </View>
   );
 }

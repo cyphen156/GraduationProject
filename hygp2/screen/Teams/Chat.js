@@ -199,7 +199,6 @@ function Chat({navigation}) {
   
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     try {
-      console.log(chatMessagesRef)
       await chatMessagesRef.add({
         createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
         file: message.file,
