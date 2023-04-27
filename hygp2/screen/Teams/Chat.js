@@ -118,21 +118,16 @@ function Chat({navigation}) {
   const onSend = useCallback((newMessages = []) => {
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     const message = newMessages[0];
-    if (message.file) {
-      
-    } else {
-      // 일반 메시지 전송
-      chatMessagesRef.add({
-        text: message.text,
-        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
-        user: {
-          _id: user.id, // 현재 로그인한 사용자의 UID 사용
-          name: user.displayName,
-          avatar: user.photoURL,
-        },
-      });
-    }
-
+    // 일반 메시지 전송
+    chatMessagesRef.add({
+      text: message.text,
+      createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+      user: {
+        _id: user.id, // 현재 로그인한 사용자의 UID 사용
+        name: user.displayName,
+        avatar: user.photoURL,
+      },
+    });
   }, [teamId, currentUser]);
   
   // 나가기 버튼
@@ -185,15 +180,14 @@ function Chat({navigation}) {
     );
   };
 
-  //Upload File누르면 데이터 받아옴
-  const uploadImage = (url, fileName, user, size) => {
+  const uploadImage = async (url, fileName, user, size) => {
     setIsCheck((e) => !e);
     user = {
       _id: user.id,
       name: user.displayName,
       avatar: user.photoURL,
     };
-
+  
     const message = {
       _id: uuidv4(),
       user,
@@ -202,19 +196,26 @@ function Chat({navigation}) {
       size: size,
       createdAt: new Date(),
     };
+  
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
-    chatMessagesRef.add({
-      createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
-      file: message.file,
-      text: fileName,
-      size: message.size,
-      user,
-    }).then(() => {
-      //setMessages(previousMessages => GiftedChat.append(previousMessages, message));
-    }).catch((error) => {
+    try {
+      console.log(chatMessagesRef)
+      await chatMessagesRef.add({
+        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+        file: message.file,
+        text: fileName,
+        size: message.size,
+        user,
+      });
+  
+      // Add the new message to the current message list.
+      // You may need to adjust this part depending on how you handle your state.
+      setMessages(previousMessages => [...previousMessages, message]);
+    } catch (error) {
       console.log("Error sending message: ", error);
-    });
+    }
   }
+  
   //파일 다운로드 하기
   const downloadFile = async (photoURL, fileName) => {
     const dirs = RNFetchBlob.fs.dirs;
