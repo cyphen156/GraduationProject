@@ -53,7 +53,7 @@ const teamsId = teamId;
       // Firebase Storage에 업로드
       const extension = fileToUpload[0].name.split('.').pop(); // 확장자
       let fileName = v4();
-      const reference = storage().ref(` /file/${user.id}/${fileName}.${extension}`);
+      const reference = storage().ref(`/file/${user.id}/${fileName}.${extension}`);
       fileName = `${fileName}.${extension}`
       console.log(`파일 업로드 : ${extension}, ${reference}` );
       if (Platform.OS === 'android'){

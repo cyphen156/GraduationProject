@@ -185,99 +185,103 @@ function Chat({navigation}) {
     );
   };
 
-    //Upload File누르면 데이터 받아옴
-    const uploadImage = (url, fileName, user, size) => {
-      setIsCheck((e) => !e);
-      user = {
-        _id: user.id,
-        name: user.displayName,
-        avatar: user.photoURL,
-      };
+  //Upload File누르면 데이터 받아옴
+  const uploadImage = (url, fileName, user, size) => {
+    setIsCheck((e) => !e);
+    user = {
+      _id: user.id,
+      name: user.displayName,
+      avatar: user.photoURL,
+    };
 
-      const message = {
-        _id: uuidv4(),
-        user,
-        text: fileName,
-        file: url,
-        size: size,
-        createdAt: new Date(),
-      };
-      const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
-      chatMessagesRef.add({
-        createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
-        file: message.file,
-        text: fileName,
-        size: message.size,
-        user,
-      }).then(() => {
-        //setMessages(previousMessages => GiftedChat.append(previousMessages, message));
-      }).catch((error) => {
-        console.log("Error sending message: ", error);
-      });
+    const message = {
+      _id: uuidv4(),
+      user,
+      text: fileName,
+      file: url,
+      size: size,
+      createdAt: new Date(),
+    };
+    const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
+    chatMessagesRef.add({
+      createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+      file: message.file,
+      text: fileName,
+      size: message.size,
+      user,
+    }).then(() => {
+      //setMessages(previousMessages => GiftedChat.append(previousMessages, message));
+    }).catch((error) => {
+      console.log("Error sending message: ", error);
+    });
+  }
+  //파일 다운로드 하기
+  const downloadFile = async (photoURL, fileName) => {
+    const dirs = RNFetchBlob.fs.dirs;
+    const localPath = `${dirs.DownloadDir}/${fileName}`;
+    
+    try {
+      const response = await RNFetchBlob.config({
+        fileCache: true,
+        appendExt: 'png',
+        path: localPath,
+      }).fetch('GET', photoURL);
+
+      console.log('File downloaded to:', response.path());
+    } catch (err) {
+      console.error('Download failed:', err);
     }
-    //파일 다운로드 하기
-    const downloadFile = async (photoURL, fileName) => {
-      const dirs = RNFetchBlob.fs.dirs;
-      const localPath = `${dirs.DownloadDir}/${fileName}`;
-      
-      try {
-        const response = await RNFetchBlob.config({
-          fileCache: true,
-          appendExt: 'png',
-          path: localPath,
-        }).fetch('GET', photoURL);
+  };
 
-        console.log('File downloaded to:', response.path());
-      } catch (err) {
-        console.error('Download failed:', err);
-      }
-    };
+  // 파일 용량 변환a
+  const sizeConversion = (filesize) => {
+    var text = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+    var e = Math.floor(Math.log(filesize) / Math.log(1024));
+    return (filesize / Math.pow(1024, e)).toFixed(2) + " " + text[e];
+  };
+  // message에 파일이 있는 경우
+  const renderMessage = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.file) {
+      const extension = currentMessage.text.split('.');
 
-    // 파일 용량 변환
-    const sizeConversion = (filesize) => {
-      var text = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-      var e = Math.floor(Math.log(filesize) / Math.log(1024));
-      return (filesize / Math.pow(1024, e)).toFixed(2) + " " + text[e];
-    };
-    // message에 파일이 있는 경우
-    const renderMessage = (props) => {
-      const { currentMessage } = props;
-      if (currentMessage.file) {
-        const extension = currentMessage.text.split('.');
-
-        // 이미지 파일
-        switch (extension[1]) {
-          case "png":
-          case "jpg":
-          case "jpeg":
-            return (
-              <View style={{ padding: 5 }}>
-                <Image 
-                  source={{uri : currentMessage.file}}
-                  style={{ width: 200, height: 200 }}
-                />
+      // 이미지 파일
+      switch (extension[1]) {
+        case "png":
+        case "jpg":
+        case "jpeg":
+          return (
+            <View style={currentUser.uid === currentMessage.user._id ? 
+            { paddingHorizontal: 55, paddingVertical:5, alignItems: "flex-end"}
+             : { paddingHorizontal: 55, paddingVertical:5, alignItems: "flex-start" }}>
+              <Image 
+                source={{uri : currentMessage.file}}
+                style={{ width: 200, height: 200 }}
+              />
+            </View>
+          );
+        // 나머지 파일
+        default:
+          return (
+            <Pressable 
+              style={currentUser.uid === currentMessage.user._id ? 
+                { backgroundColor:'white', paddingHorizontal: 55, paddingVertical:5, flexDirection: 'row', size: 10, alignItems: "flex-end" }
+                 : { backgroundColor:'white', paddingHorizontal: 55, paddingVertical:5, flexDirection: 'row', size: 10, alignItems: "flex-start"}}
+              onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}>
+              <Image 
+                source={require('../../assets/images/fileImg.png')}
+                style={{ width: 35, height: 35, }}
+              />
+              <View style={{ flexDirection: 'column', padding: 10}}>
+                <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
+                <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
               </View>
-            );
-          // 나머지 파일
-          default:
-            return (
-              <Pressable 
-                style={styles.file}
-                onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}>
-                <Image 
-                  source={require('../../assets/images/fileImg.png')}
-                  style={{ width: 35, height: 35, }}
-                />
-                <View style={{ flexDirection: 'column', padding: 10}}>
-                  <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
-                  <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
-                </View>
-              </Pressable>
-            );
-        }
-      } 
-      return <Message {...props} />;
-    };
+            </Pressable>
+          );
+      }
+    } 
+    return <Message {...props} />;
+  };
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
