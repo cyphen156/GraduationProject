@@ -153,7 +153,7 @@ function TeamCalendar({ navigation }) {
                     <Button title={taskState ? '진행 중' : '완료'} onPress={toggleIsDone} />
                     <Icon name="edit" size={25} 
                       style={{ marginRight: 5 }} 
-                      onPress={() => navigation.navigate("CreateTodos", { todoId: id })}
+                      onPress={() => navigation.navigate("UpdateTodos", { todoId: id })}
                     />
                   </View>
                 </View>

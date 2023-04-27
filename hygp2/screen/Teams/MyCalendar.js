@@ -10,6 +10,7 @@ import { Calendar } from 'react-native-calendars';
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
+
 function MyCalendar() {
   const { teamId } = useContext(TeamContext);
   const [todos, setTodos] = useState([]);

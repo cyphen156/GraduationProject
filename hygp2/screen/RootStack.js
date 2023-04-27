@@ -5,7 +5,6 @@ import WelcomeScreen from "./WelcomeScreen";
 import HomeScreen from "./Home";
 import { useUserContext } from "../context/UserContext";
 import MainTab from "./MainTab";
-import FileScreen from "./FileScreen";
 import {subscribeAuth} from '../lib/auth';
 import {getUser} from '../lib/user';
 import { useEffect, useState } from "react";
@@ -24,7 +23,7 @@ import TeamListScreen from "./Teams/TeamList";
 import {useNavigation} from '@react-navigation/native'
 import CalendarScreen from "./Calendar";
 import CreateTeamScreen from "./Teams/CreateTeam";
-import TodoDetail from "./Teams/TodoDetail";
+import UpdateTodos from "./Teams/UpdateTodos";
 
 const Stack = createNativeStackNavigator();
 
@@ -67,42 +66,45 @@ function RootStack() {
                       component={UploadScreen}
                       options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}                    
                     />
-                     <Stack.Screen 
+                    <Stack.Screen 
                       name="Setting"
                       component={SettingScreen}
                       options={{title: '설정', headerBackTitle: '뒤로가기'}}                    
-                     />
-                     <Stack.Screen 
+                    />
+                    <Stack.Screen 
                       name="FriendsAdd"
                       component={FriendsAddScreen}
                       options={{title: '닉네임으로 친구 추가 ', headerBackTitle: '뒤로가기'}}                    
-                     />
-                     <Stack.Screen 
+                    />
+                    <Stack.Screen 
                       name="FriendsList"
                       component={FriendsList}
                       options={{title: '친구 목록', headerBackTitle: '뒤로가기'}}                    
-                     />
-                     <Stack.Screen
+                    />
+                    <Stack.Screen
                       name='Post'
                       component={PostScreen}
                       options={{title: '게시물'}}
                       />
-                      <Stack.Screen
+                    <Stack.Screen
                       name='Modify'
                       component={ModifyScreen}
                       options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
                       />
-                      <Stack.Screen
+                    <Stack.Screen
                       name='Calendar'
                       component={CalendarScreen}
                       options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
                       />
-                      <Stack.Screen
+                    <Stack.Screen
                       name='CreateTeam'
                       component={CreateTeamScreen}
                       options={{title: '팀 생성', headerBackTitle: '뒤로가기'}}
                       /> 
-                        <Stack.Screen name="TodoDetail" component={TodoDetail} />
+                    <Stack.Screen 
+                      name="UpdateTodos" 
+                      component={UpdateTodos} 
+                      options={{title: '일정 변경', headerBackTitle: '뒤로가기'}}/>
                 </>
             ) : (
                 <>

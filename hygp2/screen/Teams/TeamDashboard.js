@@ -47,12 +47,12 @@ function TeamDashboard() {
       </View>
       <View style={styles.tableContainer}>
         <Text style={styles.tableTitle}>유저</Text>
-         <Table borderStyle={styles.table}>
+        <Table borderStyle={styles.table}>
 
-           <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText} />
+          {/* <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText} />
             {tableData.map((rowData, index) => (
             <Row key={index} data={rowData} style={styles.tableRow} textStyle={styles.tableRowText} />
-          ))}  
+          ))}   */}
 
         </Table> 
       </View>

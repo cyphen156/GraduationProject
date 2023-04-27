@@ -13,7 +13,7 @@ import { useUserContext } from '../../context/UserContext';
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
-function CreateTodos({ navigation }) {
+function UpdateTodos({ navigation, route }) {
 
   const {user}= useUserContext();
   const { teamId } = useContext(TeamContext);
@@ -21,44 +21,52 @@ function CreateTodos({ navigation }) {
   const [discription, setDiscription] = useState();
   const [endDate, setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
+  const [todoId, setTodoId] = useState(route.params?.todoId); // todoId 값을 받는다.
   
   useEffect(() => {
     navigation.setOptions({
         title: 'CreateTodos', headerTitleAlign: 'center',
-        headerLeft: () => (
-          <>
-            <IconLeftButton
-                name="Profile"
-                onPress={() => navigation.navigate('Profile')
-              }
-            />
-          </>),
+       
         headerRight: () => (
           <View style={{flexDirection: 'row'}}>
             <IconRightButton
-              name="search"
-              onPress={() => navigation.navigate('FriendsList')}
+              name="delete"
+              onPress={() => {
+                const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos")
+                todosRef.doc(todoId).delete();
+                navigation.pop();
+                }}
               />
-            <IconRightButton
-              name="person-add"
-              onPress={() => navigation.navigate('FriendsAdd')}
-            />
-            <IconRightButton
-              name="settings"
-              onPress={() => navigation.navigate('Setting')}
-            />      
+            
           </View>   
         ),
     });
-
-  }, [teamId, navigation]);
+    if (todoId) { // todoId가 있다면, 기존의 할 일을 불러온다.
+      const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
+      todosRef.doc(todoId).get().then((doc) => {
+        const data = doc.data();
+        setTask(data.task);
+        setDiscription(data.discription);
+        setStartDate(data.startDate.toDate());
+        setEndDate(data.endDate.toDate());
+      });
+    }
+  }, [todoId, teamId, navigation]);
   
   const saveTodo = async () => {
     const startDateTimestamp = firebase.firestore.Timestamp.fromDate(startDate);
     const endDateTimestamp = firebase.firestore.Timestamp.fromDate(endDate);
     const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
 
-      // todoId가 없다면, 새로운 할 일을 생성한다.
+    if (todoId) { // todoId가 있다면, 기존의 할 일을 업데이트한다.
+      await todosRef.doc(todoId).update({
+        task,
+        discription,
+        worker: user.displayName,
+        startDate: startDateTimestamp,
+        endDate: endDateTimestamp,
+      });
+    } else { // todoId가 없다면, 새로운 할 일을 생성한다.
       const docRef = await todosRef.add({
         task,
         discription,
@@ -69,7 +77,8 @@ function CreateTodos({ navigation }) {
 
       // Set the new todoId
       setTodoId(docRef.id);
-    
+    }
+
     // Reset fields and navigate back
     setTask('');
     setDiscription('');
@@ -136,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateTodos;
+export default UpdateTodos;

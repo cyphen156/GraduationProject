@@ -45,6 +45,12 @@ function SubTab () {
                         tabBarLabel: 'TeamCalendar',
                         tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 }}/>
+                <Tab.Screen name="TeamDashboard" 
+                    component={TeamDashboard} 
+                    options={{
+                        tabBarLabel: 'TeamDashboard',
+                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                }}/>
             </Tab.Navigator>
     )
 }
