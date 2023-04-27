@@ -75,3 +75,7 @@ yarn add react-native-document-picker
 FileScreen(컬렉션 고유id 생성) -> PostCard 에 usePostActions 훅 가져옴 -> 포스트 수정할 시 Modify실행
 
 yarn add react-native-easy-toast
+
+// 대시보드 라이브러리
+yarn add react-native-chart-kit react-native-table-component
+yarn add react-native-svg

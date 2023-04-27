@@ -8,6 +8,7 @@ import TeamContext from "./Teams/TeamContext";
 import TeamStackNavigator from "./Teams/TeamStack";
 import TeamCalendar from "./Calendars/TeamCalendar";
 import CreateTodos from "./Teams/CreateTodos";
+import TeamDashboard from "./Teams/TeamDashboard";
 
 const Tab = createBottomTabNavigator();
 
