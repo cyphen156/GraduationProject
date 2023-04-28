@@ -243,6 +243,7 @@ function Chat({navigation}) {
     const { currentMessage } = props;
     if (currentMessage.file) {
       const extension = currentMessage.text.split('.');
+
       // 이미지 파일
       switch (extension[1]) {
         case "png":
@@ -261,22 +262,33 @@ function Chat({navigation}) {
         // 나머지 파일
         default:
           return (
-            <TouchableOpacity 
-              style={currentUser.uid === currentMessage.user._id ? 
-                {  width: 250, marginHorizontal: 20, padding: 20, paddingVertical:5, marginVertical: 5, alignItems: "flex-end" }
-                : { width: 250, backgroundColor:'white', marginHorizontal: 20, padding: 20, paddingVertical:5, marginVertical: 5, alignItems: "flex-start"}}
-              onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}>
-              <View style={{ alignItems: 'center', flexDirection: 'row'}}>
-                <Image 
-                  source={require('../../assets/images/fileImg.png')}
-                  style={{ width: 35, height: 35}}
-                />
-                <View style={{ flexDirection: 'column', padding: 10, width: 200}}>
-                  <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
-                  <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
+            <View style={{
+              flexDirection: 'row', 
+              justifyContent: currentUser.uid === currentMessage.user._id ? "flex-end" : "flex-start"
+              }}>
+              <TouchableOpacity 
+                style={{ 
+                  width: 250, 
+                  marginHorizontal: 20, 
+                  padding: 20, 
+                  paddingVertical:5,
+                  marginVertical: 5, 
+                  flexDirection: 'row'
+                }}
+                onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}
+              >
+                <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+                  <Image 
+                    source={require('../../assets/images/fileImg.png')}
+                    style={{ width: 35, height: 35}}
+                  />
+                  <View style={{ flexDirection: 'column', padding: 10, width: 200}}>
+                    <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
+                    <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           );
       }
     } 
