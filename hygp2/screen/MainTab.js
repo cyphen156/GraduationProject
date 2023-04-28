@@ -32,56 +32,27 @@ function MainTab() {
         <Tab.Navigator 
             screenOptions={{
                 headerShown: true,
-                tabBarShowLabel: true,
-                tabBarActiveTintColor: '#e91e63'
+                tabBarShowLabel: false,
+                //tabBarActiveTintColor: '#e91e63'
                 }}
             >     
-            {/* <Tab.Screen name="Home" component={HomeScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>  
-            <Tab.Screen name="GoogleLogin" component={GoogleSigninBTN} options={{
-                tabBarIcon: ({color}) => (<Icon name="person" color={color} />),
-            }}/>  
-            <Tab.Screen name="MyProfileStack" component={MyProfileStack} options={{
-                tabBarIcon: ({color}) => (<Icon name="person" color={color} size={30} />),
-            }}/>  */}
+
             <Tab.Screen name="게시물" component={HomeStack} options={{ headerShown: false,
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     
             <Tab.Screen name="내가 할 일" component={FeedScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="rule" size={size} color={color} />),
             }}/>  
-            <Tab.Screen name="TeamList" component={TeamListScreen} options={{
+            <Tab.Screen name="팀 리스트" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="groups" size={size} color={color} />),
             }}/>
-            <Tab.Screen name="Calendar" component={CalendarScreen} options={{
+            <Tab.Screen name="캘린더" component={CalendarScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
             }}/> 
             <Tab.Screen name="MyCalendar" component={MyCalendar} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
             }}/> 
-            {/* <Tab.Screen name="Search" component={SearchScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                headerTitle: () => <SearchHeader />, headerShown: true
-            }}/> */}
 
-            {/* <Tab.Screen name="Camera" component={Camera} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> */}
-
-            {/** 스크린 이동시 main tabBar 숨기기 필요*/}
-            
-            {/* <Tab.Screen name="chat" component={Chat} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/>  */}
-
-            {/* <Tab.Screen name="FileUpload" component={FileUpload} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> */}
-
-            {/* <Tab.Screen name="Friends" component={FriendsList} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-            }}/> */}
         </Tab.Navigator>
     );
 }

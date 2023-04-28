@@ -16,12 +16,10 @@ function SubTab () {
     return (
             <Tab.Navigator screenOptions={{
                 headerShown: true,
-                tabBarShowLabel: true,
+                tabBarShowLabel: false,
                 tabBarActiveTintColor: '#e91e63'}
             }>
-                <Tab.Screen name="search" component={Search} options={{
-                    tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
+
                 <Tab.Screen
                     name="TeamStackNavigator"
                     component={TeamStackNavigator}
@@ -29,20 +27,23 @@ function SubTab () {
                         headerShown: false,
                         tabBarLabel: "Chat",
                         tabBarIcon: ({ color, size }) => (
-                        <Icon name="view-stream" size={size} color={color} />
+                        <Icon name="forum" size={size} color={color} />
                         ),
                     }}
                 />
+                                <Tab.Screen name="search" component={Search} options={{
+                    tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                }}/> 
                 <Tab.Screen name="TeamCalendar" 
                     component={TeamCalendar} 
                     options={{
-                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                        tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
                 }}/>
                 <Tab.Screen name="TeamDashboard" 
                     component={TeamDashboard} 
                     options={{
                         tabBarLabel: 'TeamDashboard',
-                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
+                        tabBarIcon: ({color, size}) => (<Icon name="dashboard" size={size} color={color} />),
                 }}/>
             </Tab.Navigator>
     )

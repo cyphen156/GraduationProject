@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { View, FlatList, Button, Pressable , StyleSheet , Text, ActivityIndicator} from 'react-native';
+import { View, FlatList, Button, Pressable , StyleSheet , Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -14,6 +14,7 @@ import TeamCreateButton from '../../components/TeamCreateButton';
 import Avatar from "../../components/Avatar";
 import { useUserContext } from "../../context/UserContext";
 
+
 const Stack = createNativeStackNavigator();
 
 const TeamListScreen = ({ navigation }) => {
@@ -21,7 +22,6 @@ const TeamListScreen = ({ navigation }) => {
   const {user} = useUserContext();
   useEffect(() => {
     navigation.setOptions({
-      title: 'TeamList',
       headerTitleAlign: 'center',
       headerLeft: () => (
         <>
@@ -87,8 +87,9 @@ const TeamListScreen = ({ navigation }) => {
   }, [navigation]);
   
   const renderItem = ({ item }) => {
+    console.log("itme", item)
     return (
-      <Pressable
+      <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
           setTeamId(item.id);
@@ -100,11 +101,11 @@ const TeamListScreen = ({ navigation }) => {
           });
         }}
       >
-        <View>
-          <Text style={styles.teamName}>{item.name}</Text>
-          <Text>{item.description}</Text>
+        <View> 
+          <Text style={styles.group}>{item.name}</Text>
+          <Text style={{padding:5}}>{item.discription}</Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     );
   };
 
@@ -142,10 +143,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E5E5E5',
     borderBottomWidth: 1,
   },
+  group: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    alignItems: 'center',
+  },
   teamName: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginLeft: 10,
+    alignItems: 'center',
+    padding: 5,
   },
   block: {
     flex: 1,
