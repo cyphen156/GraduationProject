@@ -194,7 +194,7 @@ function Chat({navigation}) {
       text: fileName,
       file: url,
       size: size,
-      createdAt: new Date(),
+      createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
     };
   
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
