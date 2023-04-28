@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -59,7 +59,7 @@ function UpdateTodos({ navigation, route }) {
       Alert.alert("잘못된 날짜 입니다.");
       return;
     }
-    if(task === '' && discription === ''){
+    if(task === '' || discription === ''){
       Alert.alert("제목과 설명을 작성하세요.");
       return;
     }

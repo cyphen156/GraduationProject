@@ -31,7 +31,7 @@ function CreateTodos({ navigation }) {
       Alert.alert("잘못된 날짜 입니다.");
       return;
     }
-    if(task === '' && discription === ''){
+    if(task === '' || discription === ''){
       Alert.alert("제목과 설명을 작성하세요.");
       return;
     }
