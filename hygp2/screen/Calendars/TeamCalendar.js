@@ -1,6 +1,6 @@
 import { eachDayOfInterval, format, startOfDay } from 'date-fns';
 import { useState, useMemo, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Button, SwitchBase } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -9,6 +9,7 @@ import TeamContext from '../Teams/TeamContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
+import { Switch } from 'react-native-switch';
 
 const firestore = firebase.firestore();
 
@@ -17,7 +18,6 @@ function TeamCalendar({ navigation }) {
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const colors = ["#00adf5", "#f0e68c", "#5f9ea0", "#ffa500"]; // 다양한 색상 배열 추가
-  const [taskState, setTaskState] = useState(false); // 작업 진행, 완료 토글버튼
 
   useEffect(() => {
 
@@ -29,10 +29,9 @@ function TeamCalendar({ navigation }) {
                   name="add"
                   color="#4096ee"
                   onPress={() => {
-                        navigation.navigate("CreateTodos");
+                        navigation.navigate("CreateTodos", {selectedDate});
                       }}
                   />
-
       </View>   
       ),
   });
@@ -119,15 +118,6 @@ function TeamCalendar({ navigation }) {
     return currentDate >= startDate && currentDate <= endDate;
   });
 
-  // const onDateSelect = (date) => {
-  //   setSelectedDate(date.dateString);
-  // };
-
-  // 작업 진행 버튼
-  const toggleIsDone = () => {
-    setTaskState((e) => !e); 
-  }
-
   return (
     <View style={styles.container}>
       {/* <View style={styles.calendarContainer}> */}
@@ -140,6 +130,17 @@ function TeamCalendar({ navigation }) {
       <ScrollView contentContainerStyle={styles.scrollView}>
   {filteredTodos.map((todo) => {
     const { id } = todo;
+
+    // 토글 버튼
+    const handleToggle = async ({todo, id}) => {
+      const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
+      let tasking = !(todo.complete);
+      await todosRef.doc(id).update({
+        complete: tasking
+      });
+
+    }
+
     return(
       <TouchableOpacity key={id}>
         <View style={styles.todoItem}> 
@@ -155,7 +156,15 @@ function TeamCalendar({ navigation }) {
           <View style={styles.todoMeta}>
             <Text style={styles.todoText}>작업자: {todo.worker}</Text>
             <View style={styles.icons}>
-              <Button title={taskState ? '진행 중' : '완료'} onPress={toggleIsDone} />
+            <Switch
+                  trackColor={{false: '#767577', true: '#81b0ff'}}
+                  style={{ transform: [{ scaleX: 1 }, { scaleY: 1.5 }] }} // 스위치 크기 조절
+                  thumbStyle={{ width: 40, height: 40 }} // 손잡이 크기 조절
+                  value={todo.complete}
+                  onValueChange={() => handleToggle({todo, id})}
+                  activeText={'완료'}
+                  inActiveText={'미완료'}
+            />
             </View>
             
           </View>

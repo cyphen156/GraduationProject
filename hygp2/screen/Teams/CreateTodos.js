@@ -10,7 +10,7 @@ import { useUserContext } from '../../context/UserContext';
 
 const firestore = firebase.firestore();
 
-function CreateTodos({ navigation }) {
+function CreateTodos({ navigation, route }) {
 
   const {user}= useUserContext();
   const { teamId } = useContext(TeamContext);
@@ -18,8 +18,10 @@ function CreateTodos({ navigation }) {
   const [discription, setDiscription] = useState('');
   const [endDate, setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
-  
+  const [selectedDate, setSelectedDate] = useState(route.params?.selectedDate); // 지정된 날짜 값을 받는다.
+
   useEffect(() => {
+    //console.log("selectedDate", selectedDate);
     navigation.setOptions({
       headerTitleAlign: 'center',
     });
@@ -47,6 +49,7 @@ function CreateTodos({ navigation }) {
         worker: name,
         startDate: startDateTimestamp,
         endDate: endDateTimestamp,
+        complete : false,
       });
     
     // Reset fields and navigate back

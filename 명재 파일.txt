@@ -79,3 +79,4 @@ yarn add react-native-easy-toast
 // 대시보드 라이브러리
 yarn add react-native-chart-kit react-native-table-component
 yarn add react-native-svg
+yarn add react-native-switch
