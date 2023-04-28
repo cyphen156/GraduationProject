@@ -194,9 +194,9 @@ function Chat({navigation}) {
       text: fileName,
       file: url,
       size: size,
-      createdAt: firebase.firestore.Timestamp.fromDate(message.createdAt),
+      createdAt: new Date(),
     };
-  
+
     const chatMessagesRef = firestore.collection('teams').doc(teamId).collection('messages');
     try {
       await chatMessagesRef.add({
@@ -204,7 +204,7 @@ function Chat({navigation}) {
         file: message.file,
         text: fileName,
         size: message.size,
-        user,
+        user: message.user,
       });
   
       // Add the new message to the current message list.
@@ -240,56 +240,99 @@ function Chat({navigation}) {
   };
   // message에 파일이 있는 경우
   const renderMessage = (props) => {
-    const { currentMessage } = props;
+    const { currentMessage, previousMessage } = props;
     if (currentMessage.file) {
+      const sender = senders.find((s) => s._id === props.currentMessage.user._id);
       const extension = currentMessage.text.split('.');
 
-      // 이미지 파일
-      switch (extension[1]) {
-        case "png":
-        case "jpg":
-        case "jpeg":
+      //아바타 렌더링
+      const renderAvatar = () => {
+        const currentMessageUserId = currentMessage.user._id;
+        const previousMessageUserId = previousMessage?.user?._id;
+        const shouldDisplayUsername = currentMessageUserId !== previousMessageUserId;
+        
+        const displayName = sender === currentUser.uid ? "나" : sender?.name || currentMessage.user.name;
+        
+        // 널값 체크
+        if (!previousMessage || !previousMessage.user || !currentMessage || !currentMessage.user || previousMessage.user._id === currentMessage.user._id) {
+          return null;
+        }
+        
+        if (!sender) {
           return (
-            <View style={currentUser.uid === currentMessage.user._id ? 
-            { paddingHorizontal: 55, paddingVertical:5, alignItems: "flex-end"}
-             : { paddingHorizontal: 55, paddingVertical:5, alignItems: "flex-start" }}>
-              <Image 
-                source={{uri : currentMessage.file}}
-                style={{ width: 200, height: 200 }}
-              />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {shouldDisplayUsername && <Text style={{ marginLeft: 5, marginBottom: 16 }}>알 수 없음</Text>}
+              <Avatar {...props} name="알 수 없음" />
             </View>
           );
-        // 나머지 파일
-        default:
+        }
+        
+        if (sender._id === currentUser.uid) {
           return (
-            <View style={{
-              flexDirection: 'row', 
-              justifyContent: currentUser.uid === currentMessage.user._id ? "flex-end" : "flex-start"
-              }}>
-              <TouchableOpacity 
-                style={{ 
-                  width: 250, 
-                  marginHorizontal: 20, 
-                  padding: 20, 
-                  paddingVertical:5,
-                  marginVertical: 5, 
-                  flexDirection: 'row'
-                }}
-                onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}
-              >
-                <View style={{ alignItems: 'center', flexDirection: 'row'}}>
-                  <Image 
-                    source={require('../../assets/images/fileImg.png')}
-                    style={{ width: 35, height: 35}}
-                  />
-                  <View style={{ flexDirection: 'column', padding: 10, width: 200}}>
-                    <Text style={{ fontWeight: 'bold'}}>{currentMessage.text}</Text>
-                    <Text>용량 : {sizeConversion(currentMessage.size)}</Text>
-                  </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {shouldDisplayUsername && <Text style={{ marginRight: 5, marginBottom: 16 }}>{displayName}</Text>}
+              <Avatar {...props} name="나" />
+            </View>
+          );
+        } else {
+          return (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {shouldDisplayUsername && <Text style={{ marginLeft: 5, marginBottom: 16 }}>{displayName}</Text>}
+              <Avatar {...props} avatar={sender.avatar} />
+            </View>
+          );
+        }
+      };
+
+    // 이미지 파일
+    switch (extension[1]) {
+      case "png":
+      case "jpg":
+      case "jpeg":
+        return (
+          <View style={{
+            flexDirection: 'column', 
+            alignItems: currentUser.uid === currentMessage.user._id ? "flex-end" : "flex-start"
+            }}>
+            <Image 
+              source={{uri : currentMessage.file}}
+              style={{ width: 200, height: 200 }}
+            />
+          </View>
+        );
+      // 나머지 파일
+      default:
+        return (
+          <View style={{
+            flexDirection: 'column', 
+            alignItems: currentUser.uid === currentMessage.user._id ? "flex-end" : "flex-start",
+            paddingHorizontal: 20,
+            }}>
+            {renderAvatar()}
+            <TouchableOpacity 
+              style={{ 
+                width: 250, 
+                marginHorizontal: 20, 
+                padding: 20, 
+                paddingVertical:5,
+                marginVertical: 5, 
+                flexDirection: 'row'
+              }}
+              onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}
+            >
+              <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+                <Image 
+                  source={require('../../assets/images/fileImg.png')}
+                  style={{ width: 35, height: 35}}
+                />
+                <View style={{ flexDirection: 'column', padding: 10, width: 200}}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 12 }}>{currentMessage.text}</Text>
+                  <Text style={{ fontSize: 12 }}>용량 : {sizeConversion(currentMessage.size)}</Text>
                 </View>
-              </TouchableOpacity>
-            </View>
-          );
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
       }
     } 
     return <Message {...props} />;
@@ -403,7 +446,6 @@ function Chat({navigation}) {
                   },
                 }}
               />
-          
             </View>
           );
         }}
