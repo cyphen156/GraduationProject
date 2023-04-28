@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Table, Row } from 'react-native-table-component';
 import PercentageCircle from './PercentageCircle';
 import { ScrollView } from 'react-native-gesture-handler';
+import TeamContext from './TeamContext';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
+
+const firestore = firebase.firestore();
 
 function TeamDashboard() {
+  const { teamId } = useContext(TeamContext);
+  const [userNames, setUserNames] = useState([]);
+  const [taskCount, setTaskCount] = useState(0); // 총 작업 수
+  const [completeCount, setCompleteCount] = useState(0); // 완료한 작업 수
+
   const data = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
@@ -16,13 +27,38 @@ function TeamDashboard() {
       },
     ],
   };
-
   const tableHead = ['Name', 'Age', 'Gender'];
-  const tableData = [
-    ['John', '25', 'Male'],
-    ['Jane', '31', 'Female'],
-    ['Bob', '19', 'Male'],
-  ];
+
+  // 채팅방 유저 가져오기
+  useEffect(() => {
+    const chatUsersRef = firestore.collection('teams').doc(teamId).collection('invitedUsers');
+    const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
+      const names = querySnapshot.docs.map((doc) => {
+        const data = doc.data().userData;
+        return [ data.displayName ];
+      });
+      setUserNames(names);
+    });
+  }, [teamId]);
+
+  // 총 작업 수 , 완료한 작업 수
+  useEffect(() => {
+    let task = 0;
+    let complete = 0;
+    const chatUsersRef = firestore.collection('teams').doc(teamId).collection('todos');
+    const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {   
+        querySnapshot.docs.forEach((doc) => {
+          if(doc.data().complete){
+            complete = complete + 1;
+            //console.log("complete")
+          }
+          task = task + 1;
+         // console.log("task")
+        });
+        setTaskCount(task);
+        setCompleteCount(complete);
+      });
+  },[taskCount, completeCount]);
 
   return (
     <ScrollView style={styles.container}>
@@ -49,16 +85,19 @@ function TeamDashboard() {
         <Text style={styles.tableTitle}>유저</Text>
         <Table borderStyle={styles.table}>
 
-          {/* <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText} />
-            {tableData.map((rowData, index) => (
-            <Row key={index} data={rowData} style={styles.tableRow} textStyle={styles.tableRowText} />
-          ))}   */}
+          <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText} />
+            {userNames.map((username, i) => (
+            <Row key={i} data={username} style={styles.tableRow} />
+          ))}   
 
         </Table> 
       </View>
       <View style={styles.tableContainer}>
         <Text style={styles.tableTitle}>작업 진행량</Text>
-        <PercentageCircle percentage={70}/>
+        <Text>총 작업 수 : {taskCount}</Text>
+        <Text>완료된 작업 수 : {completeCount}</Text>
+        <PercentageCircle percentage={Math.floor((completeCount/taskCount)*100)}/>
+        
       </View>
     </ScrollView>
 

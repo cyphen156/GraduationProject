@@ -4,12 +4,8 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import TeamContext from './TeamContext';
-import IconLeftButton from '../../components/IconLeftButton';
 import IconRightButton from '../../components/IconRightButton';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../MyProfileScreen';
-import TeamStackNavigator from './TeamStack';
-import FloatingWriteButton from '../../components/FloatingWriteButton';
 import TeamCreateButton from '../../components/TeamCreateButton';
 import Avatar from "../../components/Avatar";
 import { useUserContext } from "../../context/UserContext";
@@ -87,7 +83,7 @@ const TeamListScreen = ({ navigation }) => {
   }, [navigation]);
   
   const renderItem = ({ item }) => {
-    console.log("itme", item)
+    //console.log("itme", item)
     return (
       <TouchableOpacity
         style={styles.itemContainer}
