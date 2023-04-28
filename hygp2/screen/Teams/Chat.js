@@ -209,7 +209,6 @@ function Chat({navigation}) {
   
       // Add the new message to the current message list.
       // You may need to adjust this part depending on how you handle your state.
-      setMessages(previousMessages => [...previousMessages, message]);
     } catch (error) {
       console.log("Error sending message: ", error);
     }
@@ -244,7 +243,6 @@ function Chat({navigation}) {
     const { currentMessage } = props;
     if (currentMessage.file) {
       const extension = currentMessage.text.split('.');
-
       // 이미지 파일
       switch (extension[1]) {
         case "png":
@@ -265,8 +263,8 @@ function Chat({navigation}) {
           return (
             <TouchableOpacity 
               style={currentUser.uid === currentMessage.user._id ? 
-                {  width: 250, backgroundColor:'white', marginHorizontal: 20, padding: 20, paddingVertical:5,marginVertical: 10, flexDirection: 'row', size: 10, alignItems: "flex-end" }
-                 : { width: 250, backgroundColor:'white', marginHorizontal: 20, padding: 20, paddingVertical:5, marginVertical: 10, flexDirection: 'row', size: 10, alignItems: "flex-start"}}
+                {  width: 250, marginHorizontal: 20, padding: 20, paddingVertical:5, marginVertical: 5, alignItems: "flex-end" }
+                : { width: 250, backgroundColor:'white', marginHorizontal: 20, padding: 20, paddingVertical:5, marginVertical: 5, alignItems: "flex-start"}}
               onPress={() => downloadFile(currentMessage.file, currentMessage.text, currentMessage.size)}>
               <View style={{ alignItems: 'center', flexDirection: 'row'}}>
                 <Image 
@@ -399,9 +397,9 @@ function Chat({navigation}) {
         }}
         placeholder={`메시지 보내기 (${chatRoomName})`}
       />
-        {isCheck && (
-          <FileUpload onClick={uploadImage} teamId={teamId}/>
-        )}      
+      {isCheck && (
+        <FileUpload onClick={uploadImage} teamId={teamId}/>
+      )}      
     </View>
   );
 }
