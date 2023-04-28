@@ -10,6 +10,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import { Switch } from 'react-native-switch';
+import { Dimensions } from 'react-native';
+
 
 const firestore = firebase.firestore();
 
@@ -18,7 +20,7 @@ function TeamCalendar({ navigation }) {
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const colors = ["#00adf5", "#f0e68c", "#5f9ea0", "#ffa500"]; // 다양한 색상 배열 추가
-
+  const { width, height } = Dimensions.get('window');
   useEffect(() => {
 
     navigation.setOptions({
@@ -142,34 +144,31 @@ function TeamCalendar({ navigation }) {
     }
 
     return(
-      <TouchableOpacity key={id}>
-        <View style={styles.todoItem}> 
-
-          <View style={styles.todoMeta}>
-            <Text style={styles.todoTitle}>{todo.task}</Text>
-            <View style={{flexDirection: 'row-reverse'}}>
-              <Icon name="edit" size={25} 
-                    onPress={() => navigation.navigate("UpdateTodos", { todoId: id })}/>
-            </View>
-
-          </View>
-          <View style={styles.todoMeta}>
-            <Text style={styles.todoText}>작업자: {todo.worker}</Text>
-            <View style={styles.icons}>
+    <TouchableOpacity key={id}>
+      <View style={styles.todoItem}> 
+        <View style={styles.todoMeta}>
+          <Text style={styles.todoTitle}>{todo.task}</Text>
+            <Icon name="edit" size={25} onPress={() => 
+              navigation.navigate("UpdateTodos", { todoId: id })} 
+              style={{marginLeft: 10, marginRight: 10}}/>
+        </View>
+        <View style={styles.todoMeta}>
+          <Text style={styles.todoText}>작업자: {todo.worker}</Text>
+          <View style={styles.icons}>
+            <Text>작업 상태</Text>
             <Switch
-                  trackColor={{false: '#767577', true: '#81b0ff'}}
-                  style={{ transform: [{ scaleX: 1 }, { scaleY: 1.5 }] }} // 스위치 크기 조절
-                  thumbStyle={{ width: 40, height: 40 }} // 손잡이 크기 조절
-                  value={todo.complete}
-                  onValueChange={() => handleToggle({todo, id})}
-                  activeText={'완료'}
-                  inActiveText={'미완료'}
+              value={todo.complete}
+              onValueChange={() => handleToggle({todo, id})}
+              activeText={'완료'}
+              inActiveText={'미완료'}
+              barHeight={20}
+              circleSize={25}
+              switchWidthMultiplier={3}
             />
-            </View>
-            
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
     )}
   )}
 </ScrollView>
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
   },
   todoMeta: {
     flexDirection: "row",
-    alignItems: "center",
+
   },
   todoText: {
     flex: 1,
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   icons: {
-    flexDirection: "row",
+   
     alignItems: 'center',
   },
 });
