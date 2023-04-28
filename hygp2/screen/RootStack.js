@@ -24,6 +24,7 @@ import {useNavigation} from '@react-navigation/native'
 import CalendarScreen from "./Calendar";
 import CreateTeamScreen from "./Teams/CreateTeam";
 import UpdateTodos from "./Teams/UpdateTodos";
+import CreateTodos from "./Teams/CreateTodos";
 
 const Stack = createNativeStackNavigator();
 
@@ -105,6 +106,10 @@ function RootStack() {
                       name="UpdateTodos" 
                       component={UpdateTodos} 
                       options={{title: '일정 변경', headerBackTitle: '뒤로가기'}}/>
+                    <Stack.Screen 
+                      name="CreateTodos" 
+                      component={CreateTodos} 
+                      options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>                      
                 </>
             ) : (
                 <>

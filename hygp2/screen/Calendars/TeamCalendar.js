@@ -8,6 +8,7 @@ import CalendarView from '../../components/CalendarView';
 import TeamContext from '../Teams/TeamContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import TransparentCircleButton from '../../components/TransparentCircleButton';
 
 const firestore = firebase.firestore();
 
@@ -19,6 +20,22 @@ function TeamCalendar({ navigation }) {
   const [taskState, setTaskState] = useState(false); // 작업 진행, 완료 토글버튼
 
   useEffect(() => {
+
+    navigation.setOptions({
+      headerTitleAlign: 'center',
+      headerRight: () => (
+      <View style={{flexDirection: 'row', marginRight: 16}}>
+          <TransparentCircleButton
+                  name="add"
+                  color="#4096ee"
+                  onPress={() => {
+                        navigation.navigate("CreateTodos");
+                      }}
+                  />
+
+      </View>   
+      ),
+  });
     const teamsRef = firestore.collection('teams');
     const unsubscribe = teamsRef.doc(teamId).onSnapshot((doc) => {
       navigation.setOptions({
@@ -110,27 +127,7 @@ function TeamCalendar({ navigation }) {
   const toggleIsDone = () => {
     setTaskState((e) => !e); 
   }
-  //삭제 버튼
-  const onAskRemove = () => {
-    Alert.alert(
-      '삭제',
-      '정말로 삭제하시겠어요?',
-      [
-        {text: '취소', style: 'cancel'},
-        {
-          text: '삭제',
-          onPress: () => {
-            onRemove(log?.id);
-            navigation.pop();
-          },
-          style: 'destructive',
-        },
-      ],
-      {
-        cancelable: true,
-      },
-    );
-  };
+
   return (
     <View style={styles.container}>
       {/* <View style={styles.calendarContainer}> */}
@@ -141,27 +138,32 @@ function TeamCalendar({ navigation }) {
         />
       {/* </View> */}
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {filteredTodos.map((todo) => {
-          const { id } = todo;
-          return(
-            <TouchableOpacity key={id}>
-              <View style={styles.todoItem}>
-                <Text style={styles.todoTitle}>{todo.task}</Text>
-                <View style={styles.todoMeta}>
-                  <Text style={styles.todoText}>작업자: {todo.worker}</Text>
-                  <View style={styles.icons}>
-                    <Button title={taskState ? '진행 중' : '완료'} onPress={toggleIsDone} />
-                    <Icon name="edit" size={25} 
-                      style={{ marginRight: 5 }} 
-                      onPress={() => navigation.navigate("UpdateTodos", { todoId: id })}
-                    />
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        )}
-    </ScrollView>
+  {filteredTodos.map((todo) => {
+    const { id } = todo;
+    return(
+      <TouchableOpacity key={id}>
+        <View style={styles.todoItem}> 
+
+          <View style={styles.todoMeta}>
+            <Text style={styles.todoTitle}>{todo.task}</Text>
+            <View style={{flexDirection: 'row-reverse'}}>
+              <Icon name="edit" size={25} 
+                    onPress={() => navigation.navigate("UpdateTodos", { todoId: id })}/>
+            </View>
+
+          </View>
+          <View style={styles.todoMeta}>
+            <Text style={styles.todoText}>작업자: {todo.worker}</Text>
+            <View style={styles.icons}>
+              <Button title={taskState ? '진행 중' : '완료'} onPress={toggleIsDone} />
+            </View>
+            
+          </View>
+        </View>
+      </TouchableOpacity>
+    )}
+  )}
+</ScrollView>
     </View>
   );
 }
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   scrollView: {
-    padding: 20,
+    padding: 20,  // 스크롤뷰 내부 간격 조정
   },
   todoItem: {
     marginBottom: 20,

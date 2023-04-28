@@ -33,16 +33,9 @@ function SubTab () {
                         ),
                     }}
                 />
-                <Tab.Screen name="CreateTodos" 
-                    component={CreateTodos} 
-                    options={{
-                        tabBarLabel: 'CreateTodos',
-                        tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
                 <Tab.Screen name="TeamCalendar" 
                     component={TeamCalendar} 
                     options={{
-                        tabBarLabel: 'TeamCalendar',
                         tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
                 }}/>
                 <Tab.Screen name="TeamDashboard" 
