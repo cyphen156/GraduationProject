@@ -4,7 +4,7 @@ import Geolocation from '@react-native-community/geolocation';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-import TeamContext from '../screen/Teams/TeamContext';
+import TeamContext from '../../hygp2/screen/Teams/TeamContext';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();

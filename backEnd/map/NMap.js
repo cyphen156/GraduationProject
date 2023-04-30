@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import NaverMapView, { Marker } from "react-native-nmap";
 import Geolocation from '@react-native-community/geolocation';
-import TeamContext from '../screen/Teams/TeamContext';
+import TeamContext from '../../hygp2/screen/Teams/TeamContext';
 import SendLocationButton from './SendLocation';
 const { teamId } = useContext(TeamContext);
 
