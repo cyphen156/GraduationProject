@@ -1,14 +1,29 @@
-import { useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, TextInput, Button, Alert, StyleSheet, Text } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-import { useEffect } from 'react';
 import IconRightButton from '../../components/IconRightButton';
 import IconLeftButton from '../../components/IconLeftButton';
 import { useUserContext } from '../../context/UserContext';
 
 const CreateTeamScreen = ({ navigation }) => {
+  const [isHashtagMode, setHashtagMode] = useState(false);
+  const [hashtag, setHashtag] = useState('');
+
+  const handleTeamBodyChange = (text) => {
+    setTeamBody(text);
+
+    if (text.endsWith('#')) {
+      setHashtagMode(true);
+    } else if (isHashtagMode && text.endsWith(' ')) {
+      // 해시태그 모드
+      setHashtagMode(false);
+      setHashtag('');
+    } else if (isHashtagMode) {
+      setHashtag(text.split('#').pop());
+    }
+  };
 
 useEffect(() => {
   navigation.setOptions({
@@ -26,13 +41,14 @@ useEffect(() => {
       return;
     }
 
+    const hashtags = teamBody.match(/(#[가-힣a-zA-Z0-9_]+)/g) || [];
+
     firebase.firestore().collection('teams').add({
       name: teamName,
-      discription: teamBody,
+      discription: teamBody, hashtags,
       createdBy: user.id,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    })
-      .then(async docRef => {
+    }).then(async docRef => {
         const messagesRef = firebase.firestore().collection(`teams/${docRef.id}/messages`);
         const invitedUsersRef = firebase.firestore().collection(`teams/${docRef.id}/invitedUsers`);
         await invitedUsersRef.doc(user.id).set({
@@ -74,11 +90,12 @@ useEffect(() => {
       <TextInput
         placeholder="Team 설명"
         value={teamBody}
-        onChangeText={setTeamBody}
+        onChangeText={handleTeamBodyChange}
         style={styles.body}
         multiline
         textAlignVertical="top"
       />
+      {isHashtagMode && <Text>현재 해시태그 입력 모드: {hashtag}</Text>}
       <Button title="Create Team"
        onPress={handleCreateTeam}
        style={styles.button} 
