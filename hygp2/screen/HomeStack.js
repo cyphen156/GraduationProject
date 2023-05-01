@@ -7,7 +7,6 @@ import PostScreen from './PostScreen';
 import IconRightButton from '../components/IconRightButton';
 import IconLeftButton from '../components/IconLeftButton';
 import {useNavigation} from '@react-navigation/native'
-import SearchScreen from './Search';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useUserContext } from '../context/UserContext';
 import Avatar from '../components/Avatar';

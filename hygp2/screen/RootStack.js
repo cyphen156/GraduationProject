@@ -28,6 +28,8 @@ import CreateTodos from "./Teams/CreateTodos";
 import CreateMyTodos from "./MyTodos/CreateMyTodos";
 import SearchScreen from "./Search";
 import SearchHeader from "../components/SearchHeader";
+import SearchContext from "../context/SearchContext";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -57,82 +59,82 @@ function RootStack() {
     return (
       <TeamContext.Provider value = {{teamId, setTeamId}}>
         <Stack.Navigator>     
-            {user ? (
-                <>
-                    <Stack.Screen name="MainTab" component={MainTab} options={{headerShown: false}} />
-                    <Stack.Screen name="SubTab" component={SubTab} options={{headerShown: false}} />
-                    <Stack.Screen name="Write" component={WriteScreen} options={{headerShown: false}}/>
-                    <Stack.Screen name="MyProflie" component={MyProfileScreen}/>
-                    <Stack.Screen name="UserProfile" component={UserProfileScreen}  />
-                    <Stack.Screen name="프로필 변경" component={UpdateProfile} />
-                    <Stack.Screen 
-                      name="Upload"
-                      component={UploadScreen}
-                      options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}                    
-                    />
-                    <Stack.Screen 
-                      name="Setting"
-                      component={SettingScreen}
-                      options={{title: '설정', headerBackTitle: '뒤로가기'}}                    
-                    />
-                    <Stack.Screen 
-                      name="FriendsAdd"
-                      component={FriendsAddScreen}
-                      options={{title: '닉네임으로 친구 추가 ', headerBackTitle: '뒤로가기'}}                    
-                    />
-                    <Stack.Screen 
-                      name="FriendsList"
-                      component={FriendsList}
-                      options={{title: '친구 목록', headerBackTitle: '뒤로가기'}}                    
-                    />
-                    <Stack.Screen
-                      name='Post'
-                      component={PostScreen}
-                      options={{title: '게시물'}}
-                      />
-                    <Stack.Screen
-                      name='Modify'
-                      component={ModifyScreen}
-                      options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
-                      />
-                    <Stack.Screen
-                      name='Calendar'
-                      component={CalendarScreen}
-                      options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
-                      />
-                    <Stack.Screen
-                      name='CreateTeam'
-                      component={CreateTeamScreen}
-                      options={{title: '팀 생성', headerBackTitle: '뒤로가기'}}
-                      /> 
-                    <Stack.Screen 
-                      name="UpdateTodos" 
-                      component={UpdateTodos} 
-                      options={{title: '일정 변경', headerBackTitle: '뒤로가기'}}/>
-                    <Stack.Screen 
-                      name="CreateTodos" 
-                      component={CreateTodos} 
-                      options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>
-                    <Stack.Screen 
-                      name="CreateMyTodos" 
-                      component={CreateMyTodos} 
-                      options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>
-                    <Stack.Screen 
-                      name="SearchScreen" 
-                      component={SearchScreen} 
-                      options={{
-                        title: '일정 생성', 
-                        headerBackTitle: '뒤로가기', 
-                        headerTitle: () => <SearchHeader />,
-                      }}
-                    />                                            
-                </>
-            ) : (
-                <>
-                    <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
-                    <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
-                </>
-            )}       
+          {user ? (
+            <>
+              <Stack.Screen name="MainTab" component={MainTab} options={{headerShown: false}} />
+              <Stack.Screen name="SubTab" component={SubTab} options={{headerShown: false}} />
+              <Stack.Screen name="Write" component={WriteScreen} options={{headerShown: false}}/>
+              <Stack.Screen name="MyProflie" component={MyProfileScreen}/>
+              <Stack.Screen name="UserProfile" component={UserProfileScreen}  />
+              <Stack.Screen name="프로필 변경" component={UpdateProfile} />
+              <Stack.Screen 
+                name="Upload"
+                component={UploadScreen}
+                options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}                    
+              />
+              <Stack.Screen 
+                name="Setting"
+                component={SettingScreen}
+                options={{title: '설정', headerBackTitle: '뒤로가기'}}                    
+              />
+              <Stack.Screen 
+                name="FriendsAdd"
+                component={FriendsAddScreen}
+                options={{title: '닉네임으로 친구 추가 ', headerBackTitle: '뒤로가기'}}                    
+              />
+              <Stack.Screen 
+                name="FriendsList"
+                component={FriendsList}
+                options={{title: '친구 목록', headerBackTitle: '뒤로가기'}}                    
+              />
+              <Stack.Screen
+                name='Post'
+                component={PostScreen}
+                options={{title: '게시물'}}
+                />
+              <Stack.Screen
+                name='Modify'
+                component={ModifyScreen}
+                options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
+                />
+              <Stack.Screen
+                name='Calendar'
+                component={CalendarScreen}
+                options={{title: '설명 수정', headerBackTitle: '뒤로가기'}}
+                />
+              <Stack.Screen
+                name='CreateTeam'
+                component={CreateTeamScreen}
+                options={{title: '팀 생성', headerBackTitle: '뒤로가기'}}
+                /> 
+              <Stack.Screen 
+                name="UpdateTodos" 
+                component={UpdateTodos} 
+                options={{title: '일정 변경', headerBackTitle: '뒤로가기'}}/>
+              <Stack.Screen 
+                name="CreateTodos" 
+                component={CreateTodos} 
+                options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>
+              <Stack.Screen 
+                name="CreateMyTodos" 
+                component={CreateMyTodos} 
+                options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>
+              <Stack.Screen 
+                name="SearchScreen" 
+                component={SearchScreen} 
+                options={{
+                  title: '일정 생성', 
+                  headerBackTitle: '뒤로가기', 
+                  headerTitle: () => <SearchHeader />,
+                }}
+              />                                            
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
+              <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
+            </>
+          )}       
         </Stack.Navigator>
       </TeamContext.Provider>
     );

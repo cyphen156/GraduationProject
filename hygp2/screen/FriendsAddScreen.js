@@ -10,7 +10,6 @@ import Avatar from "../components/Avatar";
 import Toast from 'react-native-easy-toast';
 import { friendIdExists } from "../lib/friends";
 
-
 function FriendsAddScreen(){
     const navigation = useNavigation();
     const [friend, setFriend] = useState();
@@ -27,10 +26,10 @@ function FriendsAddScreen(){
       
       navigation.setOptions({  
           headerRight: () => (
-              <IconRightButton
-                  name="send"
-                  onPress={onPress}
-                  />                       
+            <IconRightButton
+              name="send"
+              onPress={onPress}
+            />                       
           ),
       });
   }, [displayName, exist, myUser])
@@ -49,7 +48,6 @@ function FriendsAddScreen(){
             setResponse(true);
             setExist(true);
            }
-
         });
       });
       if(!exist){
@@ -69,59 +67,58 @@ function FriendsAddScreen(){
       toastRef.current.show("추가되었습니다.");
     };
   if(!response){
-      return (
-        <View>
-          <View style={[styles.block, {width: width - 5}]}>
-              <TextInput style={styles.input} 
-                ref={ref => this.textInputRef = ref}
-                placeholder="친구 닉네임" 
-                autoFocus 
-                onChangeText={setDisplayName}
-              />
-              <Pressable 
-                  style={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}
-                  onPress={cancel}>
-                  <Icon name="cancel" size={20} color="#9e9e9e" />
-              </Pressable>
-          </View>
-          <Toast ref={toastRef}
-                        positionValue={width * 0.55}
-                        fadeInDuration={300}
-                        fadeOutDuration={1000}
-                        style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
-                    />
-      </View>
-      )
+    return (
+      <View>
+        <View style={[styles.block, {width: width - 5}]}>
+          <TextInput style={styles.input} 
+            ref={ref => this.textInputRef = ref}
+            placeholder="친구 닉네임" 
+            autoFocus 
+            onChangeText={setDisplayName}
+          />
+          <Pressable 
+              style={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}
+              onPress={cancel}>
+              <Icon name="cancel" size={20} color="#9e9e9e" />
+          </Pressable>
+        </View>
+        <Toast ref={toastRef}
+          positionValue={width * 0.55}
+          fadeInDuration={300}
+          fadeOutDuration={1000}
+          style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
+        />
+    </View>
+    )
   }
   
   else{
     return(
       <View>
-          <View style={[styles.block, {width: width - 5}]}>
-                  <TextInput style={styles.input}
-                    ref={ref => this.textInputRef = ref}
-                    placeholder="친구 닉네임" 
-                    autoFocus 
-                    onChangeText={setDisplayName}
-                  />
-                  <Pressable 
-                      style={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}
-                      onPress={cancel}>                        
-                      <Icon name="cancel" size={20} color="#9e9e9e" 
-                       />
-                  </Pressable>
-              </View>
-        <View style={[styles.profile, {width: width - 5}]}>
-          <Avatar source={user.photoURL && {uri: user.photoURL}} size={100} />
-          <Text style={styles.name}>{user.displayName}</Text>
-          <Button title="친구 추가" margin= {20} onPress={add} ></Button> 
+        <View style={[styles.block, {width: width - 5}]}>
+          <TextInput style={styles.input}
+            ref={ref => this.textInputRef = ref}
+            placeholder="친구 닉네임" 
+            autoFocus 
+            onChangeText={setDisplayName}
+          />
+          <Pressable 
+            style={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}
+            onPress={cancel}>                        
+            <Icon name="cancel" size={20} color="#9e9e9e" />
+          </Pressable>
         </View>
-        <Toast ref={toastRef}
-                        positionValue={width * 0.55}
-                        fadeInDuration={300}
-                        fadeOutDuration={1000}
-                        style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
-                    />
+      <View style={[styles.profile, {width: width - 5}]}>
+        <Avatar source={user.photoURL && {uri: user.photoURL}} size={100} />
+        <Text style={styles.name}>{user.displayName}</Text>
+        <Button title="친구 추가" margin= {20} onPress={add} ></Button> 
+      </View>
+      <Toast ref={toastRef}
+        positionValue={width * 0.55}
+        fadeInDuration={300}
+        fadeOutDuration={1000}
+        style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
+      />
      </View>
     )
   };
