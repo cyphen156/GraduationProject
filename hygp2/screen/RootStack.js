@@ -25,6 +25,9 @@ import CalendarScreen from "./Calendar";
 import CreateTeamScreen from "./Teams/CreateTeam";
 import UpdateTodos from "./Teams/UpdateTodos";
 import CreateTodos from "./Teams/CreateTodos";
+import CreateMyTodos from "./MyTodos/CreateMyTodos";
+import SearchScreen from "./Search";
+import SearchHeader from "../components/SearchHeader";
 
 const Stack = createNativeStackNavigator();
 
@@ -109,7 +112,20 @@ function RootStack() {
                     <Stack.Screen 
                       name="CreateTodos" 
                       component={CreateTodos} 
-                      options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>                      
+                      options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>
+                    <Stack.Screen 
+                      name="CreateMyTodos" 
+                      component={CreateMyTodos} 
+                      options={{title: '일정 생성', headerBackTitle: '뒤로가기'}}/>
+                    <Stack.Screen 
+                      name="SearchScreen" 
+                      component={SearchScreen} 
+                      options={{
+                        title: '일정 생성', 
+                        headerBackTitle: '뒤로가기', 
+                        headerTitle: () => <SearchHeader />,
+                      }}
+                    />                                            
                 </>
             ) : (
                 <>

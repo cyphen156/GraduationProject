@@ -1,10 +1,8 @@
 import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from './Feed'
 import CalendarScreen from "./Calendar";
-import SearchScreen from './Search';
 import Todo from './Todo';
 import Icon from "react-native-vector-icons/MaterialIcons";
-import SearchHeader from "../components/SearchHeader";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
 import Camera from "../components/image-picker-ex";
@@ -18,7 +16,6 @@ import MyCalendar from "./Teams/MyCalendar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TeamListScreen from "./Teams/TeamList";
 import CreateTeamScreen from "./Teams/CreateTeam";
-
 //import GoogleSigninBTN from "../SignIn/GoogleSignin";
 
 
@@ -36,7 +33,6 @@ function MainTab() {
                 //tabBarActiveTintColor: '#e91e63'
                 }}
             >     
-
             <Tab.Screen name="게시물" component={HomeStack} options={{ headerShown: false,
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     
@@ -46,9 +42,6 @@ function MainTab() {
             <Tab.Screen name="팀 리스트" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="groups" size={size} color={color} />),
             }}/>
-            <Tab.Screen name="캘린더" component={CalendarScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
-            }}/> 
             <Tab.Screen name="MyCalendar" component={MyCalendar} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
             }}/> 
@@ -65,8 +58,3 @@ const styles = StyleSheet.create({
 });
 
 export default MainTab;
-/*
-screenOptions={({route}) => ({
-    return (showLable:false, activeTintColor:"#009688",)
-})}
-*/

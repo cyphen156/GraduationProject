@@ -30,7 +30,7 @@ const TeamListScreen = ({ navigation }) => {
         <View style={styles.settings}>
           <IconRightButton
             name="search"
-            onPress={() => navigation.navigate('FriendsList')}
+            onPress={() => navigation.navigate('SearchScreen')}
           />
           <IconRightButton
             name="person-add"

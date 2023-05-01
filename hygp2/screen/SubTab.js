@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import Search from "./Search"
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import TeamListScreen from "./Teams/TeamList";
@@ -31,9 +30,6 @@ function SubTab () {
                         ),
                     }}
                 />
-                                <Tab.Screen name="search" component={Search} options={{
-                    tabBarIcon: ({color, size}) => (<Icon name="view-stream" size={size} color={color} />),
-                }}/> 
                 <Tab.Screen name="TeamCalendar" 
                     component={TeamCalendar} 
                     options={{
