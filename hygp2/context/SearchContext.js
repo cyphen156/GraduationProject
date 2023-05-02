@@ -5,6 +5,8 @@ const SearchContext = createContext({
   setTeams: () => {},
   searchText: '',
   setSearchText: () => {},
+  recommendedInterest: '',
+  setRecommendedInterest: () => {},
 });
 
 export default SearchContext;

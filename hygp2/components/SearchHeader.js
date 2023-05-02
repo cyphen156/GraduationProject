@@ -1,9 +1,10 @@
-import { useState, useContext } from 'react';
-import { StyleSheet, View, TextInput, Button, useWindowDimensions, Pressable } from 'react-native';
+import { useState, useContext, useEffect } from 'react';
+import { StyleSheet, View, TextInput, Button, useWindowDimensions, Pressable, Text } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import '@react-native-firebase/functions';
 import SearchContext from '../context/SearchContext';
 
 const firestore = firebase.firestore();
@@ -11,6 +12,7 @@ const firestore = firebase.firestore();
 function SearchHeader() {
   const {width} = useWindowDimensions();
   const { searchText, setSearchText, setTeams } = useContext(SearchContext);
+  const [recommendedInterest, setRecommendedInterest] = useState('');
 
   const searchTeamsByHashtagOrName = async () => {
     if (searchText === '') return; // 검색어가 없는 경우 검색을 수행하지 않음
@@ -29,6 +31,37 @@ function SearchHeader() {
     ];
 
     setTeams(searchedTeams);
+  };
+
+  useEffect(() => {
+    if (searchText === '') {
+      fetchRecommendedTeams();
+    } else {
+      setTeams([]);  // 추천 그룹을 화면에서 제거
+      setRecommendedInterest(''); // 추천 관심사를 제거
+    }
+  }, [searchText]);
+  
+  const fetchRecommendedTeams = async () => {
+    try {
+      const user = firebase.auth().currentUser;
+
+      if (!user) {
+        throw new Error('User not logged in!');
+      }
+      const getRecommendedTeams = firebase.functions().httpsCallable('getRecommendedTeams');
+      const result = await getRecommendedTeams({ uid: user.uid });
+      setTeams(result.data);
+
+      // 추천 관심사 설정
+      const userRef = firestore.collection('user').doc(user.uid);
+      const userDoc = await userRef.get();
+      const interests = userDoc.data().interests;
+      setRecommendedInterest(interests.join(', '));
+
+    } catch (error) {
+      console.error('Failed to fetch recommended teams:', error);
+    }
   };
 
   return (
@@ -53,6 +86,13 @@ function SearchHeader() {
       >
         <Icon name="search" size={20} color="#9e9e9e" />
       </Pressable>
+      {searchText === '' && (
+        <View style={styles.recommendation}>
+          <Text style={styles.recommendationText}>
+            당신에게 추천하는 팀: #{recommendedInterest}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -67,6 +107,13 @@ const styles = StyleSheet.create({
   },
   button: {
       marginLeft: 8,
+  },
+  recommendation: {
+      marginTop: 8,
+  },
+  recommendationText: {
+      color: '#9e9e9e',
+      fontSize: 16,
   },
 });
 

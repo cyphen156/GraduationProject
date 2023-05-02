@@ -10,7 +10,7 @@ import { useUserContext } from '../context/UserContext';
 const firestore = firebase.firestore();
 
 function SearchScreen() {
-  const { teams } = useContext(SearchContext);
+  const { teams, searchText, recommendedInterest } = useContext(SearchContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const { user } = useUserContext();
@@ -25,7 +25,7 @@ function SearchScreen() {
     
     const doc = await invitedUsersRef.doc(user.id).get();
     if (doc.exists) {
-        Alert.alert("이미 팀원입니다.");
+        Alert.alert("이미 소속된 팀입니다.");
         return;
     } else {
       doc.add({
@@ -59,6 +59,11 @@ function SearchScreen() {
         />
       )}
       <ScrollView contentContainerStyle={styles.scrollView}>
+        {searchText === '' && (
+          <Text style={styles.recommendationText}>
+            당신에게 추천하는 팀: {recommendedInterest}
+          </Text>
+        )}
         {teams && teams.map((team) => (
           <TouchableOpacity key={team.id} onPress={() => handlePress(team)}>
             <View style={styles.teamItem}>
@@ -90,6 +95,10 @@ const styles = StyleSheet.create({
   teamDescription: {
     fontSize: 16,
     color: "#888",
+  },recommendationText: {
+    color: '#9e9e9e',
+    fontSize: 16,
+    marginBottom: 10,
   },
 });
 
