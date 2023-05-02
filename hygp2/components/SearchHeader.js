@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
-import { StyleSheet, View, TextInput, Button, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, TextInput, Button, useWindowDimensions, Pressable } from 'react-native';
+import Icon from "react-native-vector-icons/MaterialIcons";
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -8,6 +9,7 @@ import SearchContext from '../context/SearchContext';
 const firestore = firebase.firestore();
 
 function SearchHeader() {
+  const {width} = useWindowDimensions();
   const { searchText, setSearchText, setTeams } = useContext(SearchContext);
 
   const searchTeamsByHashtagOrName = async () => {
@@ -30,33 +32,42 @@ function SearchHeader() {
   };
 
   return (
-    <View style={[styles.block, {width: useWindowDimensions().width - 32}]}>
+    <View style={[styles.block, {width: width - 32}]}>
       <TextInput
         style={styles.input}
         value={searchText}
         onChangeText={setSearchText}
-        placeholder="Search by hashtag or team name..."
+        placeholder="팀 이름이나 해시태그를 입력하세요"
+        autoFocus 
       />
-      <Button title="Search" onPress={searchTeamsByHashtagOrName} />
+      <Pressable
+        style={({pressed}) => [
+          styles.button, 
+          pressed && {opacity: 0.5},
+          { width: 50, height: 50, justifyContent: 'center', alignItems: 'center' } // 추가
+        ]}
+        onPress={async () => {
+          await searchTeamsByHashtagOrName();
+          setSearchText('');
+        }}
+      >
+        <Icon name="search" size={20} color="#9e9e9e" />
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    block: {
-        flexDirection: "row",
-        alignSelf: "center",
-        borderColor: "#ccc",
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 10,
-    },
-    input: {
-        flex: 1,
-    },
-    button: {
-        marginLeft: 8,
-    },
+  block: {
+      flexDirection: "row",
+      alignSelf: "center",
+  },
+  input: {
+      flex: 0.85,
+  },
+  button: {
+      marginLeft: 8,
+  },
 });
 
 export default SearchHeader;

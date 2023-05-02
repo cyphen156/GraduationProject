@@ -36,9 +36,6 @@ function MainTab() {
             <Tab.Screen name="게시물" component={HomeStack} options={{ headerShown: false,
                 tabBarIcon: ({color}) => (<Icon name="home" color={color} size={30} />),
             }}/>     
-            <Tab.Screen name="내가 할 일" component={FeedScreen} options={{
-                tabBarIcon: ({color, size}) => (<Icon name="rule" size={size} color={color} />),
-            }}/>  
             <Tab.Screen name="팀 리스트" component={TeamListScreen} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="groups" size={size} color={color} />),
             }}/>

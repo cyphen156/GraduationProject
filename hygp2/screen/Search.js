@@ -1,15 +1,66 @@
-import { useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useContext, useState } from 'react';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import SearchContext from '../context/SearchContext';
+import JoiningGroup from '../components/JoiningGroups';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+import '@react-native-firebase/firestore';
+import { useUserContext } from '../context/UserContext';
+
+const firestore = firebase.firestore();
 
 function SearchScreen() {
   const { teams } = useContext(SearchContext);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const { user } = useUserContext();
+
+  const handlePress = (team) => {
+    setSelectedTeam(team);
+    setModalVisible(true);
+  };
+
+  const handleConfirm = async () => {
+    const invitedUsersRef = firestore.collection(`teams/${selectedTeam.id}/invitedUsers`);
+    
+    const doc = await invitedUsersRef.doc(user.id).get();
+    if (doc.exists) {
+        Alert.alert("이미 팀원입니다.");
+        return;
+    } else {
+      doc.add({
+        userData: {
+          id: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL
+        },
+        isHost: false
+      }).then(() => {
+        console.log("팀 입장완료");
+      }).catch((error) => {
+        console.error("팀 입장 불가", error);
+      });
+    }
+    setModalVisible(false);
+  };
+
+  const handleClose = () => {
+    setModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
+      {selectedTeam && (
+        <JoiningGroup
+          visible={modalVisible}
+          onRequestClose={handleClose}
+          onConfirm={handleConfirm}
+          team={selectedTeam}
+        />
+      )}
       <ScrollView contentContainerStyle={styles.scrollView}>
         {teams && teams.map((team) => (
-          <TouchableOpacity key={team.id}>
+          <TouchableOpacity key={team.id} onPress={() => handlePress(team)}>
             <View style={styles.teamItem}>
               <Text style={styles.teamName}>{team.name}</Text>
               <Text style={styles.teamDescription}>{team.description}</Text>

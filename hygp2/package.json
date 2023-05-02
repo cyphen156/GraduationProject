@@ -33,7 +33,7 @@
     "eventemitter3": "^5.0.0",
     "ionicons": "^7.1.0",
     "react": "18.2.0",
-    "react-native": "0.71.3",
+    "react-native": "^0.71.7",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-calendars": "^1.1295.0",
     "react-native-chart-kit": "^6.12.0",
@@ -68,6 +68,7 @@
     "rn-fetch-blob": "^0.12.0",
     "s-": "^0.0.1",
     "socket.io-client": "^4.6.1",
+    "table-component": "^0.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

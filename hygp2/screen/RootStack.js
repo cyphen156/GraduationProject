@@ -123,7 +123,7 @@ function RootStack() {
                 name="SearchScreen" 
                 component={SearchScreen} 
                 options={{
-                  title: '일정 생성', 
+                  title: '팀 검색', 
                   headerBackTitle: '뒤로가기', 
                   headerTitle: () => <SearchHeader />,
                 }}
