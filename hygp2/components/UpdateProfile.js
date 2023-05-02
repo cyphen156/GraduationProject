@@ -21,7 +21,7 @@ function UpdateProfile(){
     const {user, setUser} = useUserContext();
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [discription, setDiscription] = useState('#');
     const windowHeight = Dimensions.get('window').height;
     // 아이디 변경 가능여부
     let changeable = true;
@@ -170,7 +170,6 @@ function UpdateProfile(){
             console.log('changeable : ', changeable);
             if (changeable == true){
                 toastRef.current.show('닉네임 변경이 가능합니다.');
-              
             } 
         });
 
@@ -190,9 +189,7 @@ function UpdateProfile(){
                 }
                 />
             </Pressable>
-
             <View style={styles.form}>
-
                 <View style={styles.checking}>
                     <BordredInput
                         placeholder="닉네임"
@@ -203,20 +200,29 @@ function UpdateProfile(){
                         width="90%"   
                         margin= {10}              
                         /> 
-
                     <Button style={styles.margin} title="닉네임 확인"  onPress={check} />
-                     <Toast ref={toastRef}
+                    <Toast ref={toastRef}
                         positionValue={windowHeight * 0.55}
                         fadeInDuration={300}
                         fadeOutDuration={1000}
                         style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
                     />
                 </View>
-                        <View style={styles.button}>
-                            <CustomButton title="변경" onPress={onSubmit} hasMarginBottom/>
-                            <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
-                        </View>
-                   
+                <View style={styles.checking}>
+                    <BordredInput
+                        placeholder="관심분야를 입력하세요"
+                        value={null}
+                        onChangeText={setDiscription}
+                        onSubmitEditing={onSubmit}
+                        returnKeyType="next"
+                        width="90%"   
+                        margin= {10}              
+                    /> 
+                </View>
+                    <View style={styles.button}>
+                        <CustomButton title="변경" onPress={onSubmit} hasMarginBottom/>
+                        <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
+                    </View>
                 </View>
         </View>
      

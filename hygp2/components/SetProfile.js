@@ -147,7 +147,6 @@ function SetupProfile(){
                 }
                 />
             </Pressable>
-
             <View>
                 <View style={styles.checking}>
                     <BordredInput 
@@ -159,18 +158,17 @@ function SetupProfile(){
                         width="70%"
                         margin={10}
                     />
-                        <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
+                    <Button style={styles.margin} title="닉네임 확인" onPress={check}/>
                 </View>
-                        {loading ? (
-                            <ActivityIndicator size={32} color="#6200ee" style={styles.spinner}/>
-                        ) : (
-                            <View style={styles.button}>
-                                <CustomButton title="다음" onPress={onSubmit} hasMarginBottom/>
-                                <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
-                            </View>
-                        )}
+                {loading ? (
+                    <ActivityIndicator size={32} color="#6200ee" style={styles.spinner}/>
+                ) : (
+                    <View style={styles.button}>
+                        <CustomButton title="다음" onPress={onSubmit} hasMarginBottom/>
+                        <CustomButton title="취소" onPress={onCancel} theme="secondary"/>
+                    </View>
+                )}
             </View>
-
         </View>
     )
 }

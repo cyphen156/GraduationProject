@@ -12,7 +12,7 @@ import SubTab from "./SubTab";
 import FileUpload from "../components/FileUpload";
 import FeedList from "../components/FeedList";
 import FriendsList from "./FriendsList";
-import MyCalendar from "./Teams/MyCalendar";
+import MyCalendar from "./Calendars/MyCalendar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TeamListScreen from "./Teams/TeamList";
 import CreateTeamScreen from "./Teams/CreateTeam";
@@ -25,7 +25,6 @@ const Stack = createNativeStackNavigator();
 /** 메인 화면 아래 탭 */
 function MainTab() {
     return (
-
         <Tab.Navigator 
             screenOptions={{
                 headerShown: true,

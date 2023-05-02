@@ -12,7 +12,6 @@ function SettingScreen(){
         setUser(null);
     };
     
-
     return (
         <View style={styles.block}>
             <Pressable

@@ -76,7 +76,6 @@ function MyCalendar() {
         endDate: data.endDate.toDate(),
       });
     });
-
     setTodos(fetchedTodos);
   };
   
@@ -159,24 +158,34 @@ function MyCalendar() {
 
   return (
     <View style={styles.container}>
-        <CalendarView
-          markedDates={markedDates}
-          selectedDate={selectedDate}
-          onSelectDate={setSelectedDate}
-        />
+      <CalendarView
+        markedDates={markedDates}
+        selectedDate={selectedDate}
+        onSelectDate={setSelectedDate}
+      />
       <ScrollView contentContainerStyle={styles.scrollView}>
         {filteredTodos.map((todo) => {
           const { id } = todo;
   
-          // 토글 버튼
-          const handleToggle = async ({todo, id}) => {
-            const teamId = id.split("_")[0];
-            const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
-            let tasking = !(todo.complete);
-            await todosRef.doc(id).update({
-              complete: tasking
-            });
-          };
+          // // 토글 버튼
+          // const handleToggle = async ({ complete, id }) => {
+          //   let tasking = !complete;
+          //   // 팀 아이디가 id 문자열에 포함되어 있으면 팀의 할 일로 간주
+          //   if (id.includes("_")) {
+          //     const teamId = id.split("_")[0];
+          //     const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
+          //     await todosRef.doc(id).update({
+          //       complete: tasking
+          //     });
+          //   } else {
+          //     // 팀 아이디가 없으면 개인의 할 일로 간주
+          //     const todosRef = firestore.collection(`user`).doc(userId).collection("myTodos");
+          //     await todosRef.doc(id).update({
+          //       complete: tasking
+          //     });
+          //   }
+          //   setTodos(todos.map((t) => t.id === id ? {...t, complete: tasking} : t));
+          // };
             
           return(
             <TouchableOpacity key={id}>
@@ -190,16 +199,16 @@ function MyCalendar() {
                 <View style={styles.todoMeta}>
                   <Text style={styles.todoText}>작업자: {todo.worker}</Text>
                   <View style={styles.icons}>
-                    <Text>작업 상태</Text>
+                    {/* <Text>작업 상태</Text>
                     <Switch
                       value={todo.complete}
-                      onValueChange={() => handleToggle({todo, id})}
+                      onValueChange={() => handleToggle({complete: todo.complete, id})}
                       activeText={'완료'}
                       inActiveText={'미완료'}
                       barHeight={20}
                       circleSize={25}
                       switchWidthMultiplier={3}
-                    />
+                    /> */}
                   </View>
                 </View>
               </View>

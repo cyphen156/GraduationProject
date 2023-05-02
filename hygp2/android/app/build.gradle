@@ -164,9 +164,14 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
     //네이버 의존성
+    // implementation 'com.android.support:appcompat-v7:27.0.0'
+
     // implementation('com.naver.maps:map-sdk:3.16.2') {
     //     exclude group: 'com.android.support'
     // }
+
+    // else 
+    // implementation 'com.naver.maps:map-sdk:3.16.2'
 
     implementation("com.facebook.react:react-android")
 
