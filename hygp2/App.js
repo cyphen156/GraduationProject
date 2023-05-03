@@ -69,7 +69,7 @@ function App() {
   console.disableYellowBox = true;
   const [searchText, setSearchText] = useState('');
   const [teams, setTeams] = useState([]);
-
+  const [recommendedInterest, setRecommendedInterest] = useState('');
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -79,7 +79,7 @@ function App() {
 
   return (
     <UserContextProvider>
-      <SearchContext.Provider value={{ searchText, setSearchText, teams, setTeams }}>
+      <SearchContext.Provider value={{ searchText, setSearchText, teams, setTeams, recommendedInterest, setRecommendedInterest }}>
         <NavigationContainer>
           <LogContextProvider>
             <RootStack />

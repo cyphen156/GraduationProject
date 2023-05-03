@@ -44,10 +44,11 @@ function SearchHeader() {
   const fetchRecommendedTeams = async () => {
     try {
       const user = firebase.auth().currentUser;
-
+  
       if (!user) {
         throw new Error('User not logged in!');
       }
+      
       const getRecommendedTeams = firebase.functions().httpsCallable('getRecommendedTeams');
       const result = await getRecommendedTeams({ uid: user.uid });
       setTeams(result.data);
@@ -57,8 +58,9 @@ function SearchHeader() {
       const userDoc = await userRef.get();
       const interests = userDoc.data().interests;
       console.log('11');
+      console.log(interests);
       setRecommendedInterest(interests.join(', '));
-
+      
     } catch (error) {
       console.error('Failed to fetch recommended teams:', error);
     }
