@@ -60,9 +60,11 @@ function SearchScreen() {
       )}
       <ScrollView contentContainerStyle={styles.scrollView}>
         {searchText === '' && (
-          <Text style={styles.recommendationText}>
-            당신에게 추천하는 팀: {recommendedInterest}
-          </Text>
+          <View style={styles.recommendation}>
+            <Text style={styles.recommendationText}>
+              당신에게 추천하는 팀: {recommendedInterest}
+            </Text>
+          </View>
         )}
         {teams && teams.map((team) => (
           <TouchableOpacity key={team.id} onPress={() => handlePress(team)}>

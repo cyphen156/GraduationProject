@@ -1,16 +1,10 @@
-import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import FeedScreen from './Feed'
-import CalendarScreen from "./Calendar";
-import Todo from './Todo';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../context/UserContext";
-import Camera from "../components/image-picker-ex";
 import HomeStack from "./HomeStack";
 import MyProfileStack from "./MyProfileStack";
-import SubTab from "./SubTab";
 import FileUpload from "../components/FileUpload";
-import FeedList from "../components/FeedList";
 import FriendsList from "./FriendsList";
 import MyCalendar from "./Calendars/MyCalendar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

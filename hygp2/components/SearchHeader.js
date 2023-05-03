@@ -11,8 +11,7 @@ const firestore = firebase.firestore();
 
 function SearchHeader() {
   const {width} = useWindowDimensions();
-  const { searchText, setSearchText, setTeams } = useContext(SearchContext);
-  const [recommendedInterest, setRecommendedInterest] = useState('');
+  const { searchText, setSearchText, setTeams, recommendedInterest, setRecommendedInterest } = useContext(SearchContext);
 
   const searchTeamsByHashtagOrName = async () => {
     if (searchText === '') return; // 검색어가 없는 경우 검색을 수행하지 않음
@@ -57,6 +56,7 @@ function SearchHeader() {
       const userRef = firestore.collection('user').doc(user.uid);
       const userDoc = await userRef.get();
       const interests = userDoc.data().interests;
+      console.log('11');
       setRecommendedInterest(interests.join(', '));
 
     } catch (error) {
@@ -81,18 +81,10 @@ function SearchHeader() {
         ]}
         onPress={async () => {
           await searchTeamsByHashtagOrName();
-          setSearchText('');
         }}
       >
         <Icon name="search" size={20} color="#9e9e9e" />
       </Pressable>
-      {searchText === '' && (
-        <View style={styles.recommendation}>
-          <Text style={styles.recommendationText}>
-            당신에게 추천하는 팀: #{recommendedInterest}
-          </Text>
-        </View>
-      )}
     </View>
   );
 }
@@ -108,13 +100,13 @@ const styles = StyleSheet.create({
   button: {
       marginLeft: 8,
   },
-  recommendation: {
-      marginTop: 8,
-  },
-  recommendationText: {
-      color: '#9e9e9e',
-      fontSize: 16,
-  },
+  // recommendation: {
+  //     marginTop: 8,
+  // },
+  // recommendationText: {
+  //     color: '#9e9e9e',
+  //     fontSize: 16,
+  // },
 });
 
 export default SearchHeader;
