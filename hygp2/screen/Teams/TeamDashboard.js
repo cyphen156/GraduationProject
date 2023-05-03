@@ -8,7 +8,6 @@ import TeamContext from './TeamContext';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-import GanttChart from 'react-native-gantt-chart';
 
 const firestore = firebase.firestore();
 
@@ -60,17 +59,11 @@ function TeamDashboard() {
         setCompleteCount(complete);
       });
   },[taskCount, completeCount]);
-  
-  const ganttData = [
-    {title: 'task1', date: {start: new Date(2023, 5, 1), end: new Date(2023, 5, 5)}},
-    {title: 'task2', date: {start: new Date(2023, 5, 6), end: new Date(2023, 5, 10)}},
-    {title: 'task3', date: {start: new Date(2023, 5, 11), end: new Date(2023, 5, 15)}},
-  ];
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.chartContainer}>
-        {/* <Text style={styles.chartTitle}>Sales Data</Text>
+        <Text style={styles.chartTitle}>Sales Data</Text>
         <LineChart
           data={data}
           width={300}
@@ -86,24 +79,12 @@ function TeamDashboard() {
           }}
           bezier
           style={styles.chart}
-        /> */}
-        <Text style={styles.chartTitle}>Project Schedule</Text>
-        <GanttChart
-          data={ganttData}
-          numberOfTicks={5}
-          onPressTask={(task) => console.log(task)}
-          gridMin={new Date(2023, 4, 1).getTime()}
-          gridMax={new Date(2023, 6, 1).getTime()}
-          colors={{
-            barColorPrimary: '#0c2461',
-            barColorSecondary: '#4a69bd',
-            textColor: '#fff',
-          }}
         />
       </View>
       <View style={styles.tableContainer}>
         <Text style={styles.tableTitle}>유저</Text>
         <Table borderStyle={styles.table}>
+
           <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText} />
             {userNames.map((username, i) => (
             <Row key={i} data={username} style={styles.tableRow} />
