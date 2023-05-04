@@ -36,7 +36,7 @@ function UpdateProfile() {
 
     const toastRef = useRef(); // toast ref 생성
 
-    console.log("user", user);
+    // console.log("user1", user);
     myPhotoURL = user.photoURL;
     id = user.id;
 
@@ -70,7 +70,7 @@ function UpdateProfile() {
             displayName: users.displayName,
         });
 
-        console.log("user :", users);
+        console.log("user2 :", users);
 
         updateProfile({
             id: users.id,
@@ -157,7 +157,7 @@ function UpdateProfile() {
                 id: id,
             }
 
-            console.log(users);
+            console.log(users+'1');
             postUpadte({ users });
 
             setUser(users);
@@ -168,7 +168,7 @@ function UpdateProfile() {
 
             // await createTest({user, name});
 
-            console.log("user: ", user)
+            console.log("user3: ", user)
             onLogout();
             on
         } else {
@@ -177,8 +177,10 @@ function UpdateProfile() {
     };
 
     const onCancel = () => {
-        signOut();
-        navigation.goBack();
+        toastRef.current.show("프로필 변경을 취소합니다.");
+        setTimeout(() => {
+            navigation.goBack();
+        }, 1000);
     };
 
     const onSelectImage = () => {
