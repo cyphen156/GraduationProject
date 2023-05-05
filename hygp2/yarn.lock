@@ -6829,6 +6829,11 @@ react-native-bouncy-checkbox@^3.0.7:
   resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-3.0.7.tgz#011aef92b4fbde2a1f223165626c56a9ffe637fb"
   integrity sha512-776TgMGt9wTpOQA1TcvFjL5VUn6o945wFYf3Ztqva62/vT2o3JAezLiP7hYh2Svd+PewfWBYSPMs4jeaSoS8Sg==
 
+react-native-calendar-heatmap@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/react-native-calendar-heatmap/-/react-native-calendar-heatmap-0.2.4.tgz#ab91f4b41f6137cb28faf5123f483703d12db939"
+  integrity sha512-1+fJLP5vKPlTA0YFdHNVgCWAYywLRr6QVNqjgM78B+Y87NT+sjkuoxW6PtZCk53N08qXte6jdZFvs70MEldBqg==
+
 react-native-calendars@^1.1295.0:
   version "1.1295.0"
   resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1295.0.tgz#bbd0d99593fbef42ca7cbb9159f6061c852c8a1d"

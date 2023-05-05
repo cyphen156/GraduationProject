@@ -28,12 +28,12 @@ function TeamCalendar({ navigation }) {
       headerRight: () => (
       <View style={{flexDirection: 'row', marginRight: 16}}>
           <TransparentCircleButton
-                  name="add"
-                  color="#4096ee"
-                  onPress={() => {
-                        navigation.navigate("CreateTodos", {selectedDate});
-                      }}
-                  />
+            name="add"
+            color="#4096ee"
+            onPress={() => {
+                  navigation.navigate("CreateTodos", {selectedDate});
+                }}
+            />
       </View>   
       ),
   });
