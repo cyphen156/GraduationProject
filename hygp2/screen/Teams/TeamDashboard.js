@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import CalendarHeatmap from 'react-native-calendar-heatmap';
+import HeatMap from 'react-native-heatmap-chart';
 import { Table, Row, Rows } from 'react-native-table-component';
 import PercentageCircle from './PercentageCircle';
 import { ScrollView } from 'react-native-gesture-handler';
+import { format } from 'date-fns';
 import TeamContext from './TeamContext';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -19,14 +20,22 @@ function TeamDashboard() {
   const [todos, setTodos] = useState([]);
   const [tableHead] = useState(['작업자명', '할 일', '완료']);
   const [teamTodos, setTeamTodos] = useState({});
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 5);
-  const values = [
-    { date: '2023-01-01', count: 1 },
-    { date: '2023-01-02', count: 2 },
-    { date: '2023-01-03', count: 4 },
+  const [todosByDate, setTodosByDate] = useState({});
+
+  const colors = [
+    "#FFA07A", "#7FFFD4", "#D2691E", "#DC143C",
+    "#90EE90", "#FFD700", "#FF4500", "#2E8B57",
+    "#ADFF2F", "#32CD32"
   ];
+
+  const userColors = userNames.reduce((acc, name, index) => {
+    acc[name] = colors[index % colors.length];
+    return acc;
+  }, {});
+  
+  useEffect(() => {
+    setTodosByDate(getTodosByDate(todos));
+  }, [todos]);
 
   // 채팅방 유저 가져오기
   useEffect(() => {
@@ -79,8 +88,28 @@ function TeamDashboard() {
       teamTodos[todo.worker].total++;
       teamTodos[todo.worker].todos.push(todo);
     });
-  
     return teamTodos;
+  };
+
+  const getTodosByDate = (todos) => {
+    const todosByDate = {};
+  
+    todos.forEach((todo) => {
+      const startDate = format(todo.startDate.toDate(), 'yyyy-MM-dd');
+      const endDate = format(todo.endDate.toDate(), 'yyyy-MM-dd');
+  
+      if (!todosByDate[startDate]) {
+        todosByDate[startDate] = [];
+      }
+      if (!todosByDate[endDate]) {
+        todosByDate[endDate] = [];
+      }
+  
+      todosByDate[startDate].push(todo);
+      todosByDate[endDate].push(todo);
+    });
+  
+    return todosByDate;
   };
 
   return (
@@ -89,45 +118,39 @@ function TeamDashboard() {
         <Text style={styles.chartTitle}>작업 목록</Text>
         <ScrollView horizontal>
           <View style={styles.todosListContainer}>
-          {Object.keys(teamTodos).map((worker, index) => (
-            <View key={index} style={styles.workerTodosContainer}>
-              <Text style={styles.workerName}>{worker}</Text>
-              {teamTodos[worker].todos.map((todo, i) => (
-                <Text key={i} style={styles.todoItem}>
-                  {todo.title}
-                </Text>
-              ))}
-            </View>
-          ))}
+            <Table borderStyle={styles.table}>
+            {Object.keys(teamTodos).map((worker, index) => (
+              <View key={index} style={styles.workerTodosContainer}>
+                <Text style={styles.workerName}>{worker}</Text>
+                <View style={styles.workerTodosHeatMap}>
+                  {Object.keys(todosByDate).map((date, i) => {
+                    const workerTodos = todosByDate[date].filter(
+                      (todo) => todo.worker === worker
+                    );
+                    const color =
+                      workerTodos.length > 0
+                        ? userColors[workerTodos[0].worker] || "#FFFFFF"
+                        : "#FFFFFF";
+                    return (
+                      <View
+                        key={`${worker}-${i}`}
+                        style={[
+                          styles.workerTodosHeatMapCell,
+                          { backgroundColor: color },
+                        ]}
+                      />
+                    );
+                  })}
+                </View>
+              </View>
+            ))}
+            </Table>
           </View>
-          <CalendarHeatmap
-            startDate={startDate}
-            endDate={endDate}
-            values={values}
-            showOutOfRangeDays
-            gutterSize={2}
-            horizontal={true}
-            showMonthLabels={true}
-            onPress={(value) => console.log(value)}
-            titleForValue={(value) => {
-              if (!value) {
-                return null;
-              }
-              return `${value.date}에 ${value.count}개의 작업이 있습니다.`;
-            }}
-            colorArray={[
-              '#ebedf0',
-              '#c6e48b',
-              '#7bc96f',
-              '#239a3b',
-              '#196127',
-            ]}
-          />
         </ScrollView>
       </View>
       <View style={styles.tableContainer}>
         <Table borderStyle={styles.table}>
-          <Row data={tableHead} style={styles.tableHead} />
+          <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText}/>
             {Object.keys(teamTodos).map((worker, index) => (
               <Rows
                 key={index}
@@ -139,6 +162,7 @@ function TeamDashboard() {
                   ],
                 ]}
                 style={styles.tableRow}
+                textStyle={styles.tableRowText}
               />
             ))}
         </Table> 
@@ -215,11 +239,20 @@ const styles = StyleSheet.create({
     workerTodosContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 16,
     },
     workerName: {
       fontSize: 16,
       marginRight: 16,
+      width: 75,
+    },
+    workerTodosHeatMap: {
+      flexDirection: "row",
+    },
+    workerTodosHeatMapCell: {
+      width: 20,
+      height: 20,
+      marginLeft: 2,
+      marginRight: 2,
     },
 });
 

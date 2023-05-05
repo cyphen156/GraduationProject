@@ -6946,6 +6946,13 @@ react-native-gradle-plugin@^0.71.17:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.17.tgz#cf780a27270f0a32dca8184eff91555d7627dd00"
   integrity sha512-OXXYgpISEqERwjSlaCiaQY6cTY5CH6j73gdkWpK0hedxtiWMWgH+i5TOi4hIGYitm9kQBeyDu+wim9fA8ROFJA==
 
+react-native-heatmap-chart@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-heatmap-chart/-/react-native-heatmap-chart-1.0.2.tgz#a117e5ebbfc009fed772aab3a0f98129c8be5e76"
+  integrity sha512-W9t5sV6BzXpolSZWPZ8Zb8rhOq11FL99d3O5d9u8b9hZWu9+EPvvP0b9f3rd5/ZPMM9k/x/9kDvInAjvn0ye0g==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-image-picker@^5.3.1:
   version "5.3.1"
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-5.3.1.tgz"
