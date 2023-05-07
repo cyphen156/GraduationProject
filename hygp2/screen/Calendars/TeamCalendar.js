@@ -79,12 +79,21 @@ function TeamCalendar({ navigation }) {
       interval.forEach((date, i) => {
         const formattedDate = format(date, "yyyy-MM-dd");
         if (!acc[formattedDate]) {
-          acc[formattedDate] = { periods: [], marked: false };
+          acc[formattedDate] = {
+            periods: [],
+            marked: interval.length === 1 ? true : false,
+          };
         }
   
         if (acc[formattedDate].periods.length < 2) {
           if (i === 0 && i === interval.length - 1) {
             acc[formattedDate].marked = true;
+            acc[formattedDate].periods.push({
+              startingDay: true,
+              endingDay: true,
+              color: color,
+              textColor: "#ffffff",
+            });
           } else if (i === 0) {
             acc[formattedDate].periods.push({
               startingDay: true,
