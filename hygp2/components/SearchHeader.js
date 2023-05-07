@@ -8,26 +8,36 @@ import '@react-native-firebase/functions';
 import SearchContext from '../context/SearchContext';
 
 const firestore = firebase.firestore();
+const functions = firebase.app().functions('us-central1');
 
 function SearchHeader() {
   const {width} = useWindowDimensions();
   const { searchText, setSearchText, setTeams, recommendedInterest, setRecommendedInterest } = useContext(SearchContext);
 
   const searchTeamsByHashtagOrName = async () => {
-    if (searchText === '') return; // 검색어가 없는 경우 검색을 수행하지 않음
 
     const teamsRef = firestore.collection('teams');
-    const snapshot = await teamsRef
-      .where('hashtags', 'array-contains', searchText)
-      .get();
-    const nameSnapshot = await teamsRef
-      .where('name', '==', searchText)
-      .get();
+    // const snapshot = await teamsRef
+    //   .where('hashtags', 'array-contains', searchText)
+    //   .get();
+    // const nameSnapshot = await teamsRef
+    //   .where('name', '==', searchText)
+    //   .get();
 
-    const searchedTeams = [
-      ...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-      ...nameSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-    ];
+    // const searchedTeams = [
+    //   ...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+    //   ...nameSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+    // ];
+
+    const snapshot = await teamsRef.get();
+
+    const searchedTeams = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(
+        team =>
+          team.name.includes(searchText) ||
+          (team.hashtags && team.hashtags.some(tag => tag === searchText)),
+      );
 
     setTeams(searchedTeams);
   };
@@ -44,21 +54,31 @@ function SearchHeader() {
   const fetchRecommendedTeams = async () => {
     try {
       const user = firebase.auth().currentUser;
-
+  
       if (!user) {
         throw new Error('User not logged in!');
       }
-      const getRecommendedTeams = firebase.functions().httpsCallable('getRecommendedTeams');
-      const result = await getRecommendedTeams({ uid: user.uid });
+      
+      // UID를 전달하지 않고 함수 호출
+      const getRecommendedTeams = functions.httpsCallable('getRecommendedTeams');
+      const result = await getRecommendedTeams();
+      
       setTeams(result.data);
-
+  
       // 추천 관심사 설정
       const userRef = firestore.collection('user').doc(user.uid);
       const userDoc = await userRef.get();
-      const interests = userDoc.data().interests;
-      console.log('11');
-      setRecommendedInterest(interests.join(', '));
-
+      const interests = userDoc.data().interests || '';
+      console.log(interests);
+      console.log(typeof(interests));
+      console.log("length: " + interests.length);
+      if (interests.length > 0) {
+        console.log("에러안떳냐?");
+        setRecommendedInterest(interests);
+        console.log('1\n' + recommendedInterest + "\n2:" + interests);
+      }else {
+        console.log("에러뜨심");
+      }
     } catch (error) {
       console.error('Failed to fetch recommended teams:', error);
     }

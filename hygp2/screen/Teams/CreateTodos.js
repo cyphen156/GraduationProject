@@ -50,6 +50,7 @@ function CreateTodos({ navigation, route }) {
         startDate: startDateTimestamp,
         endDate: endDateTimestamp,
         complete : false,
+        teamId: teamId,
       });
     
     // Reset fields and navigate back

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
     StyleSheet, View, Pressable, Platform,
     Image, ActivityIndicator, Button, Alert,
-    Text, Dimensions, Keyboard
+    Text, Dimensions, Keyboard, TextInput
 } from "react-native";
 import { signIn, signOut } from "../lib/auth";
 import { updateUser, nameCheck } from "../lib/user";
@@ -24,7 +24,7 @@ function UpdateProfile() {
     const { user, setUser } = useUserContext();
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [discription, setDiscription] = useState('#');
+    const [discription, setDiscription] = useState();
     const windowHeight = Dimensions.get('window').height;
     const [interests, setInterests] = useState([]);
 
@@ -54,6 +54,10 @@ function UpdateProfile() {
         });
 
         setDisplayName(user.displayName);
+
+        onDiscriptionLoad();
+        // const interestsString = interests.join(', ');
+        // setDiscription(interestsString);
     }, [setUser, navigation]);
 
     const postUpadte = ({ users }) => {
@@ -82,7 +86,7 @@ function UpdateProfile() {
         });
     }
 
-    const onSave = async () => {
+    const onDiscriptionLoad = async () => { //onSave함수 변형시켯음
         const userRef = firestore().collection('user').doc(user.id);
 
         userRef.get().then((doc) => {
@@ -90,14 +94,16 @@ function UpdateProfile() {
                 let interests = doc.data().interests || [];
 
                 if (!interests.includes(discription)) {
-                    interests.push(discription);
-
-                    userRef.update({ interests: interests }).then(() => {
-                        setInterests(interests);  // 상태 업데이트
-                        setDiscription('#');  // 입력란 초기화
-                    });
-                } else {
-                    toastRef.current.show('이미 존재하는 관심사입니다.');
+                    // interests.push(discription);
+                    console.log('3'+JSON.stringify(interests));
+                    console.log('2'+interests);
+                    setDiscription(interests.join(', '));
+                    console.log('1');
+                    console.log(discription + '\t8');
+                    // userRef.update({ interests: interests }).then(() => {
+                    //     setInterests(interests);  // 상태 업데이트
+                    //     setDiscription(discription);  // 입력란 초기화
+                    // });
                 }
             } else {
                 console.log("No such document!");
@@ -107,23 +113,46 @@ function UpdateProfile() {
         });
     };
 
-    const onDelete = async (interestToDelete) => {
+    const InterestsSave = async () => {
         const userRef = firestore().collection('user').doc(user.id);
-
-        userRef.get().then((doc) => {
-            if (doc.exists) {
-                let interests = doc.data().interests || [];
-                const updatedInterests = interests.filter(interest => interest !== interestToDelete);
-                userRef.update({ interests: updatedInterests }).then(() => {
-                    setInterests(updatedInterests);
-                });
-            } else {
-                console.log("No such document!");
-            }
+        console.log('4object');
+        console.log(discription + '\t999');
+        console.log(JSON.stringify(interests) + '\n10\n');
+        const updatedInterests = discription
+            .trim()
+            .split(',')
+            .map(
+                (item) => item.trim()
+                    .startsWith('#') ? item.trim() 
+                        : '#' + item.trim())
+                            .filter((item) => item !== "");
+        const formattedInterests = updatedInterests.map((item) => '#' + item);
+        setInterests(formattedInterests);
+        console.log(discription + '\n6');
+        console.log(interests + '\n5');
+        userRef.update({ interests: updatedInterests }).then(() => {
+            console.log("Interests updated in Firebase");
         }).catch((error) => {
-            console.log("Error getting document:", error);
+            console.log("Error updating interests:", error);
         });
     };
+    // const onDelete = async (interestToDelete) => {
+    //     const userRef = firestore().collection('user').doc(user.id);
+
+    //     userRef.get().then((doc) => {
+    //         if (doc.exists) {
+    //             let interests = doc.data().interests || [];
+    //             const updatedInterests = interests.filter(interest => interest !== interestToDelete);
+    //             userRef.update({ interests: updatedInterests }).then(() => {
+    //                 setInterests(updatedInterests);
+    //             });
+    //         } else {
+    //             console.log("No such document!");
+    //         }
+    //     }).catch((error) => {
+    //         console.log("Error getting document:", error);
+    //     });
+    // };
 
     const onSubmit = async () => {
         setLoading(true);
@@ -155,22 +184,21 @@ function UpdateProfile() {
                 photoURL: photoURL,
                 displayName: displayName,
                 id: id,
+                interests: interests,
             }
 
             console.log(users+'1');
             postUpadte({ users });
 
             setUser(users);
-
             navigation.pop();
-
+            InterestsSave();
             // posts에 참조된 user의 값을 변경해준다
 
             // await createTest({user, name});
 
             console.log("user3: ", user)
             onLogout();
-            on
         } else {
             toastRef.current.show("닉네임을 확인 해주세요.");
         }
@@ -206,6 +234,7 @@ function UpdateProfile() {
         if (user) {
             await signOut();
             setUser(null);
+            console.log(user);
         }
     };
 
@@ -241,6 +270,12 @@ function UpdateProfile() {
 
     return (
         <SafeAreaView>
+            <Toast ref={toastRef}
+                positionValue={windowHeight * 0.5}
+                fadeInDuration={300}
+                fadeOutDuration={1000}
+                style={{ backgroundColor: 'rgba(33, 87, 243, 0.5)' }}
+            />
             <View style={styles.block}>
                 <Pressable onPress={onSelectImage} >
                     <Image
@@ -266,31 +301,28 @@ function UpdateProfile() {
                             margin={10}
                         />
                         <Button style={styles.margin} title="닉네임 확인" onPress={check} />
-                        <Toast ref={toastRef}
-                            positionValue={windowHeight * 0.66}
-                            fadeInDuration={300}
-                            fadeOutDuration={1000}
-                            style={{ backgroundColor: 'rgba(33, 87, 243, 0.5)' }}
-                        />
                     </View>
-                    <View style={styles.checking}>
+                    <View style={styles.checking2}>
                         <BordredInput
                             placeholder="관심사를 입력하세요"
                             value={discription}
                             onChangeText={setDiscription}
                             returnKeyType="next"
-                            width="90%"
+                            width="150%"
+                            height="200%"
                             margin={10}
+                            multiline
+                            textAlignVertical="top"
                         />
-                        <Button style={styles.margin} title="관심사 추가" onPress={onSave} />
                     </View>
-                    <View style={styles.interestsContainer}>
+                    {/* <Button style={styles.margin} title="관심사 추가" onPress={onSave} /> */}
+                    {/* <View style={styles.interestsContainer}>
                         {interests.map((interest, index) => (
                             <Pressable key={index} onLongPress={() => onDelete(interest)}>
                                 <Text style={styles.interest}>{interest}</Text>
                             </Pressable>
                         ))}
-                    </View>
+                    </View> */}
                     <View style={styles.button}>
                         <CustomButton title="변경" onPress={onSubmit} hasMarginBottom />
                         <CustomButton title="취소" onPress={onCancel} theme="secondary" />
@@ -324,6 +356,10 @@ const styles = StyleSheet.create({
     checking: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    checking2: {
+        flexDirection: 'row',
         justifyContent: 'center',
     },
     margin: {

@@ -7,22 +7,32 @@ import IconRightButton from '../../components/IconRightButton';
 import IconLeftButton from '../../components/IconLeftButton';
 import { useEffect } from 'react';
 import WriteTeamTodos from '../../components/WriteTeamTodos';
-import TeamContext from './TeamContext';
 import { useUserContext } from '../../context/UserContext';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
-function UpdateTodos({ navigation, route }) {
+function UpdateMyTodos({ navigation, route }) {
 
   const {user}= useUserContext();
-  const { teamId } = useContext(TeamContext);
+  const [teamId, setTeamId] = useState(route.params?.todoId);
   const [task, setTask] = useState('');
   const [discription, setDiscription] = useState('');
   const [endDate, setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [todoId, setTodoId] = useState(route.params?.todoId); // todoId 값을 받는다.
+  
+  useEffect(() => {
+    if (todoId) {
+      const parsedTeamId = todoId.split("_")[0];
+      const parsedTodoId = todoId.split("_")[1];
+      console.log(parsedTeamId);
+      console.log(parsedTodoId);
+      setTeamId(parsedTeamId);
+      setTodoId(parsedTodoId);
+    }
+  }, [todoId]);
   
   useEffect(() => {
     navigation.setOptions({
@@ -42,13 +52,22 @@ function UpdateTodos({ navigation, route }) {
         ),
     });
     if (todoId) { // todoId가 있다면, 기존의 할 일을 불러온다.
-      const todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
+      let todosRef = ''
+      if (teamId == user.id){
+        todosRef = firestore.collection(`user`).doc(teamId).collection("myTodos");
+      }else{
+        todosRef = firestore.collection(`teams`).doc(teamId).collection("todos");
+      }
       todosRef.doc(todoId).get().then((doc) => {
         const data = doc.data();
+        console.log("Document data:", data);
+
         setTask(data.task);
         setDiscription(data.discription);
         setStartDate(data.startDate.toDate());
         setEndDate(data.endDate.toDate());
+      }).catch((error) => {
+        console.log("Error getting document:", error);
       });
     }
   }, [todoId, teamId, navigation]);
@@ -145,4 +164,4 @@ const styles = StyleSheet.create({
 }
 });
 
-export default UpdateTodos;
+export default UpdateMyTodos;

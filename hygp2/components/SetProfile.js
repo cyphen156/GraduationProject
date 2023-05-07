@@ -57,7 +57,10 @@ function SetupProfile(){
                 }
                 // 다운로드할 수 있는 URL 생성
                 photoURL = response ? await reference.getDownloadURL() : null;
-            } 
+            }  else {
+                // 기본 이미지의 로컬 경로를 photoURL로 설정
+                photoURL = Image.resolveAssetSource(userImage).uri;
+            }
 
             const user = {
                 id : uid,

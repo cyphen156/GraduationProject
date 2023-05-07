@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import SearchContext from '../context/SearchContext';
 import JoiningGroup from '../components/JoiningGroups';
@@ -16,21 +16,24 @@ function SearchScreen() {
   const { user } = useUserContext();
 
   const handlePress = (team) => {
+    console.log(' 1: ' + JSON.stringify(team));
+    console.log('3');
     setSelectedTeam(team);
-    setModalVisible(true);
+    console.log(JSON.stringify(user));
   };
 
   const handleConfirm = async () => {
     const invitedUsersRef = firestore.collection(`teams/${selectedTeam.id}/invitedUsers`);
     
     const doc = await invitedUsersRef.doc(user.id).get();
+    console.log("Doc exists: ", doc.exists);
     if (doc.exists) {
-        Alert.alert("이미 소속된 팀입니다.");
-        return;
+      Alert.alert("이미 소속된 팀입니다.");
+      return;
     } else {
-      doc.add({
+      invitedUsersRef.doc(user.id).set({
         userData: {
-          id: user.uid,
+          id: user.id,
           displayName: user.displayName,
           photoURL: user.photoURL
         },
@@ -41,12 +44,20 @@ function SearchScreen() {
         console.error("팀 입장 불가", error);
       });
     }
-    setModalVisible(false);
+    handleClose();
   };
 
   const handleClose = () => {
     setModalVisible(false);
+    setSelectedTeam(null);
   };
+
+  useEffect(() => {
+    if (selectedTeam !== null) {
+      console.log(' 2: ' + JSON.stringify(selectedTeam));
+      setModalVisible(true);
+    }
+  }, [selectedTeam]);
 
   return (
     <View style={styles.container}>

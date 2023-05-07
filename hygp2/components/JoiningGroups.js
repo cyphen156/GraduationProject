@@ -7,6 +7,7 @@ function JoiningGroup({ visible, onRequestClose, onConfirm, team }) {
       transparent={true}
       visible={visible}
       onRequestClose={onRequestClose}
+      onConfirm={onConfirm}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>

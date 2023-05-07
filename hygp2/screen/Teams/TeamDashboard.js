@@ -111,6 +111,17 @@ function TeamDashboard() {
   
     return todosByDate;
   };
+  /*
+  지금 할일의 첫날과 끝날만 배열에 저장하고 있잖아 
+  모든 할일들중 가장 처음 시작되는날과 할일이 가장 마지막에 끝나는 날의 길이에 해당하는 배열을 만들고 여기에 worker별로 할일목록을 저장해야해 덤으로 interval도 계산해야 하고
+  예시를 보여줄게
+  {
+  2023.04.05: user1:{todo1}, user2:{todo2, todo3}, user3
+  2023.04.06: user1:{}, user2:{todo2}, user3{}
+  2023.04.07: user1:{todo4}, user2:{todo2}, user3{todo5}
+  }
+  이해했어?
+  */
 
   return (
     <ScrollView style={styles.container}>

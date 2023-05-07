@@ -35,7 +35,6 @@ function MainTab() {
             <Tab.Screen name="MyCalendar" component={MyCalendar} options={{
                 tabBarIcon: ({color, size}) => (<Icon name="event" size={size} color={color} />),
             }}/> 
-
         </Tab.Navigator>
     );
 }

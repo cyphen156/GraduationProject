@@ -10,7 +10,6 @@ import TeamCreateButton from '../../components/TeamCreateButton';
 import Avatar from "../../components/Avatar";
 import { useUserContext } from "../../context/UserContext";
 
-
 const Stack = createNativeStackNavigator();
 
 const TeamListScreen = ({ navigation }) => {
@@ -21,7 +20,7 @@ const TeamListScreen = ({ navigation }) => {
       headerTitleAlign: 'center',
       headerLeft: () => (
         <>
-          <Pressable style={styles.profile}  onPress={() => navigation.push('Profile')}>
+          <Pressable style={styles.profile}  onPress={() => navigation.navigate('Profile')}>
             <Avatar source={user.photoURL && {uri: user.photoURL}} size={38} />
           </Pressable>
         </>

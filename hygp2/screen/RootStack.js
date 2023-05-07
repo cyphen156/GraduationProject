@@ -29,7 +29,7 @@ import CreateMyTodos from "./MyTodos/CreateMyTodos";
 import SearchScreen from "./Search";
 import SearchHeader from "../components/SearchHeader";
 import SearchContext from "../context/SearchContext";
-
+import UpdateMyTodos from "./MyTodos/updateMyTodos";
 
 const Stack = createNativeStackNavigator();
 
@@ -110,6 +110,10 @@ function RootStack() {
               <Stack.Screen 
                 name="UpdateTodos" 
                 component={UpdateTodos} 
+                options={{title: '일정 변경', headerBackTitle: '뒤로가기'}}/>
+                <Stack.Screen 
+                name="UpdateMyTodos" 
+                component={UpdateMyTodos} 
                 options={{title: '일정 변경', headerBackTitle: '뒤로가기'}}/>
               <Stack.Screen 
                 name="CreateTodos" 

@@ -48,6 +48,7 @@ function CreateMyTodos({ navigation, route }) {
         startDate: startDateTimestamp,
         endDate: endDateTimestamp,
         complete : false,
+        teamId: user.id,
       });
     
     // Reset fields and navigate back

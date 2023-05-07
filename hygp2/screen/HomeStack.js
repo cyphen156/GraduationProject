@@ -43,7 +43,6 @@ function HomeStack() {
                     />      
                  </> )}} 
              />
-             
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen
         name='Post'
