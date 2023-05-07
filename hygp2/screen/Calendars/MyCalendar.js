@@ -1,6 +1,6 @@
 import { eachDayOfInterval, format, startOfDay } from 'date-fns';
 import { useState, useMemo, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Button, SwitchBase } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Button, SwitchBase, Pressable } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
@@ -11,6 +11,7 @@ import TransparentCircleButton from '../../components/TransparentCircleButton';
 import { Switch } from 'react-native-switch';
 import { Dimensions } from 'react-native';
 import { useUserContext } from '../../context/UserContext';
+import Avatar from "../../components/Avatar";
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -23,6 +24,19 @@ function MyCalendar() {
   const userId = auth.currentUser.uid;  // 현재 사용자의 ID를 가져옵니다.
   const navigation = useNavigation();
   const {user}= useUserContext();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <>
+          <Pressable style={styles.profile}  onPress={() => navigation.navigate('Profile')}>
+            <Avatar source={user.photoURL && {uri: user.photoURL}} size={38} />
+          </Pressable>
+        </>
+      ),
+    });
+  }, [navigation]);
 
   const fetchAllTeams = async () => {
     const uid = auth.currentUser.uid;
@@ -261,6 +275,9 @@ const styles = StyleSheet.create({
   },
   icons: {
     alignItems: 'center',
+  },
+  profile: {
+    marginLeft: 16,
   },
 });
 
