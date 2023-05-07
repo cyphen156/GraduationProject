@@ -31,14 +31,14 @@ const TeamListScreen = ({ navigation }) => {
             name="search"
             onPress={() => navigation.navigate('SearchScreen')}
           />
-          <IconRightButton
+          {/* <IconRightButton
             name="person-add"
             onPress={() => navigation.navigate('FriendsAdd')}
           />
           <IconRightButton
             name="settings"
             onPress={() => navigation.navigate('Setting')}
-          />
+          /> */}
         </View>
       ),
     });
