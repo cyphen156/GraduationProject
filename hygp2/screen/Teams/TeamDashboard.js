@@ -4,7 +4,7 @@ import HeatMap from 'react-native-heatmap-chart';
 import { Table, Row, Rows } from 'react-native-table-component';
 import PercentageCircle from './PercentageCircle';
 import { ScrollView } from 'react-native-gesture-handler';
-import { format } from 'date-fns';
+import { format, eachDayOfInterval } from 'date-fns';
 import TeamContext from './TeamContext';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
@@ -21,6 +21,7 @@ function TeamDashboard() {
   const [tableHead] = useState(['작업자명', '할 일', '완료']);
   const [teamTodos, setTeamTodos] = useState({});
   const [todosByDate, setTodosByDate] = useState({});
+  const [userColors, setUserColors] = useState({});
 
   const colors = [
     "#FFA07A", "#7FFFD4", "#D2691E", "#DC143C",
@@ -28,13 +29,18 @@ function TeamDashboard() {
     "#ADFF2F", "#32CD32"
   ];
 
-  const userColors = userNames.reduce((acc, name, index) => {
-    acc[name] = colors[index % colors.length];
-    return acc;
-  }, {});
+  useEffect(() => {
+    const newUserColors = userNames.reduce((acc, name, index) => {
+      acc[name] = colors[index % colors.length];
+      return acc;
+    }, {});
+  
+    setUserColors(newUserColors);
+  }, [userNames]);
   
   useEffect(() => {
     setTodosByDate(getTodosByDate(todos));
+    // console.log(JSON.stringify(todos) + '\n' + todos.length);
   }, [todos]);
 
   // 채팅방 유저 가져오기
@@ -53,6 +59,7 @@ function TeamDashboard() {
   useEffect(() => {
     let task = 0;
     let complete = 0;
+    console.log('\t\t111' + teamId+'\t\t\t+++');
     const chatUsersRef = firestore.collection('teams').doc(teamId).collection('todos');
     const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
       const todosData = [];
@@ -94,70 +101,69 @@ function TeamDashboard() {
   const getTodosByDate = (todos) => {
     const todosByDate = {};
   
+    todos.sort((a, b) => a.startDate.toDate() - b.startDate.toDate());
+
     todos.forEach((todo) => {
       const startDate = format(todo.startDate.toDate(), 'yyyy-MM-dd');
       const endDate = format(todo.endDate.toDate(), 'yyyy-MM-dd');
   
-      if (!todosByDate[startDate]) {
-        todosByDate[startDate] = [];
-      }
-      if (!todosByDate[endDate]) {
-        todosByDate[endDate] = [];
-      }
-  
-      todosByDate[startDate].push(todo);
-      todosByDate[endDate].push(todo);
+      const dateRange = eachDayOfInterval({
+        start: new Date(startDate),
+        end: new Date(endDate),
+      }).map((date) => format(date, 'yyyy-MM-dd'));
+      dateRange.forEach((date) => {
+        if (!todosByDate[date]) {
+          todosByDate[date] = [];
+        }
+        todosByDate[date].push(todo);
+      });
     });
-  
+    console.log(Object.keys(todosByDate));
+    console.log(Object.values(todosByDate));
     return todosByDate;
   };
-  /*
-  지금 할일의 첫날과 끝날만 배열에 저장하고 있잖아 
-  모든 할일들중 가장 처음 시작되는날과 할일이 가장 마지막에 끝나는 날의 길이에 해당하는 배열을 만들고 여기에 worker별로 할일목록을 저장해야해 덤으로 interval도 계산해야 하고
-  예시를 보여줄게
-  {
-  2023.04.05: user1:{todo1}, user2:{todo2, todo3}, user3
-  2023.04.06: user1:{}, user2:{todo2}, user3{}
-  2023.04.07: user1:{todo4}, user2:{todo2}, user3{todo5}
-  }
-  이해했어?
-  */
 
+  const renderHeatmap = () => {
+    const rows = userNames.map((worker) => {
+    const cells = Object.keys(todosByDate).map((date) => {
+      const workerTodos = (todosByDate[date] || []).filter((todo) => {todo.worker === worker;
+        // console.log(todo);
+        if (todo.worker === worker) {
+          console.log(todo);
+        }
+      });
+    let color;
+
+    if (workerTodos.length === 0) {
+      color = "#FFFFFF";
+    } else {
+      color = workerTodos.complete ? "#000000" : userColors[worker] || "#FFFFFF";
+    }
+ 
+    return (
+      <View
+        key={`${worker}-${date}`}
+        style={[
+          styles.workerTodosHeatMapCell,
+          { backgroundColor: color },
+        ]}
+      />
+    );
+  });
+  return (
+    <View key={worker} style={styles.workerTodosContainer}>
+      <Text style={styles.workerName}>{worker}</Text>
+      <View style={styles.workerTodosHeatMap}>{cells}</View>
+    </View>
+  );
+});
+return <View style={styles.todosListContainer}>{rows}</View>;
+};
   return (
     <ScrollView style={styles.container}>
       <View style={styles.chartContainer}>
         <Text style={styles.chartTitle}>작업 목록</Text>
-        <ScrollView horizontal>
-          <View style={styles.todosListContainer}>
-            <Table borderStyle={styles.table}>
-            {Object.keys(teamTodos).map((worker, index) => (
-              <View key={index} style={styles.workerTodosContainer}>
-                <Text style={styles.workerName}>{worker}</Text>
-                <View style={styles.workerTodosHeatMap}>
-                  {Object.keys(todosByDate).map((date, i) => {
-                    const workerTodos = todosByDate[date].filter(
-                      (todo) => todo.worker === worker
-                    );
-                    const color =
-                      workerTodos.length > 0
-                        ? userColors[workerTodos[0].worker] || "#FFFFFF"
-                        : "#FFFFFF";
-                    return (
-                      <View
-                        key={`${worker}-${i}`}
-                        style={[
-                          styles.workerTodosHeatMapCell,
-                          { backgroundColor: color },
-                        ]}
-                      />
-                    );
-                  })}
-                </View>
-              </View>
-            ))}
-            </Table>
-          </View>
-        </ScrollView>
+        <ScrollView horizontal>{renderHeatmap()}</ScrollView>
       </View>
       <View style={styles.tableContainer}>
         <Table borderStyle={styles.table}>

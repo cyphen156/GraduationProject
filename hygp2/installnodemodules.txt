@@ -76,3 +76,8 @@ yarn add react-native-paper
 yarn add react-native-bouncy-checkbox
 yarn add @freakycoder/react-native-bounceable
 yarn add @react-native-firebase/functions
+
+
+
+안드로이드 파일 경로
+/storage/emulated/0/Download/08bfdbf2-f611-4a14-a6ab-18f3eac3ac0a.zip
