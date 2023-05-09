@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform,
-    StyleSheet, Text, View, Alert } from "react-native";
+    StyleSheet, Text, View, Alert, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignButtons from '../components/SignButtons';
 import SignForm from '../components/SignForm';
@@ -79,9 +79,11 @@ function SignIn ({navigation, route}) {
         <KeyboardAvoidingView
             style={styles.keyboardAvoidingView}
             behavior={Platform.select({ios: 'padding'})}>
-
-            <SafeAreaView style={styles.fullscreen}>
-                <Text style={styles.text}>PublicGallery</Text>
+       
+            <SafeAreaView style={styles.fullscreen}> 
+                <Image 
+                    style={styles.image}
+                    source={require('../assets/images/Teamony.png')}/>
                 <View style={styles.form}>
                     {/* input */}
                     <SignForm
@@ -121,6 +123,11 @@ const styles = StyleSheet.create ({
     keyboardAvoidingView: {
         flex: 1,
     },
+    image: {
+        width: 350,
+        height: 100,
+        resizeMode:"contain"
+      },
 });
 
 export default SignIn;
