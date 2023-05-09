@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
 import HeatMap from 'react-native-heatmap-chart';
 import { Table, Row, Rows } from 'react-native-table-component';
 import PercentageCircle from './PercentageCircle';
@@ -22,6 +22,8 @@ function TeamDashboard() {
   const [teamTodos, setTeamTodos] = useState({});
   const [todosByDate, setTodosByDate] = useState({});
   const [userColors, setUserColors] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedData, setSelectedData] = useState([]);
 
   const colors = [
     "#FFA07A", "#7FFFD4", "#D2691E", "#DC143C",
@@ -40,7 +42,6 @@ function TeamDashboard() {
   
   useEffect(() => {
     setTodosByDate(getTodosByDate(todos));
-    // console.log(JSON.stringify(todos) + '\n' + todos.length);
   }, [todos]);
 
   // 채팅방 유저 가져오기
@@ -59,7 +60,6 @@ function TeamDashboard() {
   useEffect(() => {
     let task = 0;
     let complete = 0;
-    console.log('\t\t111' + teamId+'\t\t\t+++');
     const chatUsersRef = firestore.collection('teams').doc(teamId).collection('todos');
     const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
       const todosData = [];
@@ -68,13 +68,16 @@ function TeamDashboard() {
           complete = complete + 1;
         }
         task = task + 1;
-        todosData.push(doc.data());
+        todosData.push({
+          id: doc.id,
+          data: doc.data()
+        });
       });
       setTaskCount(task);
       setCompleteCount(complete);
       setTodos(todosData);
       setTeamTodos(workerList(todosData));
-    }, [taskCount, completeCount, teamId]);
+    }, [teamId]);
   }, []);
 
   //todos worker 별로 분류
@@ -82,30 +85,38 @@ function TeamDashboard() {
     const teamTodos = {};
   
     todos.forEach((todo) => {
-      if (!teamTodos[todo.worker]) {
-        teamTodos[todo.worker] = {
+      const worker = todo.data.worker;
+      const complete = todo.data.complete;
+
+      if (!teamTodos[worker]) {
+        teamTodos[worker] = {
           completed: 0,
           total: 0,
           todos: [],
         };
       }
-      if (todo.complete) {
-        teamTodos[todo.worker].completed++;
+      if (complete) {
+        teamTodos[worker].completed++;
       }
-      teamTodos[todo.worker].total++;
-      teamTodos[todo.worker].todos.push(todo);
+      teamTodos[worker].total++;
+      teamTodos[worker].todos.push(todo);
     });
     return teamTodos;
+  };
+
+  const onClick = (date, workerTodos) => {
+    setSelectedData(date, workerTodos);
+    setModalVisible(true);
   };
 
   const getTodosByDate = (todos) => {
     const todosByDate = {};
   
-    todos.sort((a, b) => a.startDate.toDate() - b.startDate.toDate());
+    todos.sort((a, b) => a.data.startDate.toDate() - b.data.startDate.toDate());
 
     todos.forEach((todo) => {
-      const startDate = format(todo.startDate.toDate(), 'yyyy-MM-dd');
-      const endDate = format(todo.endDate.toDate(), 'yyyy-MM-dd');
+      const startDate = format(todo.data.startDate.toDate(), 'yyyy-MM-dd');
+      const endDate = format(todo.data.endDate.toDate(), 'yyyy-MM-dd');
   
       const dateRange = eachDayOfInterval({
         start: new Date(startDate),
@@ -118,79 +129,106 @@ function TeamDashboard() {
         todosByDate[date].push(todo);
       });
     });
-    console.log(Object.keys(todosByDate));
-    console.log(Object.values(todosByDate));
     return todosByDate;
   };
 
   const renderHeatmap = () => {
     const rows = userNames.map((worker) => {
     const cells = Object.keys(todosByDate).map((date) => {
-      const workerTodos = (todosByDate[date] || []).filter((todo) => {todo.worker === worker;
-        // console.log(todo);
-        if (todo.worker === worker) {
-          console.log(todo);
-        }
-      });
-    let color;
-
-    if (workerTodos.length === 0) {
-      color = "#FFFFFF";
-    } else {
-      color = workerTodos.complete ? "#000000" : userColors[worker] || "#FFFFFF";
-    }
- 
+      const workerTodos = (todosByDate[date] || []).filter((todo) => todo.data.worker == worker)
+      let color;
+      if (workerTodos.length === 0) {
+        color = "#FFFFFF";
+      } else {
+        const hasIncompleteTodo = workerTodos.some((todo) => !todo.data.complete);
+        color = hasIncompleteTodo ? userColors[worker] || "#FFFFFF" : "#d0d0d0";
+      }
     return (
-      <View
-        key={`${worker}-${date}`}
-        style={[
-          styles.workerTodosHeatMapCell,
-          { backgroundColor: color },
-        ]}
-      />
-    );
-  });
+      <TouchableOpacity
+            key={`${worker}-${date}`}
+            style={[
+              styles.workerTodosHeatMapCell,
+              { backgroundColor: color },
+            ]}
+            onPress={() => {
+              onClick(date, workerTodos)
+              // Add the code to display the todo summary in the modal
+            }}
+          />
+        );
+      });
+      return (
+        <View key={worker} style={styles.workerTodosContainer}>
+          <Text style={styles.workerName}>{worker}</Text>
+          <View style={styles.workerTodosHeatMap}>{cells}</View>
+        </View>
+      );
+    });
+    return <View style={styles.todosListContainer}>{rows}</View>;
+  };
   return (
-    <View key={worker} style={styles.workerTodosContainer}>
-      <Text style={styles.workerName}>{worker}</Text>
-      <View style={styles.workerTodosHeatMap}>{cells}</View>
-    </View>
-  );
-});
-return <View style={styles.todosListContainer}>{rows}</View>;
-};
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>작업 목록</Text>
-        <ScrollView horizontal>{renderHeatmap()}</ScrollView>
-      </View>
-      <View style={styles.tableContainer}>
-        <Table borderStyle={styles.table}>
-          <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText}/>
-            {Object.keys(teamTodos).map((worker, index) => (
-              <Rows
-                key={index}
-                data={[
-                  [
-                    worker,
-                    teamTodos[worker].total,
-                    teamTodos[worker].completed,
-                  ],
-                ]}
-                style={styles.tableRow}
-                textStyle={styles.tableRowText}
-              />
-            ))}
-        </Table> 
-      </View>
-      <View style={styles.tableContainer}>
-        <Text style={styles.tableTitle}>작업 진행량</Text>
-        <Text>총 작업 수 : {taskCount}</Text>
-        <Text>완료된 작업 수 : {completeCount}</Text>
-        <PercentageCircle percentage={Math.floor((completeCount/taskCount)*100)}/>
-      </View>
-    </ScrollView>
+      <ScrollView style={styles.container}>
+        <View style={styles.chartContainer}>
+          <Text style={styles.chartTitle}>작업 목록</Text>
+          <ScrollView horizontal>{renderHeatmap()}</ScrollView>
+        </View>
+        <View style={styles.tableContainer}>
+          <Table borderStyle={styles.table}>
+            <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeaderText}/>
+              {Object.keys(teamTodos).map((worker, index) => (
+                <Rows
+                  key={index}
+                  data={[
+                    [
+                      worker,
+                      teamTodos[worker].total,
+                      teamTodos[worker].completed,
+                    ],
+                  ]}
+                  style={styles.tableRow}
+                  textStyle={styles.tableRowText}
+                />
+              ))}
+          </Table> 
+        </View>
+        <View style={styles.tableContainer}>
+          <Text style={styles.tableTitle}>작업 진행량</Text>
+          <Text>총 작업 수 : {taskCount}</Text>
+          <Text>완료된 작업 수 : {completeCount}</Text>
+          <PercentageCircle percentage={Math.floor((completeCount/taskCount)*100)}/>
+        </View>
+        <View>
+          {/* 모달창 */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(!modalVisible)}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                {selectedDay && (
+                  <>
+                    <Text style={styles.modalText}>{selectedDay}</Text>
+                    <Text>{workerTodos.data.worker}의 할 일</Text>
+                    <Text>{workerTodos.data.task} : {workerTodos.data.complete ? '완료' : '미완료'}</Text>
+                    <Text></Text>
+                  </>
+                )}
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text>뒤로 가기</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      </ScrollView>
   );
 }
 
@@ -199,6 +237,7 @@ const styles = StyleSheet.create({
       flex: 1,
       padding: 16,
       backgroundColor: '#F5FCFF',
+      zIndex: 1,
     },
     chartContainer: {
       alignItems: 'center',
@@ -271,6 +310,40 @@ const styles = StyleSheet.create({
       marginLeft: 2,
       marginRight: 2,
     },
+    //modal
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22,
+      zIndex: 2,
+    },
+    modalView: {
+      width: 250,
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center"
+    },
+    buttonRow: {
+      flexDirection: 'row',
+    },
+    Yes: {
+      marginRight: 10,
+    }
 });
 
 export default TeamDashboard;

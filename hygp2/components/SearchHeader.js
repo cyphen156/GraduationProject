@@ -77,7 +77,7 @@ function SearchHeader() {
         setRecommendedInterest(interests);
         console.log('1\n' + recommendedInterest + "\n2:" + interests);
       }else {
-        console.log("에러뜨심");
+        console.log("추천사항없음");
       }
     } catch (error) {
       console.error('Failed to fetch recommended teams:', error);
