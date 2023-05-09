@@ -20,7 +20,7 @@ function TeamDashboard() {
   const [taskCount, setTaskCount] = useState(0); // 총 작업 수
   const [completeCount, setCompleteCount] = useState(0); // 완료한 작업 수
   const [todos, setTodos] = useState([]);
-  const [tableHead] = useState(['작업자명', '할 일', '완료']);
+  const [tableHead] = useState(['작업자명', '작업', '완료']);
   const [teamTodos, setTeamTodos] = useState({});
   const [todosByDate, setTodosByDate] = useState({});
   const [userColors, setUserColors] = useState({});
@@ -123,8 +123,8 @@ function TeamDashboard() {
   };
 
   const onClick = (date, workerTodos) => {
-    console.log('\n\n\n\n1234\n\n\n\n'+selectedData);
-    setSelectedData(date, workerTodos);
+    setSelectedData({date, workerTodos});
+    console.log(JSON.stringify(selectedData, null, 2));
     setModalVisible(true);
   };
 
@@ -216,7 +216,7 @@ function TeamDashboard() {
           <Text>완료된 작업 수 : {completeCount}</Text>
           <PercentageCircle percentage={Math.floor((completeCount/taskCount)*100)}/>
         </View>
-        {/* <View>
+        <View>
           <Modal
             animationType="slide"
             transparent={true}
@@ -225,11 +225,15 @@ function TeamDashboard() {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                {selectedData && (
+                {selectedData.date && (
                   <>
                     <Text style={styles.modalText}>{selectedData.date}</Text>
-                    <Text>{selectedData.workerTodos.worker}의 할 일</Text>
-                    <Text>{selectedData.workerTodos.task} : {selectedData.workerTodos.complete ? '완료' : '미완료'}</Text>
+                    <Text>{selectedData.workerTodos[0].data.worker}의 할 일</Text>
+                    {selectedData.workerTodos.map((todo) => (
+                      <Text key={todo.id}> 
+                        {todo.data.task} : {todo.data.complete ? '완료' : '미완료'}
+                      </Text>
+                    ))}                  
                   </>
                 )}
                 <View style={styles.buttonRow}>
@@ -244,7 +248,7 @@ function TeamDashboard() {
               </View>
             </View>
           </Modal>
-        </View> */}
+        </View>
       </ScrollView>
   );
 }
