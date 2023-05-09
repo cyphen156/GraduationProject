@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import HeatMap from 'react-native-heatmap-chart';
 import { Table, Row, Rows } from 'react-native-table-component';
 import PercentageCircle from './PercentageCircle';
@@ -54,31 +55,39 @@ function TeamDashboard() {
       });
       setUserNames(names);
     });
+    return () => {
+      unsubscribe();
+    }
   }, [teamId]);
 
   // 총 작업 수 , 완료한 작업 수
-  useEffect(() => {
-    let task = 0;
-    let complete = 0;
-    const chatUsersRef = firestore.collection('teams').doc(teamId).collection('todos');
-    const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
-      const todosData = [];
-      querySnapshot.docs.forEach((doc) => {
-        if (doc.data().complete) {
-          complete = complete + 1;
-        }
-        task = task + 1;
-        todosData.push({
-          id: doc.id,
-          data: doc.data()
+  useFocusEffect(
+    React.useCallback(() => {
+      let task = 0;
+      let complete = 0;
+      const chatUsersRef = firestore.collection('teams').doc(teamId).collection('todos');
+      const unsubscribe = chatUsersRef.onSnapshot((querySnapshot) => {
+        const todosData = [];
+        querySnapshot.docs.forEach((doc) => {
+          if (doc.data().complete) {
+            complete = complete + 1;
+          }
+          task = task + 1;
+          todosData.push({
+            id: doc.id,
+            data: doc.data()
+          });
         });
+        setTaskCount(task);
+        setCompleteCount(complete);
+        setTodos(todosData);
+        setTeamTodos(workerList(todosData));
       });
-      setTaskCount(task);
-      setCompleteCount(complete);
-      setTodos(todosData);
-      setTeamTodos(workerList(todosData));
-    }, [teamId]);
-  }, []);
+      return () => {
+        unsubscribe();
+      }
+    }, [teamId]),
+  );
 
   //todos worker 별로 분류
   const workerList = (todos) => {
