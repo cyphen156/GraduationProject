@@ -105,6 +105,7 @@ function TeamDashboard() {
   };
 
   const onClick = (date, workerTodos) => {
+    console.log('\n\n\n\n1234\n\n\n\n'+selectedData);
     setSelectedData(date, workerTodos);
     setModalVisible(true);
   };
@@ -197,8 +198,7 @@ function TeamDashboard() {
           <Text>완료된 작업 수 : {completeCount}</Text>
           <PercentageCircle percentage={Math.floor((completeCount/taskCount)*100)}/>
         </View>
-        <View>
-          {/* 모달창 */}
+        {/* <View>
           <Modal
             animationType="slide"
             transparent={true}
@@ -207,12 +207,11 @@ function TeamDashboard() {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                {selectedDay && (
+                {selectedData && (
                   <>
-                    <Text style={styles.modalText}>{selectedDay}</Text>
-                    <Text>{workerTodos.data.worker}의 할 일</Text>
-                    <Text>{workerTodos.data.task} : {workerTodos.data.complete ? '완료' : '미완료'}</Text>
-                    <Text></Text>
+                    <Text style={styles.modalText}>{selectedData.date}</Text>
+                    <Text>{selectedData.workerTodos.worker}의 할 일</Text>
+                    <Text>{selectedData.workerTodos.task} : {selectedData.workerTodos.complete ? '완료' : '미완료'}</Text>
                   </>
                 )}
                 <View style={styles.buttonRow}>
@@ -227,7 +226,7 @@ function TeamDashboard() {
               </View>
             </View>
           </Modal>
-        </View>
+        </View> */}
       </ScrollView>
   );
 }
