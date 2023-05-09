@@ -83,7 +83,7 @@ function SignIn ({navigation, route}) {
             <SafeAreaView style={styles.fullscreen}> 
                 <Image 
                     style={styles.image}
-                    source={require('../assets/images/Teamony.png')}/>
+                    source={require('../assets/images/Teamony-removebg-preview.png')}/>
                 <View style={styles.form}>
                     {/* input */}
                     <SignForm
@@ -113,19 +113,21 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold'
     },
     form: {
-        marginTop: 64,
+        //marginTop: 64,
         width: '100%',
         paddingHorizontal: 16,
     },
     buttons: {
-        marginTop : 64,
+        marginTop : 30,
     },
     keyboardAvoidingView: {
         flex: 1,
     },
     image: {
-        width: 350,
-        height: 100,
+        width: '65%',
+        height: '30%',
+        flex: 1,
+        //position: 'absolute',
         resizeMode:"contain"
       },
 });
