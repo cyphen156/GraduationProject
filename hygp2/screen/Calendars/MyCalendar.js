@@ -28,6 +28,7 @@ function MyCalendar() {
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
+      title: '내 일정',
       headerLeft: () => (
         <>
           <Pressable style={styles.profile}  onPress={() => navigation.navigate('Profile')}>

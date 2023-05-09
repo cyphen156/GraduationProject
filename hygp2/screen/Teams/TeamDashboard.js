@@ -10,6 +10,7 @@ import TeamContext from './TeamContext';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const firestore = firebase.firestore();
 
@@ -25,12 +26,20 @@ function TeamDashboard() {
   const [userColors, setUserColors] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
+  const navigation = useNavigation();
 
   const colors = [
     "#FFA07A", "#7FFFD4", "#D2691E", "#DC143C",
     "#90EE90", "#FFD700", "#FF4500", "#2E8B57",
     "#ADFF2F", "#32CD32"
   ];
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitleAlign: 'center',
+      title: '대시보드',
+    });
+  }, [navigation]);
 
   useEffect(() => {
     const newUserColors = userNames.reduce((acc, name, index) => {
