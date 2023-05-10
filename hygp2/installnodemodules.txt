@@ -81,3 +81,13 @@ yarn add @react-native-firebase/functions
 
 안드로이드 파일 경로
 /storage/emulated/0/Download/08bfdbf2-f611-4a14-a6ab-18f3eac3ac0a.zip
+
+
+key
+CN=hygp3, OU=hygp3, O=hyupsungUniversity, L=hwaseong-city, ST=gyeonggi-do, C=kr이(가) 맞습니까?
+  [아니오]:  y
+
+다음에 대해 유효 기간이 10,000일인 2,048비트 RSA 키 쌍 및 자체 서명된 인증서(SHA256withRSA)
+를 생성하는 중
+        : CN=hygp3, OU=hygp3, O=hyupsungUniversity, L=hwaseong-city, ST=gyeonggi-do, C=kr   
+[hygp2-release-key.keystore을(를) 저장하는 중]

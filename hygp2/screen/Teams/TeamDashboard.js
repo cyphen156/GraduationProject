@@ -228,12 +228,18 @@ function TeamDashboard() {
                 {selectedData.date && (
                   <>
                     <Text style={styles.modalText}>{selectedData.date}</Text>
-                    <Text>{selectedData.workerTodos[0].data.worker}의 할 일</Text>
-                    {selectedData.workerTodos.map((todo) => (
-                      <Text key={todo.id}> 
-                        {todo.data.task} : {todo.data.complete ? '완료' : '미완료'}
-                      </Text>
-                    ))}                  
+                    {selectedData.workerTodos.length > 0 ? (
+                      <>
+                        <Text>{selectedData.workerTodos[0].data.worker}의 할 일</Text>
+                        {selectedData.workerTodos.map((todo) => (
+                          <Text key={todo.id}> 
+                            {todo.data.task} : {todo.data.complete ? '완료' : '미완료'}
+                          </Text>
+                        ))}
+                      </>
+                    ) : (
+                      <Text>할 일이 없습니다.</Text>
+                    )}                 
                   </>
                 )}
                 <View style={styles.buttonRow}>
