@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#263238',
     fontWeight: 'bold',
-    textDecorationLine: 'line-through',
   },
   body: {
     flex: 1,

@@ -17,18 +17,6 @@ function SearchHeader() {
   const searchTeamsByHashtagOrName = async () => {
 
     const teamsRef = firestore.collection('teams');
-    // const snapshot = await teamsRef
-    //   .where('hashtags', 'array-contains', searchText)
-    //   .get();
-    // const nameSnapshot = await teamsRef
-    //   .where('name', '==', searchText)
-    //   .get();
-
-    // const searchedTeams = [
-    //   ...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-    //   ...nameSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-    // ];
-
     const snapshot = await teamsRef.get();
 
     const searchedTeams = snapshot.docs
@@ -36,7 +24,7 @@ function SearchHeader() {
       .filter(
         team =>
           team.name.includes(searchText) ||
-          (team.hashtags && team.hashtags.some(tag => tag === searchText)),
+          (team.hashtags && team.hashtags.some(tag => tag.includes(searchText))),
       );
 
     setTeams(searchedTeams);
@@ -120,13 +108,6 @@ const styles = StyleSheet.create({
   button: {
       marginLeft: 8,
   },
-  // recommendation: {
-  //     marginTop: 8,
-  // },
-  // recommendationText: {
-  //     color: '#9e9e9e',
-  //     fontSize: 16,
-  // },
 });
 
 export default SearchHeader;
