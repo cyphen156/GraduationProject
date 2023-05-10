@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext, useRef } from 'react';
 import { View, StyleSheet, Text, Button, Image, Pressable, TouchableOpacity } from 'react-native';
 import { GiftedChat, Avatar, Send, SystemMessage, Bubble, Message } from 'react-native-gifted-chat';
 import firebase from '@react-native-firebase/app';
@@ -11,6 +11,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import FileUpload from '../../components/FileUpload';
 import { v4 as uuidv4 } from 'uuid';
 import RNFetchBlob from 'rn-fetch-blob';
+import Toast from 'react-native-easy-toast';
+import { Dimensions } from 'react-native';
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -21,6 +23,8 @@ function Chat({navigation}) {
   const [chatRoomName, setChatRoomName] = useState('');
   const [host, setHost] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+  const toastRef = useRef(); // toast ref 생성
+  const windowHeight = Dimensions.get('window').height;
 
   useEffect(() => {
     const teamsRef = firestore.collection('teams');
@@ -227,8 +231,10 @@ function Chat({navigation}) {
       }).fetch('GET', photoURL);
 
       console.log('File downloaded to:', response.path());
+      toastRef.current.show('File downloaded');
     } catch (err) {
       console.error('Download failed:', err);
+      toastRef.current.show('Download failed.');
     }
   };
 
@@ -416,6 +422,12 @@ function Chat({navigation}) {
   
           return (
             <View>
+              <Toast ref={toastRef}
+                    positionValue={windowHeight * 0.50}
+                    fadeInDuration={700}
+                    fadeOutDuration={1500}
+                    style={{backgroundColor:'rgba(33, 87, 243, 0.5)'}}
+              />
               {shouldDisplayUsername && (
                 <Text
                   style={
@@ -446,10 +458,12 @@ function Chat({navigation}) {
                   },
                 }}
               />
+
             </View>
           );
         }}
         placeholder={`메시지 보내기 (${chatRoomName})`}
+        
       />
       {isCheck && (
         <FileUpload onClick={uploadImage} teamId={teamId}/>
