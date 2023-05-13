@@ -30,6 +30,7 @@ import SearchScreen from "./Search";
 import SearchHeader from "../components/SearchHeader";
 import SearchContext from "../context/SearchContext";
 import UpdateMyTodos from "./MyTodos/UpdateMyTodos";
+
 const Stack = createNativeStackNavigator();
 
 function RootStack() {

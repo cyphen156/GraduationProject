@@ -1,0 +1,83 @@
+//add
+ios/pname/Info.plist
+
+    <key>UIAppFonts</key>
+    <array>
+        <string>MaterialIcons.ttf</string>
+    </array>
+</dict>
+</plist>
+
+//add
+android/app/build.gradle
+
+project.ext.vectoricons = [
+    iconsFontNames[ 'materialIcons.ttf' ]
+]
+
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
+
+yarn add @react-native-community/async-storage /
+yarn add @react-navigation/drawer /
+yarn add @react-navigation/native /
+yarn add @react-navigation/bottom-tabs /
+yarn add @react-navigation/material-top-tabs /
+yarn add @react-navigation/material-bottom-tabs /
+yarn add @react-navigation/native-stack /
+yarn add @react-native-community/datetimepicker /
+yarn add react-native-get-random-values /
+yarn add react-native-screens /
+yarn add react-native-safe-area-context /
+yarn add react-native-gesture-handler /
+yarn add react-native-reanimated /
+yarn add react-native-vector-icons /
+yarn add react-native-pager /
+yarn add react-native-tab-view /
+yarn add react-native-pager-view /
+yarn add react-native-calendars /
+yarn add react-native-modal-datetime-picker /
+yarn add date-fns   /
+yarn add uuid   /
+yarn add react-native-gifted-chat
+yarn add @react-native-community/masked-view
+
+npm install react-native-elements
+
+npm install --save firebase
+
+npm install --save @react-native-firebase/app
+
+yarn add react-native-image-picker // 추가 이미지 선택 기능
+
+// jmj 내비게이션과 아이콘
+
+yarn add react-query axios //리액트 쿼리 (HTTP 프로토콜관련)
+
+
+cd ios
+pod install
+
+//firebase connect
+yarn add @react-native-firebase/app
+yarn add @react-native-firebase/auth
+yarn add @react-native-firebase/firestore
+yarn add @react-native-firebase/storage
+yarn add @react-native-firebase/database
+
+cd ios
+pod install --repo-update
+
+
+
+// 2023.03.27
+yarn add react-native-ionicons
+yarn add react-native-paper
+yarn add react-native-bouncy-checkbox
+yarn add @freakycoder/react-native-bounceable
+yarn add @react-native-firebase/functions
+
+
+
+안드로이드 파일 경로
+/storage/emulated/0/Download/08bfdbf2-f611-4a14-a6ab-18f3eac3ac0a.zip
