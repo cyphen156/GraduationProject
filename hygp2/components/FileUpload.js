@@ -12,27 +12,52 @@ import storage from '@react-native-firebase/storage';
 import { createFile } from '../lib/files';
 import {useUserContext} from '../context/UserContext';
 import {v4} from 'uuid';
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
 import firestore from '@react-native-firebase/firestore';
 
 function FileUpload({teamId, onClick}) {
 
-const [singleFile, setSingleFile] = useState(null);
-const [blob, setBlob] = useState(null);
-const [metadata, setMetadata] = useState(null);
-const {user} = useUserContext();
-const navigation = useNavigation();
-const teamsId = teamId;
+  const [singleFile, setSingleFile] = useState(null);
+  const [blob, setBlob] = useState(null);
+  const [metadata, setMetadata] = useState(null);
+  const {user} = useUserContext();
+  const navigation = useNavigation();
+  const teamsId = teamId;
+
+  //권한 부여
+  const requestPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'App Storage Permission',
+          message: 'App needs access to your storage to upload files.',
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: 'OK'
+        }
+      );
+      // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      //   console.log("Storage permission given");
+      // } else {
+      //   console.log("Storage permission denied");
+      // }
+      return granted;
+    } catch (err) {
+      console.warn(err);
+      // return false;
+    }
+  };
 
  const uploadImage = useCallback(async () => {
 
     // 권한 요청
-    const hasPermission = await requestPermission();
-    if (!hasPermission) {
-      console.log('Permission denied');
-      return;
-    }
+    // const hasPermission = await requestPermission();
+    // if (!hasPermission) {
+    //   console.log('Permission denied');
+    //   return;
+    // }
     
     if (singleFile != null) {
       // If file selected then create FormData
@@ -71,11 +96,17 @@ const teamsId = teamId;
           onClick(url, fileName, user, size);
         } 
       );
-      }
+    }
   }, [singleFile, user, navigation]);
 
   // 파일 선택
   const selectFile = async () => {
+    const hasPermission = await requestPermission();
+
+    if (!hasPermission) {
+      console.log('Permission denied');
+      return;
+    }
 
     try {
       const res = await DocumentPicker.pick({
@@ -83,7 +114,6 @@ const teamsId = teamId;
       });
 
       console.log('res : ' + JSON.stringify(res));
-
       setSingleFile(res);
     } catch (err) {
       setSingleFile(null);
@@ -96,24 +126,6 @@ const teamsId = teamId;
         alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
-    }
-  };
-
-  //권한 부여
-  const requestPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Storage Permission',
-          message: 'App needs access to your storage to upload files.',
-          buttonPositive: 'OK',
-        },
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err) {
-      console.warn(err);
-      return false;
     }
   };
 
