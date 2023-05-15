@@ -66,6 +66,7 @@ function FriendsAddScreen(){
       console.log("add버튼 :", aa);
       toastRef.current.show("추가되었습니다.");
     };
+
   if(!response){
     return (
       <View>
@@ -93,6 +94,11 @@ function FriendsAddScreen(){
   }
   
   else{
+
+    const avatarSource = user.photoURL && user.photoURL.startsWith('https')
+    ? { uri: user.photoURL }
+    : require('../assets/images/user.png');
+
     return(
       <View>
         <View style={[styles.block, {width: width - 5}]}>
@@ -109,7 +115,7 @@ function FriendsAddScreen(){
           </Pressable>
         </View>
       <View style={[styles.profile, {width: width - 5}]}>
-        <Avatar source={user.photoURL && {uri: user.photoURL}} size={100} />
+        <Avatar source={avatarSource} size={100} />
         <Text style={styles.name}>{user.displayName}</Text>
         <Button title="친구 추가" margin= {20} onPress={add} ></Button> 
       </View>

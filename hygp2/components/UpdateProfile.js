@@ -283,9 +283,11 @@ function UpdateProfile() {
                         resizeMode="cover"
                         style={styles.circle}
                         source={
-                            response
-                                ? { uri: response?.assets[0]?.uri }
-                                : { uri: user.photoURL }
+                            response?.assets[0]
+                                ? { uri: response.assets[0].uri }
+                                : user.photoURL
+                                ? { uri: user.photoURL }
+                                : require('../assets/images/user.png')
                         }
                     />
                 </Pressable>

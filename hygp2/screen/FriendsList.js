@@ -46,9 +46,12 @@ const FriendsList = () => {
 
   const renderItem = ({item}) => {
     const friendId = item.id;
+    const avatarSource = item.photoURL.startsWith('https')
+      ? { uri: item.photoURL }
+      : require('../assets/images/user.png');
     return (
       <Pressable style={styles.item} onPress={() => navigation.navigate('UserProfile', {userInfo: item})}>
-        <Avatar style={styles.PhotoImage} source={item.photoURL && {uri: item.photoURL}} />
+        <Avatar style={styles.PhotoImage} source={avatarSource} />
         <Text style={styles.title}>{item.displayName}</Text>
         <View style={{flexDirection: 'row-reverse', marginLeft: 'auto'}}>
           <Icon

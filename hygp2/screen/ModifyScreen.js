@@ -2,7 +2,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState, useEffect, useCallback } from "react";
 import { StyleSheet, TextInput, Platform, KeyboardAvoidingView } from "react-native";
 import IconRightButton from "../components/IconRightButton";
-import { updatePost , updateUserProfile } from "../lib/posts";
+import { updatePost,
+    //  updateUserProfile
+     } from "../lib/posts";
 import events from "../lib/events";
 import { useUserContext } from "../context/UserContext";
 
@@ -24,11 +26,10 @@ function ModifyScreen(){
             postId: params.id,
             description,
         });
-        await updateUserProfile({
-            id: params.id,
-            photoURL : user.photoURL,
-        })
-
+        // await updateUserProfile({
+        //     id: params.id,
+        //     photoURL : user.photoURL,
+        // })
         navigation.pop();
     },[navigation, params.id, description]);
 
