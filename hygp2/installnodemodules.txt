@@ -39,10 +39,20 @@ yarn add react-native-calendars /
 yarn add react-native-modal-datetime-picker /
 yarn add date-fns   /
 yarn add uuid   /
+yarn add react-native-gifted-chat
+yarn add @react-native-community/masked-view
+
+npm install react-native-elements
+
+npm install --save firebase
+
+npm install --save @react-native-firebase/app
 
 yarn add react-native-image-picker // 추가 이미지 선택 기능
 
 // jmj 내비게이션과 아이콘
+
+yarn add react-query axios //리액트 쿼리 (HTTP 프로토콜관련)
 
 
 cd ios
@@ -53,6 +63,31 @@ yarn add @react-native-firebase/app
 yarn add @react-native-firebase/auth
 yarn add @react-native-firebase/firestore
 yarn add @react-native-firebase/storage
+yarn add @react-native-firebase/database
 
 cd ios
 pod install --repo-update
+
+
+
+// 2023.03.27
+yarn add react-native-ionicons
+yarn add react-native-paper
+yarn add react-native-bouncy-checkbox
+yarn add @freakycoder/react-native-bounceable
+yarn add @react-native-firebase/functions
+
+
+
+안드로이드 파일 경로
+/storage/emulated/0/Download/08bfdbf2-f611-4a14-a6ab-18f3eac3ac0a.zip
+
+
+key
+CN=hygp3, OU=hygp3, O=hyupsungUniversity, L=hwaseong-city, ST=gyeonggi-do, C=kr이(가) 맞습니까?
+  [아니오]:  y
+
+다음에 대해 유효 기간이 10,000일인 2,048비트 RSA 키 쌍 및 자체 서명된 인증서(SHA256withRSA)
+를 생성하는 중
+        : CN=hygp3, OU=hygp3, O=hyupsungUniversity, L=hwaseong-city, ST=gyeonggi-do, C=kr   
+[hygp2-release-key.keystore을(를) 저장하는 중]

@@ -1,15 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext } from 'react';
 
-const SearchContext = createContext();
-
-export function SearchContextProvider({children}) {
-    const [keyword, onChangeText] = useState('');
-    
-    return (
-        <SearchContext.Provider value={{keyword, onChangeText}}>
-            {children}
-        </SearchContext.Provider>
-    );
-}
+const SearchContext = createContext({
+  teams: [],
+  setTeams: () => {},
+  searchText: '',
+  setSearchText: () => {},
+  recommendedInterest: '',
+  setRecommendedInterest: () => {},
+});
 
 export default SearchContext;

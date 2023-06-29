@@ -1,0 +1,59 @@
+23.03.28
+google-signin - 왜 돼냐 갑자기????
+
+yarn add react-native-google-signin --save
+
+/android/app/build.gradle
+dependencies {  ／／추가하기
+        implementation 'com.google.android.gms:play-services-auth:20.4.1'
+}
+
+
+loginpage 수정중
+SignIn/GoogleSignin.js // 구글 인증
+
+MainTab // GoogleSigninComponent 추가 --< 앱이 멈추는거같음 인증 // firebase/auth두번 불러와서 그런거같아보임
+
+23.03.29
+OAuth2.0 - > user -> app -> google 순으로 인증
+Login/password대신 AccessToken형식으로 사용
+
+23.4.05
+로그인 - 프로필 이미지변경
+-->> 로그인이 풀리는거 같음 
+
+텍스트 엔터, -> 넘기면 널값이 전달되고 에러뜸 
+무시하면 되기는 하지만 해결 필요
+
+파이어베이스 콜렉션에 대한 이해 필요...
+-> 파일 입출력, 쿼리 사용법 모름
+
+컬렉션 구성
+RDBMS 
+- User
+        -file -- storage
+        -friends-
+        --group
+        -chatlog -- chating server
+        -calendar
+
+- group
+        --user > 권한 설정
+        -file -- stroage
+        -calendar
+
+웹 호스팅
+https://jongmin92.github.io/categories/Project/
+
+23.04.11
+채팅 스크린완성
+chat.js
+누구에게 메세지를 보낼지 그룹채팅을 할때 사용자 분기 처리 필요
+채팅서버...모듈 임포트 방식 바꿔주기,  추후 화상채팅 가능하도록 변경해야함 -> 카메라를 사용해서 웹소캣으로 실시간 통신, 파일 저장은 파이어베이스
+
+04.26 
+캘린더 todos onclick이벤트 => 컴포넌트 push, 또는 alert로 구현 요구
+(todos상세페이지 or createTodos)
+
+yarn add react-native-claendar
+-> 업데이트 안하면 period작동안함

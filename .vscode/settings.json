@@ -1,0 +1,9 @@
+{
+<<<<<<< Updated upstream
+    "cmake.sourceDirectory": "C:/GraduationProject/hygp2/node_modules/react-native/ReactAndroid/src/main/jni/react/jscexecutor"
+}
+=======
+    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+    "cmake.configureOnOpen": false
+}
+>>>>>>> Stashed changes

@@ -10,7 +10,6 @@ import {NavigationContainer} from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RootStack from './screen/RootStack'
 import { LogContextProvider } from './context/LogContext';
-import { SearchContextProvider } from "./context/SearchContext";
 import {
   SafeAreaView,
   ScrollView,
@@ -29,6 +28,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { UserContextProvider } from './context/UserContext';
+import { LogBox } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import SearchContext from './context/SearchContext';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -62,21 +64,29 @@ const Section = ({children, title}): Node => {
 const Stack = createNativeStackNavigator();
 
 function App() {
+  LogBox.ignoreLogs(['Warning: ...']);
+  console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+  console.disableYellowBox = true;
+  const [searchText, setSearchText] = useState('');
+  const [teams, setTeams] = useState([]);
+  const [recommendedInterest, setRecommendedInterest] = useState('');
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+
   return (
     <UserContextProvider>
-      <NavigationContainer>
-        <SearchContextProvider>
+      <SearchContext.Provider value={{ searchText, setSearchText, teams, setTeams, recommendedInterest, setRecommendedInterest }}>
+        <NavigationContainer>
           <LogContextProvider>
             <RootStack />
           </LogContextProvider>
-        </SearchContextProvider>
-      </NavigationContainer>
+        </NavigationContainer>
+      </SearchContext.Provider>
     </UserContextProvider>
     /*
     <SafeAreaView style={backgroundStyle}>
@@ -104,7 +114,7 @@ function App() {
       </ScrollView>
     </SafeAreaView>
     */
-  );
+  )
 }
 
 const styles = StyleSheet.create({

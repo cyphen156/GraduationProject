@@ -119,9 +119,18 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
+            minifyEnabled false
             signingConfig signingConfigs.debug
         }
         release {
@@ -152,14 +161,26 @@ android {
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
+    //구글 의존성
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
-
+    //implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-analytics'
-
-
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
+    //implementation 'com.firebaseui:firebase-ui-database:8.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+
+    //네이버 의존성
+    // implementation 'com.android.support:appcompat-v7:27.0.0'
+
+    // implementation('com.naver.maps:map-sdk:3.16.2') {
+    //     exclude group: 'com.android.support'
+    // }
+
+    // else 
+    // implementation 'com.naver.maps:map-sdk:3.16.2'
 
     implementation("com.facebook.react:react-android")
 

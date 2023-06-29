@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     separator: {
-        backgroundColor: '#e0e0e0',
+        backgroundColor: '#ff0000',
         height: 1,  
     },  
 });

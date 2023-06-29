@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         fontSize: 21,
         color: '#757575',
     },
+
 });
 
 export default WelcomeScreen;

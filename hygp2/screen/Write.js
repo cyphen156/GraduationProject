@@ -6,15 +6,16 @@ import { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LogContext from "../context/LogContext";
 import CameraButton from "../components/CameraButton";
+import { useUserContext } from "../context/UserContext";
 
 function WriteScreen({route}){
     const log = route.params?.log;
-
+    console.log("log :", log)
     const [title, setTitle] = useState(log?.title ?? '');
     const [body, setBody] = useState(log?.body ?? '');
     const navigation = useNavigation();
     const [date, setDate] = useState(log ? new Date(log.date) : new Date());
-
+    const {user} = useUserContext();
     const {onCreate, onModify, onRemove} = useContext(LogContext);
 
     const onAskRemove = () => {
@@ -42,11 +43,13 @@ function WriteScreen({route}){
             onModify({
                 id: log.id,
                 date: date.toISOString(),
+                displayName : user.displayName,
                 title,
                 body,
             });
         } else{
             onCreate({
+                
                 title,
                 body,
                 date: date.toISOString(),
@@ -72,7 +75,6 @@ function WriteScreen({route}){
                     onChangeTitle={setTitle}
                     onChangeBody={setBody} />
             </KeyboardAvoidingView>
-            <CameraButton/>
         </SafeAreaView>
     );
 }

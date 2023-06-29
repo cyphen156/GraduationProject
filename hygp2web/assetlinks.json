@@ -1,0 +1,17 @@
+[{
+    "relation": ["delegate_permission/common.get_login_creds"],
+    "target": {
+      "namespace": "web",
+      "site": "hygp2-ec607@appspot.gserviceaccount.com"
+    }
+   },
+   {
+    "relation": ["delegate_permission/common.get_login_creds"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.hygp2",
+      "sha256_cert_fingerprints": [
+        "A8:17:85:36:0F:1A:88:E8:62:36:79:3D:24:99:69:EF:77:41:72:CC:76:69:79:68:44:51:9E:BB:DF:7E:F0:BC"
+      ]
+    }
+   }]

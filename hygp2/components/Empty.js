@@ -24,7 +24,7 @@ const style = StyleSheet.create({
     },
     description: {
         fontSize: 24,
-        color: '9e9e9e',
+        color: '#9e9e9e',
     },
 });
 
