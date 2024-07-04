@@ -29,7 +29,7 @@ import CreateMyTodos from "./MyTodos/CreateMyTodos";
 import SearchScreen from "./Search";
 import SearchHeader from "../components/SearchHeader";
 import SearchContext from "../context/SearchContext";
-import UpdateMyTodos from "./MyTodos/UpdateMyTodos";
+import UpdateMyTodos from "./MyTodos/updateMyTodos";
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
